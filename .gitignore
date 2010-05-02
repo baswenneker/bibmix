@@ -3,6 +3,8 @@
 config/database.yml
 log/*
 tmp/*
+rdoc/*
+html/*
 
 ## generic files to ignore
 *~

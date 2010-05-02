@@ -1,0 +1,14 @@
+Bibmix
+======
+A rails plugin that mixes/enhances given bibliographic information with aggregated data from external sources.
+
+Example
+=======
+Example goes here.
+
+Authors 
+=======
+Bas Wenneker, <b.wenneker@gmail.com>
+
+--
+Copyright (c) 2010 Bas Wenneker, released under the MIT license
