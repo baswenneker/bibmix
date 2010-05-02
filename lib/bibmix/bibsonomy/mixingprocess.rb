@@ -48,11 +48,11 @@ module Bibmix
 				raise MixingProcessInvariantError unless invariant
 				raise MixingProcessMissingTitleError if !@base.title
 				
-				query = Bibsonomy::TitleQuery.new(@base.title)
+				query = Bibmix::Bibsonomy::TitleQuery.new(@base.title)
 				
 				if query.response.size > 0
 					begin
-						@result = Bibsonomy::TitleQueryMerger.new(@base, query).merge
+						@result = Bibmix::Bibsonomy::TitleQueryMerger.new(@base, query).merge
 						@status = RESULT_TITLE_QUERY_OK
 					rescue QueryMergerError
 						@status = RESULT_TITLE_QUERY_EMPTY				
@@ -77,7 +77,7 @@ module Bibmix
 				@base.author.each do |q|
 					
 					# Query on author name.
-					query = Bibsonomy::AuthorQuery.new(q)
+					query = Bibmix::Bibsonomy::AuthorQuery.new(q)
 					if query.response.size > 0
 						author_queries << query
 					end
@@ -85,10 +85,10 @@ module Bibmix
 				
 				begin
 					# Merge the results.
-					@result = Bibsonomy::AuthorQueryMerger.new(@base, author_queries).merge
+					@result = Bibmix::Bibsonomy::AuthorQueryMerger.new(@base, author_queries).merge
 					@status = RESULT_AUTHOR_QUERY_OK
-				rescue QueryMergerError
-					Rails.logger.info("Step #{@current_step} - empty response for #{author_queries}")
+				rescue QueryMergerError => e
+					Rails.logger.info("Step #{@current_step} - empty response for #{author_queries} - #{e}")
 				end
 							
 				Rails.logger.info("Step #{@current_step}-#{@status}")
@@ -103,11 +103,11 @@ module Bibmix
 				tokens.each do |token|
 					next if token.size <= 8
 					
-					query = Bibsonomy::TitleQuery.new(token)
+					query = Bibmix::Bibsonomy::TitleQuery.new(token)
 				
 					if query.response.size > 0
 						begin
-							@result = Bibsonomy::TitleQueryMerger.new(@base, query).merge
+							@result = Bibmix::Bibsonomy::TitleQueryMerger.new(@base, query).merge
 							@status = RESULT_TITLE_QUERY_OK
 						rescue QueryMergerError				
 						end

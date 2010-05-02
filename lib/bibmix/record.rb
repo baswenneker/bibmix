@@ -101,7 +101,7 @@ module Bibmix
 		end
 		
 		def merge(record)
-			raise RecordInvalidMergeParamError unless record.kind_of?(Bibsonomy::Record)
+			raise RecordInvalidMergeParamError unless record.kind_of?(Bibmix::Record)
 			
 			each_attribute do |attr|
 				if self.send(attr).nil? && !record.send(attr).nil?
@@ -126,7 +126,7 @@ module Bibmix
 		end
 		
 		def to_s
-			"<Bibsonomy::Record(#{@title})>"
+			"<Bibmix::Record(#{@title})>"
 		end
 	
 		protected	 

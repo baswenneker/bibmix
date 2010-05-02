@@ -32,6 +32,7 @@ module Bibmix
 						similarity = assess_similarity(@base, record)
 						@lookup_table[record.intrahash] = similarity
 						if similarity > 0.75
+							puts '#####', record.to_yaml
 							similar_records[record.intrahash] = [similarity, record]
 						end
 					end
@@ -49,7 +50,7 @@ module Bibmix
 			end
 			
 			def assess_similarity(rec1, rec2)
-				if !(rec1.kind_of?(Record) || rec2.kind_of?(Record))
+				if !(rec1.kind_of?(Bibmix::Record) || rec2.kind_of?(Bibmix::Record))
 					raise AuthorQueryMergerInvalidSimilarityParamError, "One of the params is not a Record, (#{rec1.inspect},#{rec2.inspect})"
 				end
 				
@@ -71,6 +72,10 @@ module Bibmix
 				end
 				
 				0
+			end
+		protected
+			def invariant
+				@base.kind_of?(Bibmix::Record) && @query.kind_of?(Array)
 			end
 		end
 	end
