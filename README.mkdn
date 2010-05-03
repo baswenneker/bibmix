@@ -10,5 +10,6 @@ Authors
 =======
 Bas Wenneker, <b.wenneker@gmail.com>
 
---
-Copyright (c) 2010 Bas Wenneker, released under the MIT license
+* * *
+Copyright (c) 2010 Bas Wenneker
+released under the MIT License

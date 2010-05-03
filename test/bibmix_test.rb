@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'bibmix'
 
 class BibmixTest < ActiveSupport::TestCase
   # Replace this with your real tests.

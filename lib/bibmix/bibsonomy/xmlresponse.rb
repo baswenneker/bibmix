@@ -1,6 +1,4 @@
-require 'bibmix/response'
-require 'bibmix/error'
-require 'bibmix/record'
+require 'bibmix/bibsonomy'
 require 'rexml/document' 
 
 module Bibmix

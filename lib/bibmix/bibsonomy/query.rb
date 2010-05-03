@@ -1,5 +1,4 @@
-require 'bibsonomy/request'
-require 'bibmix/error'
+require 'bibmix/bibsonomy'
 
 module Bibmix
 	module Bibsonomy

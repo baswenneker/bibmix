@@ -1,3 +1,5 @@
+require 'bibmix'
+
 module Bibmix
 	
 	class QueryMergerError < RuntimeError

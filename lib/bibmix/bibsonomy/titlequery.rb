@@ -1,4 +1,4 @@
-#require 'bibsonomy/query'
+require 'bibmix/bibsonomy'
 
 module Bibmix
 	module Bibsonomy

@@ -1,6 +1,4 @@
-require 'bibmix/request'
-require 'bibmix/bibsonomy/xmlresponse'
-require 'bibmix/error'
+require 'bibmix/bibsonomy'
 require 'httpclient'
 require 'cgi'
 

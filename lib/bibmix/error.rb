@@ -1,3 +1,5 @@
+require 'bibmix'
+
 module Bibmix
 	class Error < RuntimeError
 	end

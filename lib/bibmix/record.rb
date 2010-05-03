@@ -1,4 +1,4 @@
-require 'bibmix/error'
+require 'bibmix'
 
 module Bibmix
 	

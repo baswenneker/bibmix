@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'bibmix/bibsonomy'
 
 class BibmixBibsonomyRequestTest < ActiveSupport::TestCase
   

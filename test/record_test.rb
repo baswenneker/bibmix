@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'bibmix'
 
 class BibmixRecordTest < ActiveSupport::TestCase
   
