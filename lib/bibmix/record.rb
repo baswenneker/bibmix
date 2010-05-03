@@ -31,12 +31,12 @@ module Bibmix
 
 		attr_accessor *@@attributes
 		
-		# Returns the attributes of the record.
+		# Returns an array of attributes of the record.
 		def get_attributes
 			@@attributes
 		end
 		
-		# Allows to loop over the attributes.
+		# Allows to loop over the attribute keys of the record.
 		def each_attribute(&block)
 		  @@attributes.each &block
 		end
