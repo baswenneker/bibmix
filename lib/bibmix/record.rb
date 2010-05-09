@@ -11,6 +11,9 @@ module Bibmix
 	class RecordInvalidMergeParamError < RecordError
 	end
 	
+	# Record class which is a datawrapper for all valid bibtex fields, the type of
+	# entry, tags, a hash identifier and the complete citation string from which
+	# the data originates from.
 	class Record
 		
 		@@attributes = [
@@ -23,9 +26,9 @@ module Bibmix
 			:organization, :pages, :publisher,
 			:school, :series, :title,
 			:type, :volume, :year,
-			# Fields also returned by bibsonomy.
+			# Fields also returned by bibsonomy, but are useful for other APIs as well.
 			:entrytype, :tags, :intrahash,
-			# The complete citation, if any.
+			# The complete citation string, if any.
 			:citation		
 		]
 
@@ -37,15 +40,23 @@ module Bibmix
 		end
 		
 		# Allows to loop over the attribute keys of the record.
+		def each(&block)
+			values = {}
+			each_attribute do |attr|
+				value = self.fetch(attr)
+				if not value.nil?
+					values[attr] = value
+				end
+			end
+		  @@attributes.each &block
+		end
+		
+		# Allows to loop over the attribute keys of the record.
 		def each_attribute(&block)
 		  @@attributes.each &block
 		end
 		
-		def get(key)
-			self.send("@#{key}")
-		end
-		
-		# Make sure the entry type value is a valid one.
+		# A setter for entrytype which makes sure the entry type value is a valid one.
 		def entrytype=(value)
 			valid_entry_types = [
 				'article', 'book', 'booklet',
@@ -62,7 +73,7 @@ module Bibmix
 			@entrytype = value
 		end
 		
-		# Make sure the tags are hashes.
+		# A setter for tags which makes sure the tags are hashes.
 		def tags=(value)
 						
 			if value.class != Hash
@@ -72,7 +83,7 @@ module Bibmix
 			@tags = value
 		end
 		
-		# Make sure the author is an array.
+		# Setter for 'author' which makes sure the author is an array.
 		def author=(value)
 			
 			if value.class == String
@@ -86,6 +97,13 @@ module Bibmix
 			@author = value
 		end
 		
+		def fetch(key, default=nil)
+			val = self.send(key)
+			
+			val || default
+		end
+		
+		# Creates a record from a hash.
 		def self.from_hash(hsh)
 			record = Bibmix::Record.new
 			
@@ -100,6 +118,7 @@ module Bibmix
 			record
 		end
 		
+		# Merges the current record with the given record.
 		def merge(record)
 			raise RecordInvalidMergeParamError unless record.kind_of?(Bibmix::Record)
 			
@@ -125,6 +144,7 @@ module Bibmix
 			
 		end
 		
+		# To string method for pretty printing the record.
 		def to_s
 			"<Bibmix::Record(#{@title})>"
 		end
