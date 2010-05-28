@@ -9,7 +9,7 @@ module Bibmix
 				@csv_string = nil
 				
 				def execute
-					@csv_string = @base.citation
+					@csv_string = ''
 					execute_tq_aq
 				end
 				
@@ -32,6 +32,7 @@ module Bibmix
 					tmp_record = Bibmix::Record.new
 					fields = ['fields', 'base', "title_query(#{titlequery_time})", "author_query(#{authorquery_time})"]
 					@csv_string << FasterCSV.generate do |csv|
+					  csv << [@base.citation]
 					  csv << fields
 					  tmp_record.each_attribute do |attr|
 					  	row = []
@@ -55,7 +56,7 @@ module Bibmix
 					 
 					end
 					
-					File.open("#{Rails.root}/tmp/result/test.csv", 'w') {|f| f.write(@csv_string) }
+					File.open("#{Rails.root}/tmp/test.csv", 'w') {|f| f.write(@csv_string) }
 				end
 				
 			end
