@@ -1,4 +1,5 @@
 require 'bibmix/bibsonomy'
+require 'amatch'
 
 module Bibmix
 	module Bibsonomy
@@ -33,12 +34,11 @@ module Bibmix
 						similarity = assess_similarity(@base, record)
 						@lookup_table[record.intrahash] = similarity
 						if similarity > 0.75
-							puts '#####', record.to_yaml
 							similar_records[record.intrahash] = [similarity, record]
 						end
 					end
 				end
-				
+				puts similar_records
 				raise AuthorQueryMergerEmptyQueryResultError if similar_records.size == 0
 				
 	#			puts similar_records.to_yaml
@@ -65,7 +65,7 @@ module Bibmix
 				if @lookup_table.key?(rec2.intrahash)
 					return @lookup_table[rec2.intrahash]
 				end
-				
+				Rails.logger.info rec2.title
 				title_sim = rec1.title.pair_distance_similar(rec2.title)
 	
 				if title_sim > 0.75

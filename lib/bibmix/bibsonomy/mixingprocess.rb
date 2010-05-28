@@ -84,7 +84,7 @@ module Bibmix
 						author_queries << query
 					end
 				end
-				
+				Rails.logger.info("Step #{@current_step} - author queries: #{author_queries.size}")
 				begin
 					# Merge the results.
 					@result = Bibmix::Bibsonomy::AuthorQueryMerger.new(@base, author_queries).merge
