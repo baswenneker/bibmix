@@ -1,5 +1,6 @@
 require 'bibmix'
 
+
 module Bibmix
 	
 	# The Bibmix::Response class is an abstract class which can be used as a wrapper
@@ -20,8 +21,7 @@ module Bibmix
 			raise Bibmix::NotImplementedError
 		end
 		
-		# Allows to loop over the contents (Bibmix::Record instances) of the response 
-		# result.
+		# Allows to loop over Bibmix::Record instances of the response result.
 		def each(&block)
 		  self.get.each &block
 		end

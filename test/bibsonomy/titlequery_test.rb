@@ -1,13 +1,18 @@
-require 'test_helper'
-require 'bibmix/bibsonomy'
+require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class BibmixBibsonomyTitleQueryTest < ActiveSupport::TestCase
+class Bibsonomy_TitleQueryTest < ActiveSupport::TestCase
+  include Bibmix::Bibsonomy
   
 	def setup
-    @query = Bibmix::Bibsonomy::TitleQuery.new
+    @query = TitleQuery.new
   end  
+  
+  def teardown
+ 		@query = nil
+ 	end
  	
  	def test_get_invalid_query
+ 		
  		q = '__invalid_ titlename___'
  		response = nil
  		assert_nothing_raised{
@@ -18,7 +23,7 @@ class BibmixBibsonomyTitleQueryTest < ActiveSupport::TestCase
  		assert !response.eql?(false)
  		assert_equal 0, response.size()
  		
- 		assert @query.first().eql?(false)
+ 		assert_equal false, @query.first()
 
 	end
  
@@ -35,7 +40,5 @@ class BibmixBibsonomyTitleQueryTest < ActiveSupport::TestCase
  		assert !@query.first.eql?(false)
  	end
 
- 	def teardown
- 		@query = nil
- 	end
+ 	
 end

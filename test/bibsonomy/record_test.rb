@@ -1,0 +1,119 @@
+require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
+
+class Bibsonomy_RecordTest < ActiveSupport::TestCase
+  include Bibmix::Bibsonomy
+  
+  def setup
+  	@hash = get_hash
+  end
+ 
+	def test_each_attribute
+		@record = Record.from_hash(@hash)
+		@record.each_attribute do |k|
+			assert @record.get_attributes.include?(k)
+		end		
+	end
+  
+	def test_from_hash
+		
+    @record = Record.from_hash(@hash)    
+		@hash.each do |k, v|			
+			if @record.get_attributes.include?(k)
+				assert_not_nil @record.send("#{k}")
+			end
+		end	
+		
+		assert @record.author.kind_of?(Array)
+	end
+
+	def test_invalid_merge
+		
+		@record = Record.from_hash(@hash)    
+		assert_raise(Bibmix::RecordInvalidMergeParamError){
+			@record.merge(nil)
+		}
+		
+		assert_raise(Bibmix::RecordInvalidMergeParamError){
+			@record.merge(@hash)
+		}
+		
+	end
+	
+	def test_author_setter
+		
+		record = Record.new		
+		record.author = 'A and B'
+		
+		assert_equal Array, record.author.class
+		assert_equal 'A', record.author[0]
+		assert_equal 'B', record.author[1]
+		
+		record.author = ['A', 'B']
+		
+		assert_equal Array, record.author.class
+		assert_equal 'A', record.author[0]
+		assert_equal 'B', record.author[1]
+	end
+	
+	def test_tags_setter
+		
+		record = Record.new		
+		record.tags = {
+			:x => 'a',
+			:y => 'b'
+		}
+		
+		assert_equal Hash, record.tags.class
+		
+		assert_raise(Bibmix::RecordError){
+			record.tags = 'some_invalid_tag_type'
+		}		
+	end
+
+	def test_merge
+		
+    merge_hash = get_merge_hash
+    merge_record = Record.from_hash(merge_hash)
+		@record = Record.from_hash(get_hash)
+		@record.merge(merge_record)
+		
+		@hash.each do |k, v|
+			if k == :author
+				assert_not_nil @record.get(k)
+			else
+				assert_not_nil @record.get(k)
+				assert_equal v, @record.get(k)
+			end
+		end
+		
+		assert_equal merge_hash[:publisher], @record.get('publisher')
+		assert_equal @hash[:year], @record.get('year')
+		
+	end
+	
+	def teardown
+		@record = nil
+		@hash = nil
+	end
+	
+	protected
+	
+  def get_hash
+  	hash = {
+  		:citation => 'Isaac G. Councill, C. Lee Giles, Min-Yen Kan. (2008) ParsCit: An open-source CRF reference string parsing package. To appear in the proceedings of the Language Resources and Evaluation Conference (LREC 08), Marrakesh, Morrocco, May.',
+  		:author => 'Isaac G Councill and C Lee Giles and Min-Yen Kan',
+  		:title => 'Parscit An open-source CRF reference string parsing package',
+  		:year => '2008',
+  		:address => 'Marrakesh, Morrocco',
+  		:booktitle => 'in the proceedings of the Language Resources and Evaluation Conference (LREC 08'
+  	}
+ 	end
+ 
+	def get_merge_hash
+  	hash = {
+  		:publisher => 'ACM',
+  		:year => '2010'
+  	}
+  end
+  
+end

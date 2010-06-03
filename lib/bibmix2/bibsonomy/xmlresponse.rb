@@ -65,7 +65,7 @@ module Bibmix
 			# Transforms an xml entry into a Bibsonomy::Record.
 			def get_record(entry)
 				
-				record = Bibmix::Bibsonomy::Record.new
+				record = Bibmix::Record.new
 				REXML::XPath.first(entry, "bibtex").attributes.each do |key, value|
 					record.send("#{key.strip}=", value.strip)
 				end

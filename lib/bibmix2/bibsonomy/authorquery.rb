@@ -15,7 +15,7 @@ module Bibmix
 					
 					begin
 						@response = @request.send(author, 'posts')
-						Bibmix.log(self, "#{author}: #{@response.size}")
+						Rails.logger.info "AuthorQuery::run(#{author}): #{@response.size}"
 					rescue RequestError
 						@response = false
 					end

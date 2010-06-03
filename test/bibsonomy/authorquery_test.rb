@@ -1,11 +1,15 @@
-require 'test_helper'
-require 'bibmix/bibsonomy'
+require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class BibmixBibsonomyAuthorQueryTest < ActiveSupport::TestCase
+class Bibsonomy_AuthorQueryTest < ActiveSupport::TestCase
+  include Bibmix::Bibsonomy
   
 	def setup
-    @query = Bibmix::Bibsonomy::AuthorQuery.new
-  end  
+    @query = AuthorQuery.new
+  end
+  
+ 	def teardown
+ 		@query = nil
+ 	end
  
 	# Tests whether a search on 'houben' results in something.
  	def test_get_valid_query
@@ -22,10 +26,6 @@ class BibmixBibsonomyAuthorQueryTest < ActiveSupport::TestCase
 	 		
 	 		setup
 	 	end
- 	end
- 	
- 	def teardown
- 		@query = nil
  	end
  	
 end

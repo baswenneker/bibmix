@@ -2,7 +2,8 @@ require 'bibmix'
 
 module Bibmix
 	
-	class QueryMergerError < Bibmix::Error; end
+	class QueryMergerError < RuntimeError
+	end
 	
 	class QueryMerger
 		

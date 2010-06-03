@@ -22,17 +22,3 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include('README.mkdn')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
-
-#gem 'darkfish-rdoc'
-##require 'darkfish-rdoc'
-#
-#Rake::RDocTask.new do |rdoc|
-#    rdoc.title    = "Bibmix"
-#    rdoc.rdoc_files.include 'README'
-#		rdoc.rdoc_files.include('lib/**/*.rb')
-#		
-#    rdoc.options += [
-#        '-SHN',
-#        '-f', 'darkfish',  # This is the important bit
-#      ]
-#end

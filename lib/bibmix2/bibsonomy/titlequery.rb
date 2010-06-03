@@ -5,15 +5,12 @@ module Bibmix
 		class TitleQuery < Bibmix::Bibsonomy::Query
 			
 			def execute(q=nil)
-				raise Bibmix::QueryError("Invalid query param (#{q}, #{q.class})") unless q.nil? || q.class == String
-
+				
 				if @response.nil?
-					# Only do the actual request once, to improve performance.
 					begin
 						@response = @request.send(q, 'posts')
-					rescue RequestError => e
+					rescue RequestError
 						@response = false
-						Bibmix.log(self, "request failed, #{e}")
 					end	
 				end
 				

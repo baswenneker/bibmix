@@ -5,15 +5,23 @@ require 'cgi'
 module Bibmix
 	module Bibsonomy
 	
-		class RequestError < Bibmix::Error; end
-		class InvalidRequestConfigFileError < RequestError;	end
-		class MissingRequestUsernameError < RequestError;	end
-		class MissingRequestApiKeyError < RequestError;	end
-		class UnimplementedFormatError < RequestError; end
+		class RequestError < Bibmix::Error
+		end
+		
+		class InvalidRequestConfigFileError < RequestError 
+		end
+		
+		class MissingRequestUsernameError < RequestError 
+		end
 	
-		class Request < Bibmix::CacheRequest
+		class MissingRequestApiKeyError < RequestError	
+		end
+	
+		class UnimplementedFormatError < RequestError
+		end
+	
+		class Request < Bibmix::Request
 			DEFAULT_CONFIG = "#{File.dirname(__FILE__)}/../../config/bibsonomy_request_config.yml"
-			CACHING = true
 			
 	    def initialize
 	    	init_config
@@ -32,19 +40,8 @@ module Bibmix
 			  q = preprocess_query(q)		  
 			  client = get_client()
 			  
-			  request_uri = "http://www.bibsonomy.org/api/#{api_type}?resourcetype=bibtex&start=0&end=500&format=#{@config['format']}&search=#{q}"
-			  
-			  if CACHING
-				  response = from_cache(request_uri)
-				  if response.nil?
-				  	response = client.get_content(request_uri)			  	
-				  	to_cache(request_uri, response)
-				  end
-				else
-					response = client.get_content(request_uri)	
-				end
-			  
-			  Bibmix.log(self, "request_uri = #{request_uri}")
+			  response = client.get_content("http://www.bibsonomy.org/api/#{api_type}?resourcetype=bibtex&start=0&end=500&format=#{@config['format']}&search=#{q}")
+			  Rails.logger.info "[bibsonomy] Request::send $ http://www.bibsonomy.org/api/#{api_type}?resourcetype=bibtex&start=0&end=50&format=#{@config['format']}&search=#{q}"
 			 
 			  process_response(response)
 			end

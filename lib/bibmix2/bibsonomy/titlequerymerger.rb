@@ -3,8 +3,10 @@ require 'bibmix/bibsonomy'
 module Bibmix
 	module Bibsonomy
 		
-		class TitleQueryMergerError < QueryMergerError;	end
+		class TitleQueryMergerError < QueryMergerError; end
+		
 		class TitleQueryMergerInvariantError < TitleQueryMergerError;	end
+	
 		class TitleQueryMergerEmptyQueryResultError < TitleQueryMergerError; end
 			
 		class TitleQueryMerger < Bibmix::Bibsonomy::QueryMerger

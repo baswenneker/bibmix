@@ -4,10 +4,17 @@ require 'amatch'
 module Bibmix
 	module Bibsonomy
 		
-		class AuthorQueryMergerError < Bibmix::QueryMergerError;	end
-		class AuthorQueryMergerInvariantError < AuthorQueryMergerError;	end
-		class AuthorQueryMergerEmptyQueryResultError < AuthorQueryMergerError; end
-		class AuthorQueryMergerInvalidSimilarityParamError < AuthorQueryMergerError; end
+		class AuthorQueryMergerError < Bibmix::Bibsonomy::QueryMergerError
+		end
+		
+		class AuthorQueryMergerInvariantError < AuthorQueryMergerError
+		end
+	
+		class AuthorQueryMergerEmptyQueryResultError < AuthorQueryMergerError
+		end
+	
+		class AuthorQueryMergerInvalidSimilarityParamError < AuthorQueryMergerError
+		end
 			
 		class AuthorQueryMerger < Bibmix::Bibsonomy::QueryMerger
 			
@@ -31,9 +38,10 @@ module Bibmix
 						end
 					end
 				end
-				
+				puts similar_records
 				raise AuthorQueryMergerEmptyQueryResultError if similar_records.size == 0
 				
+	#			puts similar_records.to_yaml
 				similar_records = similar_records.sort {|a,b| a[0]<=>b[0]}
 				similar_records.each do |record|
 					@base = @base.merge(record[1][1])
@@ -57,7 +65,7 @@ module Bibmix
 				if @lookup_table.key?(rec2.intrahash)
 					return @lookup_table[rec2.intrahash]
 				end
-				
+				Rails.logger.info rec2.title
 				title_sim = rec1.title.pair_distance_similar(rec2.title)
 	
 				if title_sim > 0.75
