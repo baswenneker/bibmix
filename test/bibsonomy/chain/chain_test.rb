@@ -7,6 +7,7 @@ class Bibmix_Bibsonomy_ChainTest < ActiveSupport::TestCase
  	def test_titlequery_chain
  		
  		record = Record.from_hash({
+ 			:citation => 'Parscit An open-source CRF reference string parsing package',
  			:title => 'Parscit An open-source CRF reference string parsing package'
  		})
  		chainrecord = ChainRecord.new(record)
@@ -52,6 +53,7 @@ class Bibmix_Bibsonomy_ChainTest < ActiveSupport::TestCase
  	def test_forbidden_authorquery_chain
  		
  		record = Record.from_hash({
+ 			:citation => 'Experimental Test of Parity Conservation in Beta Deca',
  			:title => 'Experimental Test of Parity Conservation in Beta Deca',
  			:author => 'C. S. Wu and E. Ambler and R. W. Hayward and D. D. Hoppes and R. P. Hudson'
  		})

@@ -81,38 +81,34 @@ module Bibmix
 				attr_record = Bibmix::Bibsonomy::Record.new
 				
 				# initialize the spreadsheet
-			  #workbook = Spreadsheet::Workbook.new
 			  workbook = Spreadsheet.open path
-			  # create the heading format
-#				heading = Spreadsheet::Format.new({
-#					:color => :blue,
-#          :weight => :bold,
-#					:size => 12
-#				})
-#				
-				co_citation = {:x => 1, :y => 0}
-				co_base = 3
-				co_title = 5
-				co_author = 7
 				
-			  # create the result worksheet
-			  #sheet = workbook.create_worksheet :name => 'Results'
+				# set coordinates
+				co_date = {:x => 1, :y => 0}
+				co_citation = {:x => 1, :y => 1}
+				
+				starting_row = 4
+				base_column = 3
+				titlequery_column = 5
+				authorquery_column = 7
+				
+			  # retrieve the result worksheet
 				sheet = workbook.worksheet 'Results'
 
-				sheet[co_citation[:y], co_citation[:x]] = 'test'#base_record.citation
+				# set the citation cell
+				sheet[co_date[:y], co_date[:x]] = Time.now().strftime('%d/%m/%y %H:%M')
+
+				# set the citation cell
+				sheet[co_citation[:y], co_citation[:x]] = base_record.citation
 			  
 			  # add the results
-			  row = 3
+			  row = starting_row
 			  attr_record.each_attribute do |attr|
 				
-					#sheet.row(row).set_format(0, heading)
-
-				  #sheet.row(row).push "#{attr}"
-				  
 				  [
-				  	[base_record, co_base], 
-				  	[titlequery_record, co_title], 
-				  	[authorquery_record, co_author]
+				  	[base_record, base_column], 
+				  	[titlequery_record, titlequery_column], 
+				  	[authorquery_record, authorquery_column]
 				  ].each do |record, co|
 				  	
 				  	value = record.get(attr, '')
@@ -127,18 +123,7 @@ module Bibmix
 			  	row += 1
 			 	end
 				sheet.updated_from(0)
-				# result columns should be wider than evaluation cols
-				#[1, 3, 5].each{|no| sheet.column(no).width = 30}
-				#[2, 4, 6].each{|no| sheet.column(no).width = 5}
-				
-				# create the calculations worksheet
-#			  sheet = workbook.create_worksheet :name => 'Calculations'
-#				
-#				sheet.row(0).push('Velden in bibtex entry')
-#				
-#				
-#				sheet.row(0).push("=COUNTA(Results!A3:A27)")
-#				
+			
 				# write the file
 			  workbook.write "#{Rails.root}/tmp/test.xls"
 			end
