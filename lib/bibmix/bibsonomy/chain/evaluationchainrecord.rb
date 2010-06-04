@@ -6,76 +6,29 @@ module Bibmix
 	module Bibsonomy
 		class EvaluationChainRecord < ChainRecord
 			
-			attr_reader :records
+			attr_reader :records, :merged
+			attr_accessor :base_record
 			
 			def initialize(record=nil)
 				@records = {}
+				@merged = false
 				super(record)
 			end
 			
 			def condition=(condition)
 				@condition = condition
 				
+				if condition == Chain::STATUS_TITLE_MERGED || condition == Chain::STATUS_AUTHOR_MERGED
+					@merged = true
+				end
+				
 				@records[condition] = @record.clone
 			end
 			
-			def to_csv
-				
-#				puts 'start'
-#				titlequery_time = Benchmark.realtime do
-#				  run_titlequery_step
-#				end
-#				puts titlequery_time
-				
-				titlequery_result = get_record(Chain::STATUS_TITLE_MERGED)
-				
-#				authorquery_time = Benchmark.realtime do
-#					run_authorquery_step
-#				end
-				authorquery_result = get_record(Chain::STATUS_AUTHOR_MERGED)
-#				puts authorquery_time
-
-				tmp_record = Bibmix::Bibsonomy::Record.new
-				record = get_record(Chain::STATUS_NOT_MERGED)
-				
-				#puts @record.to_yaml,'#####'
-				
-				fields = ['fields', 'base', "title_query", "author_query"]
-				csv_buffer = ''
-				csv_buffer << FasterCSV.generate do |csv|
-				  csv << [record.citation]
-				  csv << fields
-				  
-				  tmp_record.each_attribute do |attr|
-				  	
-				  	row = []
-				  	row << attr
-				  	row << record.get(attr, '')
-				  	puts record.get(attr, '')
-				  	if not titlequery_result.nil?
-				  		row << titlequery_result.get(attr, '')
-				  	else
-				  		row << ''
-				  	end
-				  	
-				  	if not authorquery_result.nil?
-				  		row << authorquery_result.get(attr, '')
-				  	else
-				  		row << ''
-				  	end
-				  	
-				  	csv << row
-				 	end
-				 
-				end
-				
-				File.open("#{Rails.root}/tmp/test.csv", 'w') {|f| f.write(csv_buffer) }
-			end
-			
-			def to_excel(path)
+			def to_excel(file, path)
 				
 			  # get all the data.
-			  base_record = get_record(Chain::STATUS_NOT_MERGED)
+				parsed_record = get_record Chain::STATUS_NOT_MERGED
 			  titlequery_record = get_record(Chain::STATUS_TITLE_MERGED)				
 				authorquery_record = get_record(Chain::STATUS_AUTHOR_MERGED)
 				attr_record = Bibmix::Bibsonomy::Record.new
@@ -86,9 +39,11 @@ module Bibmix
 				# set coordinates
 				co_date = {:x => 1, :y => 0}
 				co_citation = {:x => 1, :y => 1}
+				co_merged = {:x => 1, :y => 2}
 				
-				starting_row = 4
-				base_column = 3
+				starting_row = 5
+				base_column = 1
+				parsed_column = 3
 				titlequery_column = 5
 				authorquery_column = 7
 				
@@ -99,25 +54,37 @@ module Bibmix
 				sheet[co_date[:y], co_date[:x]] = Time.now().strftime('%d/%m/%y %H:%M')
 
 				# set the citation cell
-				sheet[co_citation[:y], co_citation[:x]] = base_record.citation
+				sheet[co_citation[:y], co_citation[:x]] = parsed_record.citation
+				
+				# set the citation cell
+				sheet[co_merged[:y], co_merged[:x]] = self.merged ? 'Yes, extra information was found and merged.' : 'No information found.'
+			  
+			  default_evaluation_value = self.merged ? 'yn' : 'y'
 			  
 			  # add the results
 			  row = starting_row
 			  attr_record.each_attribute do |attr|
 				
 				  [
-				  	[base_record, base_column], 
-				  	[titlequery_record, titlequery_column], 
-				  	[authorquery_record, authorquery_column]
-				  ].each do |record, co|
+				  	[@base_record, base_column, 'y'], 
+				  	[parsed_record, parsed_column, default_evaluation_value], 
+				  	[titlequery_record, titlequery_column, default_evaluation_value], 
+				  	[authorquery_record, authorquery_column, default_evaluation_value]
+				  ].each do |record, column, default|
 				  	
 				  	value = record.get(attr, '')
-				  	sheet[row, co] = value
-				  	if value == ''
-				  		sheet[row, co+1] = ''
-				  	else
-				  		sheet[row, co+1] = 'yn'
+				  	
+				  	if value.is_a? Array
+				  		value = value.join(', ')
 				  	end
+				  	
+				  	sheet[row, column] = value
+				  	if value == ''
+				  		sheet[row, column+1] = ''
+				  	else
+				  		sheet[row, column+1] = default
+				  	end
+				  	
 				  end
 				  
 			  	row += 1
@@ -125,7 +92,8 @@ module Bibmix
 				sheet.updated_from(0)
 			
 				# write the file
-			  workbook.write "#{Rails.root}/tmp/test.xls"
+			  workbook.write "#{Rails.root}/tmp/evaluation/#{file}.xls"
+			  Bibmix.log(self, "wrote evaluation file #{Rails.root}/tmp/evaluation/#{file}.xls")
 			end
 			
 			protected

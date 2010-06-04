@@ -17,10 +17,9 @@ class Bibmix_Bibsonomy_ChainTest < ActiveSupport::TestCase
  		chainrecord = EvaluationChainRecord.new(record)
  		chainrecord = _titlequery_chain(chainrecord, record)
  		
- 		chainrecord.to_excel("#{File.dirname(__FILE__)}/template.xls")
+ 		#chainrecord.to_excel("#{File.dirname(__FILE__)}/template.xls")
  	end
  	
- 	protected
  	# Tests a chain which results in a authorquery.
  	def test_authorquery_chain
  
@@ -70,7 +69,7 @@ class Bibmix_Bibsonomy_ChainTest < ActiveSupport::TestCase
  		assert_equal Chain::STATUS_TITLE_NOT_MERGED, chainrecord.condition
  	end
  
- 	#protected
+ 	protected
  	def _titlequery_chain(chainrecord, record)
  		# assert the initial state of the chainrecord
  		assert_equal Chain::STATUS_NOT_MERGED, chainrecord.condition
