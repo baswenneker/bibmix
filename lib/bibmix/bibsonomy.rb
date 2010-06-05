@@ -12,7 +12,7 @@ require 'bibmix/bibsonomy/titlequery'
 require 'bibmix/bibsonomy/xmlresponse'
 require 'bibmix/bibsonomy/authorquery'
 require 'bibmix/bibsonomy/querymerger'
-require 'bibmix/bibsonomy/querymergerfactory'
+require 'bibmix/bibsonomy/querymergerdecoratorfactory'
 require 'bibmix/bibsonomy/titlequerymerger'
 require 'bibmix/bibsonomy/authorquerymerger'
 

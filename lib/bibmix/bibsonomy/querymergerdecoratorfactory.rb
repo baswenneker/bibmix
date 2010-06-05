@@ -12,6 +12,7 @@ module Bibmix
 		    
 		    result = args[0]
 		    decorators.each do |decorator_name|
+		    	
 		    	case decorator_name
 		    		when 'page'
 		    			result = PagesSimilarityDecorator.new(result)

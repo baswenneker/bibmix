@@ -16,8 +16,10 @@ module Bibmix
 				if hash.empty?
 					@result = @query.first
 				else
-					@result = merge_weighted_hash(hash, 1)
+					@result = merge_weighted_hash(hash)
 				end
+				
+				@result
 			end
 			
 #			# Method which assesses the similarity between both records.

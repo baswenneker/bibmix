@@ -26,7 +26,7 @@ module Evaluation
 	 			
 	 			chainrecord.to_excel("citation-#{line_no}","#{File.dirname(__FILE__)}/template.xls")
 	 			
-	 			if line_no == 10
+	 			if line_no == 1
 	 				exit
 	 			end
 	 			line_no += 1

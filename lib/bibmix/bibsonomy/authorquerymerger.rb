@@ -27,7 +27,7 @@ module Bibmix
 				
 				raise AuthorQueryMergerEmptyQueryResultError if hash.size == 0
 				
-				@result = merge_weighted_hash(hash,0.75)
+				@result = merge_weighted_hash(hash, 0.75)
 			end
 			
 			# Method which assesses the similarity between both records.

@@ -91,9 +91,14 @@ module Bibmix
 			 	end
 				sheet.updated_from(0)
 			
+				filepath = "#{Rails.root}/tmp/evaluation/#{file}.xls"
+				if File.exist?(filepath)
+					File.delete(filepath)
+				end
+			
 				# write the file
-			  workbook.write "#{Rails.root}/tmp/evaluation/#{file}.xls"
-			  Bibmix.log(self, "wrote evaluation file #{Rails.root}/tmp/evaluation/#{file}.xls")
+			  workbook.write(filepath)
+			  Bibmix.log(self, "wrote evaluation file #{filepath}")
 			end
 			
 			protected

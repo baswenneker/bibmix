@@ -70,7 +70,7 @@ module Bibmix
 		# Merges the current record with the given record.
 		def merge(record)
 			raise RecordInvalidMergeParamError unless record.kind_of?(Bibmix::Record)
-			
+			Bibmix.log(self, record.to_yaml)
 			each_attribute do |attr|
 				if self.send(attr).nil? && !record.send(attr).nil?
 					self.send("#{attr}=", record.send(attr))

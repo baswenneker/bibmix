@@ -12,16 +12,17 @@ class Bibmix_Bibsonomy_ChainTest < ActiveSupport::TestCase
  		})
  		chainrecord = ChainRecord.new(record)
  		
- 		_titlequery_chain(chainrecord, record)
+ 		#_titlequery_chain(chainrecord, record)
  		
  		chainrecord = EvaluationChainRecord.new(record)
+ 		chainrecord.base_record = record.clone
  		chainrecord = _titlequery_chain(chainrecord, record)
  		
  		#chainrecord.to_excel("#{File.dirname(__FILE__)}/template.xls")
  	end
  	
  	# Tests a chain which results in a authorquery.
- 	def test_authorquery_chain
+ 	def _test_authorquery_chain
  
  		record = Record.from_hash({
  			:title => 'Experimental Test of Parity Conservation in Beta Deca',
@@ -49,7 +50,7 @@ class Bibmix_Bibsonomy_ChainTest < ActiveSupport::TestCase
  	end
  
  	# Tests a chain which results in a authorquery.
- 	def test_forbidden_authorquery_chain
+ 	def _test_forbidden_authorquery_chain
  		
  		record = Record.from_hash({
  			:citation => 'Experimental Test of Parity Conservation in Beta Deca',
@@ -86,6 +87,8 @@ class Bibmix_Bibsonomy_ChainTest < ActiveSupport::TestCase
  		# execute the chain of actions.
  		chainrecord = title.execute(chainrecord)
  		
+ 		puts chainrecord.to_yaml
+ 		chainrecord.to_excel('test',"#{File.dirname(__FILE__)}/template.xls")
  		# check the resulting condition
  		assert_equal Chain::STATUS_TITLE_MERGED, chainrecord.condition
  		
