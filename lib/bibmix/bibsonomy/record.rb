@@ -28,6 +28,13 @@ module Bibmix
 			# Create getters and setters for the given attributes.
 			attr_accessor *@@attributes
 			
+			def id
+				if !@intrahash
+					raise Bibmix::Error, 'No intrahash identifier present'
+				end
+				@intrahash
+			end
+			
 			# A setter for entrytype which makes sure the entry type value is a valid one.
 			def entrytype=(value)
 				valid_entry_types = [

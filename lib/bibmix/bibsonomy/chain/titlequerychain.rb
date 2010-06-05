@@ -14,7 +14,7 @@ module Bibmix
 				
 				if query.response.size > 0
 					begin
-						chainrecord.record = Bibmix::Bibsonomy::TitleQueryMerger.new(record, query).merge
+						chainrecord.record = QueryMergerDecoratorFactory.instance.title(TitleQueryMerger.new(record, query)).merge
 						chainrecord.condition = Chain::STATUS_TITLE_MERGED
 						self.log('successfully merged title, setting chainrecord condition to STATUS_TITLE_MERGED')
 					rescue QueryMergerError => e						

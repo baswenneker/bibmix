@@ -5,6 +5,7 @@ module Bibmix
 	end
 end
 
+require 'decorator'
 require 'bibmix/error'
 require 'bibmix/query'
 require 'bibmix/querymerger'

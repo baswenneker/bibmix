@@ -20,6 +20,10 @@ module Bibmix
 			@@attributes
 		end
 		
+		def id
+			raise Bibmix::NotImplementedError
+		end
+		
 		# Allows to loop over the attribute keys of the record.
 		def each(&block)
 			values = {}

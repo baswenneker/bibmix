@@ -29,7 +29,6 @@ module Bibmix
 		end
 		
 		def to_cache(name, contents)
-			puts get_filepath(name)
 			File.open(get_filepath(name), 'a') {|f| f.write(contents) }
 		end
 		

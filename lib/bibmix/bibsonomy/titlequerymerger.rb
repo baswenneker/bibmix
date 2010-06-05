@@ -11,10 +11,28 @@ module Bibmix
 			
 			def merge(*args)				
 				raise TitleQueryMergerInvariantError unless invariant
-				raise TitleQueryMergerEmptyQueryResultError if @query.response.size == 0
-							
-				@result = @query.first
+				
+				hash = similar_record_hash(@query)
+				if hash.empty?
+					@result = @query.first
+				else
+					@result = merge_weighted_hash(hash, 1)
+				end
 			end
+			
+#			# Method which assesses the similarity between both records.
+#			def assess_similarity(rec1, rec2)
+#	
+#				# assess similarity based on hash and title
+#				similarity = super(rec1, rec2)
+#				return 1 if similarity == 1
+#				
+#				# asses string similarity of the title using pair distance similarity measure
+#				title_similarity = rec1.title.pair_distance_similar(rec2.title)
+#					
+#				# return the max of both
+#				[similarity, title_similarity].max
+#			end
 		end
 	end
 end

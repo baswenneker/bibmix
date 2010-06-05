@@ -28,7 +28,7 @@ module Bibmix
 				
 				begin
 					# Merge the results.
-					chainrecord.record = Bibmix::Bibsonomy::AuthorQueryMerger.new(record, author_queries).merge
+					chainrecord.record = QueryMergerDecoratorFactory.title(AuthorQueryMerger.new(record, author_queries)).merge
 					chainrecord.condition = Chain::STATUS_AUTHOR_MERGED
 					self.log('successfully merged author, setting chainrecord condition to STATUS_AUTHOR_MERGED')
 				rescue QueryMergerError => e

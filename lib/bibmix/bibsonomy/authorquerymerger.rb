@@ -13,59 +13,37 @@ module Bibmix
 			
 			def initialize(base, query)
 				super(base, query)
-				@lookup_table = {}
 			end
-			
+						
 			def merge(*args)
 				raise AuthorQueryMergerInvariantError unless invariant
-				
+								
 				# The intrahashes are used to filter out duplicate entries.
 				# Read more about hashes @bibsonomy: <http://www.bibsonomy.org/help/doc/inside.html>
-				similar_records = {}
+				hash = {}
 				@query.each do |query|
-					query.response.each do |record|
-						similarity = assess_similarity(@base, record)
-						@lookup_table[record.intrahash] = similarity
-						if similarity > 0.75
-							similar_records[record.intrahash] = [similarity, record]
-						end
-					end
+					hash = hash.merge(similar_record_hash(query))
 				end
 				
-				raise AuthorQueryMergerEmptyQueryResultError if similar_records.size == 0
+				raise AuthorQueryMergerEmptyQueryResultError if hash.size == 0
 				
-				similar_records = similar_records.sort {|a,b| a[0]<=>b[0]}
-				similar_records.each do |record|
-					@base = @base.merge(record[1][1])
-				end
-				
-				@result = @base
+				@result = merge_weighted_hash(hash,0.75)
 			end
 			
-			def assess_similarity(rec1, rec2)
-				if !(rec1.kind_of?(Bibmix::Record) || rec2.kind_of?(Bibmix::Record))
-					raise AuthorQueryMergerInvalidSimilarityParamError, "One of the params is not a Record, (#{rec1.inspect},#{rec2.inspect})"
-				end
-				
-				["title", "intrahash"].each do |key|
-					next if rec1.send(key).nil? || rec2.send(key).nil?
-					
-					return 0 if rec1.send(key).size == 0 || rec2.send(key).size == 0
-					return 1 if rec1.send(key) == rec2.send(key)
-				end
-				
-				if @lookup_table.key?(rec2.intrahash)
-					return @lookup_table[rec2.intrahash]
-				end
-				
-				title_sim = rec1.title.pair_distance_similar(rec2.title)
-	
-				if title_sim > 0.75
-					return title_sim
-				end
-				
-				0
-			end
+			# Method which assesses the similarity between both records.
+#			def assess_similarity(rec1, rec2)
+#	
+#				# assess similarity based on hash and title
+#				similarity = super(rec1, rec2)
+#				return 1 if similarity == 1
+#				
+#				# asses string similarity of the title using pair distance similarity measure
+#				title_similarity = rec1.title.pair_distance_similar(rec2.title)
+#					
+#				# return the max of both
+#				[similarity, title_similarity].max
+#			end
+			
 		protected
 			def invariant
 				@base.kind_of?(Bibmix::Record) && @query.kind_of?(Array)
