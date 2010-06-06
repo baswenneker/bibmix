@@ -10,7 +10,7 @@ module Bibmix
 	class Record
 		
 		# An array of attributes names.
-		@@attributes = []
+		@@attributes = [:merged]
 
 		# Create getters and setters for the given attributes.
 		attr_accessor *@@attributes
@@ -65,19 +65,6 @@ module Bibmix
 			end
 			
 			record
-		end
-		
-		# Merges the current record with the given record.
-		def merge(record)
-			raise RecordInvalidMergeParamError unless record.kind_of?(Bibmix::Record)
-			Bibmix.log(self, record.to_yaml)
-			each_attribute do |attr|
-				if self.send(attr).nil? && !record.send(attr).nil?
-					self.send("#{attr}=", record.send(attr))
-				end
-			end
-			
-			self
 		end
 		
 		def method_missing(method, *args)

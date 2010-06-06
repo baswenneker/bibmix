@@ -1,5 +1,4 @@
 require 'bibmix/bibsonomy'
-require 'fastercsv'
 require "spreadsheet" 
 
 module Bibmix
@@ -17,12 +16,10 @@ module Bibmix
 			
 			def condition=(condition)
 				@condition = condition
-				
-				if condition == Chain::STATUS_TITLE_MERGED || condition == Chain::STATUS_AUTHOR_MERGED
-					@merged = true
-				end
-				
+								
 				@records[condition] = @record.clone
+				@merged |= record.merged
+				@record.merged = false
 			end
 			
 			def to_excel(file, path)
@@ -115,6 +112,10 @@ module Bibmix
 				Chain.status_hash.invert.sort.each do |value, const_name|
 				
 					if value == status
+						# this is just a copy of a preceding record, so it is not merged
+						previous.merged = false
+						
+						# return the record
 						return previous
 					end
 					

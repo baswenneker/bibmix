@@ -16,7 +16,6 @@ module Evaluation
 	 			author = title.chain(AuthorQueryChain.new(Chain::STATUS_TITLE_NOT_MERGED))
 	 			
 	 			hash = Reference.create_with_parscit(base['citation']).to_hash
-				puts hash.to_yaml
 				
 				record = Record.from_hash(hash)
 	 			
@@ -26,7 +25,7 @@ module Evaluation
 	 			
 	 			chainrecord.to_excel("citation-#{line_no}","#{File.dirname(__FILE__)}/template.xls")
 	 			
-	 			if line_no == 1
+	 			if line_no == 10
 	 				exit
 	 			end
 	 			line_no += 1

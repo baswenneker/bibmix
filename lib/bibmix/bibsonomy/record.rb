@@ -22,7 +22,7 @@ module Bibmix
 				# Fields also returned by bibsonomy, but are useful for other APIs as well.
 				:entrytype, :tags, :intrahash,
 				# The complete citation string, if any.
-				:citation		
+				:citation, :merged
 			]
 			
 			# Create getters and setters for the given attributes.
@@ -66,6 +66,25 @@ module Bibmix
 				@author = value
 			end
 		
+			# Merges the current record with the given record.
+			def merge(record)
+				raise RecordInvalidMergeParamError unless record.kind_of?(Bibmix::Record)
+				
+				each_attribute do |attr|
+					if self.respond_to?("merge_#{attr}")
+						self.send("merge_#{attr}", record)
+					elsif self.send(attr).nil? && !record.send(attr).nil?
+						merge_overwrite_attribute(attr, record)
+					end
+				end
+				
+				self
+			end
+			
+			def merge_pages(record)
+				merge_overwrite_attribute('pages', record)
+			end			
+			
 			protected	 
 			def split_authors(authors)
 				result = []
@@ -73,6 +92,13 @@ module Bibmix
 					result << author
 				end
 				result
+			end
+			
+			def merge_overwrite_attribute(attr, record)
+				if not self.get(attr).eql?(record.get(attr))
+					self.send("#{attr}=", record.send(attr))
+					self.send("merged=", true)
+				end
 			end
 		end
 	end

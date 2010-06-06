@@ -13,6 +13,24 @@ class Bibsonomy_RecordTest < ActiveSupport::TestCase
 			assert @record.get_attributes.include?(k)
 		end		
 	end
+	
+	def test_merged_attribute
+		merge_hash = get_merge_hash
+    merge_record = Record.from_hash(merge_hash)
+    
+    # merge a record and check if the record was merged
+		@record = Record.from_hash(get_hash)
+		@record.merge(merge_record)
+		assert @record.merged
+		
+		# set merged to false and check if the correct value is stored
+		@record.merged = false
+		assert_equal false, @record.merged
+		
+		# there is nothing to merge, so merged should still be false
+		@record.merge(merge_record)
+		assert_equal false, @record.merged
+	end
   
 	def test_from_hash
 		
@@ -33,9 +51,13 @@ class Bibsonomy_RecordTest < ActiveSupport::TestCase
 			@record.merge(nil)
 		}
 		
+		assert !@record.merged
+		
 		assert_raise(Bibmix::RecordInvalidMergeParamError){
 			@record.merge(@hash)
 		}
+		
+		assert !@record.merged
 		
 	end
 	

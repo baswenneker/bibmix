@@ -28,10 +28,10 @@ module Bibmix
 				
 				begin
 					# Merge the results.
-					chainrecord.record = QueryMergerDecoratorFactory.instance.title(AuthorQueryMerger.new(record, author_queries)).merge
-					chainrecord.condition = Chain::STATUS_AUTHOR_MERGED
-					self.log('successfully merged author, setting chainrecord condition to STATUS_AUTHOR_MERGED')
+					merged_record = QueryMergerDecoratorFactory.instance.title(AuthorQueryMerger.new(record, author_queries)).merge
+					chainrecord.set_merged_record(merged_record, Chain::STATUS_AUTHOR_MERGED, Chain::STATUS_AUTHOR_NOT_MERGED)
 				rescue QueryMergerError => e
+					chainrecord.condition = Chain::STATUS_AUTHOR_NOT_MERGED
 					self.log("empty response for #{author_queries} - #{e}")
 				end			
 				
