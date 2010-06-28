@@ -63,6 +63,7 @@ module Bibmix
 			
 			def merge_weighted_hash(hash, threshold=0)
 				similar_records = hash.sort {|a,b| a[0]<=>b[0]}
+				
 				similar_records.each do |record|
 					if record[1][0] >= threshold
 						@base = @base.merge(record[1][1])

@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <left-data-source class="cdc.impl.datasource.office.ExcelDataSource" name="sourceA">
+        <params>
+            <param name="file-name" value="__source_a__"/>
+            <param name="source-name" value="sourceA"/>
+        </params>
+        <row-model>
+            <column column="address"
+                converter="cdc.datamodel.converters.DummyConverter" name="address">
+                <empty-values/>
+            </column>
+            <column column="annotate"
+                converter="cdc.datamodel.converters.DummyConverter" name="annotate">
+                <empty-values/>
+            </column>
+            <column column="author"
+                converter="cdc.datamodel.converters.DummyConverter" name="author">
+                <empty-values/>
+            </column>
+            <column column="booktitle"
+                converter="cdc.datamodel.converters.DummyConverter" name="booktitle">
+                <empty-values/>
+            </column>
+            <column column="chapter"
+                converter="cdc.datamodel.converters.DummyConverter" name="chapter">
+                <empty-values/>
+            </column>
+            <column column="crossref"
+                converter="cdc.datamodel.converters.DummyConverter" name="crossref">
+                <empty-values/>
+            </column>
+            <column column="edition"
+                converter="cdc.datamodel.converters.DummyConverter" name="edition">
+                <empty-values/>
+            </column>
+            <column column="editor"
+                converter="cdc.datamodel.converters.DummyConverter" name="editor">
+                <empty-values/>
+            </column>
+            <column column="howpublished"
+                converter="cdc.datamodel.converters.DummyConverter" name="howpublished">
+                <empty-values/>
+            </column>
+            <column column="institution"
+                converter="cdc.datamodel.converters.DummyConverter" name="institution">
+                <empty-values/>
+            </column>
+            <column column="journal"
+                converter="cdc.datamodel.converters.DummyConverter" name="journal">
+                <empty-values/>
+            </column>
+            <column column="key"
+                converter="cdc.datamodel.converters.DummyConverter" name="key">
+                <empty-values/>
+            </column>
+            <column column="month"
+                converter="cdc.datamodel.converters.DummyConverter" name="month">
+                <empty-values/>
+            </column>
+            <column column="note"
+                converter="cdc.datamodel.converters.DummyConverter" name="note">
+                <empty-values/>
+            </column>
+            <column column="number"
+                converter="cdc.datamodel.converters.DummyConverter" name="number">
+                <empty-values/>
+            </column>
+            <column column="organization"
+                converter="cdc.datamodel.converters.DummyConverter" name="organization">
+                <empty-values/>
+            </column>
+            <column column="pages"
+                converter="cdc.datamodel.converters.DummyConverter" name="pages">
+                <empty-values/>
+            </column>
+            <column column="publisher"
+                converter="cdc.datamodel.converters.DummyConverter" name="publisher">
+                <empty-values/>
+            </column>
+            <column column="school"
+                converter="cdc.datamodel.converters.DummyConverter" name="school">
+                <empty-values/>
+            </column>
+            <column column="series"
+                converter="cdc.datamodel.converters.DummyConverter" name="series">
+                <empty-values/>
+            </column>
+            <column column="title"
+                converter="cdc.datamodel.converters.DummyConverter" name="title">
+                <empty-values/>
+            </column>
+            <column column="type"
+                converter="cdc.datamodel.converters.DummyConverter" name="type">
+                <empty-values/>
+            </column>
+            <column column="volume"
+                converter="cdc.datamodel.converters.DummyConverter" name="volume">
+                <empty-values/>
+            </column>
+            <column column="year"
+                converter="cdc.datamodel.converters.DummyConverter" name="year">
+                <empty-values/>
+            </column>
+            <column column="entrytype"
+                converter="cdc.datamodel.converters.DummyConverter" name="entrytype">
+                <empty-values/>
+            </column>
+            <column column="tags"
+                converter="cdc.datamodel.converters.DummyConverter" name="tags">
+                <empty-values/>
+            </column>
+            <column column="intrahash"
+                converter="cdc.datamodel.converters.DummyConverter" name="intrahash">
+                <empty-values/>
+            </column>
+            <column column="citation"
+                converter="cdc.datamodel.converters.DummyConverter" name="citation">
+                <empty-values/>
+            </column>
+            <column column="merged"
+                converter="cdc.datamodel.converters.DummyConverter" name="merged">
+                <empty-values/>
+            </column>
+        </row-model>
+    </left-data-source>
+    <right-data-source
+        class="cdc.impl.datasource.office.ExcelDataSource" name="sourceB">
+        <params>
+            <param name="file-name" value="__source_b__"/>
+            <param name="sheet-name" value=""/>
+            <param name="source-name" value="sourceB"/>
+        </params>
+        <row-model>
+            <column column="address"
+                converter="cdc.datamodel.converters.DummyConverter" name="address">
+                <empty-values/>
+            </column>
+            <column column="annotate"
+                converter="cdc.datamodel.converters.DummyConverter" name="annotate">
+                <empty-values/>
+            </column>
+            <column column="author"
+                converter="cdc.datamodel.converters.DummyConverter" name="author">
+                <empty-values/>
+            </column>
+            <column column="booktitle"
+                converter="cdc.datamodel.converters.DummyConverter" name="booktitle">
+                <empty-values/>
+            </column>
+            <column column="chapter"
+                converter="cdc.datamodel.converters.DummyConverter" name="chapter">
+                <empty-values/>
+            </column>
+            <column column="crossref"
+                converter="cdc.datamodel.converters.DummyConverter" name="crossref">
+                <empty-values/>
+            </column>
+            <column column="edition"
+                converter="cdc.datamodel.converters.DummyConverter" name="edition">
+                <empty-values/>
+            </column>
+            <column column="editor"
+                converter="cdc.datamodel.converters.DummyConverter" name="editor">
+                <empty-values/>
+            </column>
+            <column column="howpublished"
+                converter="cdc.datamodel.converters.DummyConverter" name="howpublished">
+                <empty-values/>
+            </column>
+            <column column="institution"
+                converter="cdc.datamodel.converters.DummyConverter" name="institution">
+                <empty-values/>
+            </column>
+            <column column="journal"
+                converter="cdc.datamodel.converters.DummyConverter" name="journal">
+                <empty-values/>
+            </column>
+            <column column="key"
+                converter="cdc.datamodel.converters.DummyConverter" name="key">
+                <empty-values/>
+            </column>
+            <column column="month"
+                converter="cdc.datamodel.converters.DummyConverter" name="month">
+                <empty-values/>
+            </column>
+            <column column="note"
+                converter="cdc.datamodel.converters.DummyConverter" name="note">
+                <empty-values/>
+            </column>
+            <column column="number"
+                converter="cdc.datamodel.converters.DummyConverter" name="number">
+                <empty-values/>
+            </column>
+            <column column="organization"
+                converter="cdc.datamodel.converters.DummyConverter" name="organization">
+                <empty-values/>
+            </column>
+            <column column="pages"
+                converter="cdc.datamodel.converters.DummyConverter" name="pages">
+                <empty-values/>
+            </column>
+            <column column="publisher"
+                converter="cdc.datamodel.converters.DummyConverter" name="publisher">
+                <empty-values/>
+            </column>
+            <column column="school"
+                converter="cdc.datamodel.converters.DummyConverter" name="school">
+                <empty-values/>
+            </column>
+            <column column="series"
+                converter="cdc.datamodel.converters.DummyConverter" name="series">
+                <empty-values/>
+            </column>
+            <column column="title"
+                converter="cdc.datamodel.converters.DummyConverter" name="title">
+                <empty-values/>
+            </column>
+            <column column="type"
+                converter="cdc.datamodel.converters.DummyConverter" name="type">
+                <empty-values/>
+            </column>
+            <column column="volume"
+                converter="cdc.datamodel.converters.DummyConverter" name="volume">
+                <empty-values/>
+            </column>
+            <column column="year"
+                converter="cdc.datamodel.converters.DummyConverter" name="year">
+                <empty-values/>
+            </column>
+            <column column="entrytype"
+                converter="cdc.datamodel.converters.DummyConverter" name="entrytype">
+                <empty-values/>
+            </column>
+            <column column="tags"
+                converter="cdc.datamodel.converters.DummyConverter" name="tags">
+                <empty-values/>
+            </column>
+            <column column="intrahash"
+                converter="cdc.datamodel.converters.DummyConverter" name="intrahash">
+                <empty-values/>
+            </column>
+            <column column="citation"
+                converter="cdc.datamodel.converters.DummyConverter" name="citation">
+                <empty-values/>
+            </column>
+            <column column="merged"
+                converter="cdc.datamodel.converters.DummyConverter" name="merged">
+                <empty-values/>
+            </column>
+        </row-model>
+        <preprocessing>
+            <deduplication>
+                <deduplication-condition acceptance-level="100">
+                    <condition
+                        class="cdc.impl.distance.EqualFieldsDistance"
+                        column="intrahash" weight="100">
+                        <params/>
+                    </condition>
+                </deduplication-condition>
+                <hashing-function columns="intrahash,intrahash" hash="equality"/>
+            </deduplication>
+        </preprocessing>
+    </right-data-source>
+    <join class="cdc.impl.join.snm.SNMJoin_v1" summary-left="false" summary-right="false">
+        <params>
+            <param name="window" value="8"/>
+            <param name="sort-order-right" value="title"/>
+            <param name="sort-order-left" value="title"/>
+        </params>
+        <join-condition class="cdc.impl.conditions.WeightedJoinCondition">
+            <params>
+                <param name="acceptance-level" value="100"/>
+            </params>
+            <condition class="cdc.impl.distance.PairSimilarityDistance"
+                left-column="title" right-column="title" weight="100">
+                <params>
+                    <param name="disapprove-level" value="0.14"/>
+                    <param name="approve-level" value="0.09"/>
+                </params>
+            </condition>
+        </join-condition>
+        <row-model>
+            <column name="address" source="sourceB"/>
+            <column name="annotate" source="sourceB"/>
+            <column name="author" source="sourceB"/>
+            <column name="booktitle" source="sourceB"/>
+            <column name="chapter" source="sourceB"/>
+            <column name="crossref" source="sourceB"/>
+            <column name="edition" source="sourceB"/>
+            <column name="editor" source="sourceB"/>
+            <column name="howpublished" source="sourceB"/>
+            <column name="institution" source="sourceB"/>
+            <column name="journal" source="sourceB"/>
+            <column name="key" source="sourceB"/>
+            <column name="month" source="sourceB"/>
+            <column name="note" source="sourceB"/>
+            <column name="number" source="sourceB"/>
+            <column name="organization" source="sourceB"/>
+            <column name="pages" source="sourceB"/>
+            <column name="publisher" source="sourceB"/>
+            <column name="school" source="sourceB"/>
+            <column name="series" source="sourceB"/>
+            <column name="title" source="sourceB"/>
+            <column name="type" source="sourceB"/>
+            <column name="volume" source="sourceB"/>
+            <column name="year" source="sourceB"/>
+            <column name="entrytype" source="sourceB"/>
+            <column name="tags" source="sourceB"/>
+            <column name="intrahash" source="sourceB"/>
+            <column name="citation" source="sourceB"/>
+            <column name="merged" source="sourceB"/>
+        </row-model>
+    </join>
+    <results-savers>
+        <results-saver class="cdc.impl.resultsavers.CSVFileSaver">
+            <params>
+                <param name="encoding" value="UTF-8"/>
+                <param name="output-file" value="__output_result__"/>
+            </params>
+        </results-saver>
+    </results-savers>
+</configuration>

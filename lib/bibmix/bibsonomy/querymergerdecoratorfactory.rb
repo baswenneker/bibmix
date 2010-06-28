@@ -18,6 +18,8 @@ module Bibmix
 		    			result = PagesSimilarityDecorator.new(result)
 		    		when 'title'
 		    			result = TitleSimilarityDecorator.new(result)
+		    		when 'fril'
+		    			result = FrilSimilarityDecorator.new(result)
 		    		when 'year'
 		    			result = YearSimilarityDecorator.new(result)
 		    	end

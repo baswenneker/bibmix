@@ -69,11 +69,11 @@ module Bibmix
 			# Setter for 'pages' which makes sure the number of - is always 1.
 			def pages=(value)
 				
-				if pages.kind_of?(String)
-					pages = pages.gsub(/[-]+/,'-')
+				if value.kind_of?(String)
+					value = value.gsub(/[-]+/,'-')
 				end
 				
-				@pages = pages
+				@pages = value
 			end
 		
 			# Merges the current record with the given record.

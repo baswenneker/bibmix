@@ -17,6 +17,7 @@ require 'bibmix/bibsonomy/titlequerymerger'
 require 'bibmix/bibsonomy/authorquerymerger'
 require 'bibmix/bibsonomy/tokenizer'
 
+require 'bibmix/bibsonomy/mergerdecorator/frilsimilaritydecorator'
 require 'bibmix/bibsonomy/mergerdecorator/pagessimilaritydecorator'
 require 'bibmix/bibsonomy/mergerdecorator/titlesimilaritydecorator'
 require 'bibmix/bibsonomy/mergerdecorator/yearsimilaritydecorator'

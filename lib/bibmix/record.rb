@@ -67,6 +67,21 @@ module Bibmix
 			record
 		end
 		
+		def to_array
+			
+			result = []		
+			self.each_attribute do |key|
+				val = self.get(key, ' ')
+				
+				if !val.nil? && val.kind_of?(Array)
+					val = val.join(' and ')
+				end
+				
+				result << val
+			end
+			result
+		end
+		
 		def method_missing(method, *args)
 			
 			if ENV["RAILS_ENV"] == "test"

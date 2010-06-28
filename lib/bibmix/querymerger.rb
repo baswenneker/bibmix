@@ -6,7 +6,8 @@ module Bibmix
 	
 	class QueryMerger
 		
-		attr_reader :base, :query, :result, :similarity_lookup_hash
+		attr_reader :base, :query, :result
+		attr_accessor :similarity_lookup_hash
 		
 		def initialize(base, query)
 			@base = base

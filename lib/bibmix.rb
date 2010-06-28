@@ -1,4 +1,7 @@
 module Bibmix
+	
+	CONFIG_DIR = "#{File.dirname(__FILE__)}/config"
+	
 	def self.log(obj, message)
 		classname = obj.class.to_s.split('::').last
 		Rails.logger.info("#{classname}: #{message}.")
