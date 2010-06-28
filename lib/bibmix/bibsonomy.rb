@@ -15,6 +15,7 @@ require 'bibmix/bibsonomy/querymerger'
 require 'bibmix/bibsonomy/querymergerdecoratorfactory'
 require 'bibmix/bibsonomy/titlequerymerger'
 require 'bibmix/bibsonomy/authorquerymerger'
+require 'bibmix/bibsonomy/tokenizer'
 
 require 'bibmix/bibsonomy/mergerdecorator/pagessimilaritydecorator'
 require 'bibmix/bibsonomy/mergerdecorator/titlesimilaritydecorator'

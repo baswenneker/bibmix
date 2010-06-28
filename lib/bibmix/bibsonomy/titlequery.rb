@@ -11,6 +11,7 @@ module Bibmix
 					# Only do the actual request once, to improve performance.
 					begin
 						@response = @request.send(q, 'posts')
+						Bibmix.log(self, "#{q}: #{@response.size}")
 					rescue RequestError => e
 						@response = false
 						Bibmix.log(self, "request failed, #{e}")

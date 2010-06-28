@@ -32,7 +32,7 @@ module Bibmix
 			  q = preprocess_query(q)		  
 			  client = get_client()
 			  
-			  request_uri = "http://www.bibsonomy.org/api/#{api_type}?resourcetype=bibtex&start=0&end=500&format=#{@config['format']}&search=#{q}"
+			  request_uri = "http://www.bibsonomy.org/api/#{api_type}?resourcetype=bibtex&start=0&end=1000&format=#{@config['format']}&search=#{q}"
 			  
 			  if CACHING
 				  response = from_cache(request_uri)

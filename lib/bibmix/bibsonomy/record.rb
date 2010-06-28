@@ -65,6 +65,16 @@ module Bibmix
 				raise Bibmix::RecordError.new("Author has an invalid type (#{value.class}, #{value})") if value.class != Array
 				@author = value
 			end
+			
+			# Setter for 'pages' which makes sure the number of - is always 1.
+			def pages=(value)
+				
+				if pages.kind_of?(String)
+					pages = pages.gsub(/[-]+/,'-')
+				end
+				
+				@pages = pages
+			end
 		
 			# Merges the current record with the given record.
 			def merge(record)

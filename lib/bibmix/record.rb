@@ -33,7 +33,7 @@ module Bibmix
 					values[attr] = value
 				end
 			end
-		  @@attributes.each &block
+		  values.each &block
 		end
 		
 		# Allows to loop over the attribute keys of the record.
