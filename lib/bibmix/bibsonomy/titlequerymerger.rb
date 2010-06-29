@@ -16,7 +16,7 @@ module Bibmix
 				if hash.empty?
 					@result = @query.first
 				else
-					@result = merge_weighted_hash(hash, 0.9)
+					@result = merge_weighted_hash(hash,0.9)
 				end
 				
 				@result

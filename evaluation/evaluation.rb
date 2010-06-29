@@ -3,6 +3,34 @@ require File.expand_path(File.dirname(__FILE__) + "/../../../../config/environme
 module Evaluation
 	include Bibmix::Bibsonomy
 	
+	def self.init2
+		
+		File.open("#{File.dirname(__FILE__)}/flux-cim-cs.txt") do |f| 
+			
+			line_no = 0
+			while line = f.readline do 
+				#base = get_token_hash_from_annotated_citation(line)
+							
+				title = TitleQueryChain.new(Chain::STATUS_NOT_MERGED)
+	 			author = title.chain(AuthorQueryChain.new(Chain::STATUS_TITLE_NOT_MERGED))
+	 			
+	 			hash = Reference.create_with_parscit(line).to_hash
+				
+				record = Record.from_hash(hash)
+	 			
+	 			chainrecord = EvaluationChainRecord.new(record)
+	 			chainrecord = title.execute(chainrecord)
+	 			
+	 			chainrecord.to_excel("citation-#{line_no}","#{File.dirname(__FILE__)}/template_macros.xls")
+	 			
+	 			if line_no == 2
+	 				exit
+	 			end
+	 			line_no += 1
+	 		end
+		end
+	end
+	
 	def self.init
 		
 		line_no = 0
@@ -60,4 +88,4 @@ module Evaluation
 	end
 end
 
-Evaluation.init
+Evaluation.init2

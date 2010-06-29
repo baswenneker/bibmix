@@ -39,13 +39,18 @@ module Bibmix
 				co_merged = {:x => 1, :y => 2}
 				
 				starting_row = 5
-				base_column = 1
-				parsed_column = 3
-				titlequery_column = 5
-				authorquery_column = 7
+				#base_column = 1
+				parsed_column = 2
+				titlequery_column = 4
+				authorquery_column = 6
+				
+				# retrieve the result worksheet
+				sheet = workbook.worksheet 'Expert'
+				# set the citation cell
+				sheet[co_citation[:y], co_citation[:x]] = parsed_record.citation
 				
 			  # retrieve the result worksheet
-				sheet = workbook.worksheet 'Results'
+				sheet = workbook.worksheet 'Bibmix'
 
 				# set the citation cell
 				sheet[co_date[:y], co_date[:x]] = Time.now().strftime('%d/%m/%y %H:%M')
@@ -63,7 +68,7 @@ module Bibmix
 			  attr_record.each_attribute do |attr|
 				
 				  [
-				  	[@base_record, base_column, 'y'], 
+				  	#[@base_record, base_column, 'y'], 
 				  	[parsed_record, parsed_column, default_evaluation_value], 
 				  	[titlequery_record, titlequery_column, default_evaluation_value], 
 				  	[authorquery_record, authorquery_column, default_evaluation_value]

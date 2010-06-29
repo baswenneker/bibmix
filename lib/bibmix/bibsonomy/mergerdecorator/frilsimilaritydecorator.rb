@@ -1,6 +1,7 @@
 require 'bibmix/bibsonomy'
 require 'spreadsheet'
 require 'faster_csv'
+require "rexml/document"
 
 module Bibmix
 	module Bibsonomy
@@ -23,14 +24,16 @@ module Bibmix
 				
 				config = YAML.load_file("#{Bibmix::CONFIG_DIR}/fril/fril_config.yml")['default']
 				
-				file = "#{Bibmix::CONFIG_DIR}/fril/fril_match_config.xml"
-				text = File.read(file) 
-  			File.open("#{Rails.root}/tmp/fril/config.xml", 'w+') do |f| 
-  				 text = text.gsub(/__source_a__/,	"#{Rails.root}/tmp/fril/query.xls")
-  				 text = text.gsub(/__source_b__/,	"#{Rails.root}/tmp/fril/response.xls")
-  				 text = text.gsub(/__output_result__/,	"#{Rails.root}/tmp/fril/result.csv")
-  				 f << text
-  			end
+#				file = "#{Bibmix::CONFIG_DIR}/fril/fril_match_config.xml"
+#				text = File.read(file) 
+#  			File.open("#{Rails.root}/tmp/fril/config.xml", 'w+') do |f| 
+#  				 text = text.gsub(/__source_a__/,	"#{Rails.root}/tmp/fril/query.xls")
+#  				 text = text.gsub(/__source_b__/,	"#{Rails.root}/tmp/fril/response.xls")
+#  				 text = text.gsub(/__output_result__/,	"#{Rails.root}/tmp/fril/result.csv")
+#  				 f << text
+#  			end
+  			
+  			prepare_xml_config
   			
   			text = File.read("#{Bibmix::CONFIG_DIR}/fril/fril.sh")
   			text = text.gsub(/__fril_directory__/, config['fril_path'])
@@ -63,6 +66,20 @@ module Bibmix
 					#@fril_matching[new_record.id] = [new_record, row.last]
 					@decorated.similarity_lookup_hash[new_record.id] = row.last.to_i/100
 				end
+			end
+			
+			def prepare_xml_config
+				
+				file = File.new("#{Bibmix::CONFIG_DIR}/fril/fril_match_config.xml")
+				document = REXML::Document.new(file)
+			
+				els = document.root.elements
+				
+				els['left-data-source/params/param[@name="file-name"]'].attributes['value'] = "#{Rails.root}/tmp/fril/query.xls"
+				els['right-data-source/params/param[@name="file-name"]'].attributes['value'] = "#{Rails.root}/tmp/fril/response.xls"
+				els['results-savers/results-saver/params/param[@name="output-file"]'].attributes['value'] = "#{Rails.root}/tmp/fril/result.csv"
+				
+				document.write("#{Rails.root}/tmp/fril/config.xml")
 			end
 			
 			def write_spreadsheets
