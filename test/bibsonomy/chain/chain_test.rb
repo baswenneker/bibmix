@@ -87,8 +87,7 @@ class Bibmix_Bibsonomy_ChainTest < ActiveSupport::TestCase
  		# execute the chain of actions.
  		chainrecord = title.execute(chainrecord)
  		
- 		puts chainrecord.to_yaml
- 		chainrecord.to_excel('test',"#{File.dirname(__FILE__)}/template.xls")
+ 		chainrecord.to_excel('test', Bibmix.get_config('evaluation_template_xls'))
  		# check the resulting condition
  		assert_equal Chain::STATUS_TITLE_MERGED, chainrecord.condition
  		

@@ -1,10 +1,38 @@
 module Bibmix
 	
-	CONFIG_DIR = "#{File.dirname(__FILE__)}/config"
+	CONFIGURATION_CLASS = 'default'
+	CONFIGURATION_FILE = "#{File.dirname(__FILE__)}/config/config.yml"
 	
+	def self.get_config(key)
+		
+		if @config.nil?
+			@config = YAML.load_file(CONFIGURATION_FILE)[CONFIGURATION_CLASS]
+			
+			@config.each do |k, v|
+        if v.is_a?(String)
+          v = v.gsub(/__TMP_DIR__/, "#{Rails.root}/tmp")
+          v = v.gsub(/__FRIL_DIR__/, "#{File.dirname(__FILE__)}/config/fril")
+          v = v.gsub(/__EVALUATION_DIR__/, "#{File.dirname(__FILE__)}/../evaluation")
+          
+        end
+        @config[k] = v
+      end   
+			
+		end
+
+		if @config.has_key?(key)
+			return @config[key]
+		end
+		
+		false
+	end
+	
+	# Use the rails logger to log certain messages.
 	def self.log(obj, message)
-		classname = obj.class.to_s.split('::').last
-		Rails.logger.info("#{classname}: #{message}.")
+		if Bibmix.get_config('logging')
+			classname = obj.class.to_s.split('::').last
+			Rails.logger.info("#{classname}: #{message}.")
+		end
 	end
 end
 

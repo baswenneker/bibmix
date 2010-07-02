@@ -16,7 +16,7 @@ module Bibmix
 				
 				@record = record
 				
-				if record.merged.eql?(true)
+				if record.merged == true
 					self.send("condition=", status_merged)
 					Bibmix.log(self, 'successfully merged title, setting chainrecord condition to STATUS_TITLE_MERGED')
 				else

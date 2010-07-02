@@ -6,24 +6,23 @@ module Bibmix
 	module Bibsonomy
 	
 		class RequestError < Bibmix::Error; end
-		class InvalidRequestConfigFileError < RequestError;	end
+		class RequestConfigNotFoundError < RequestError;	end
 		class MissingRequestUsernameError < RequestError;	end
 		class MissingRequestApiKeyError < RequestError;	end
 		class UnimplementedFormatError < RequestError; end
 	
 		class Request < Bibmix::CacheRequest
-			DEFAULT_CONFIG = "#{File.dirname(__FILE__)}/../../config/bibsonomy_request_config.yml"
 			CACHING = true
 			
 	    def initialize
 	    	init_config
 	   	end
 	   	
-	   	def init_config(file=DEFAULT_CONFIG)
-	   		begin
-	    		@config = YAML.load_file(file)['default']
-	    	rescue
-	    		raise Bibmix::Bibsonomy::InvalidRequestConfigFileError, "Invalid file, please provide a valid configuration (#{file})"
+	   	# Initializes the configuration used to query bibsonomy.
+	   	def init_config
+	   		@config = Bibmix::get_config('bibsonomy_api')
+	    	if @config == false
+	    		raise Bibmix::Bibsonomy::RequestConfigNotFoundError, "Config not found, please provide a valid configuration."
 	    	end
 	   	end
 	   

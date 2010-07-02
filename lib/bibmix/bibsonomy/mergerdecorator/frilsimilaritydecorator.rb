@@ -8,94 +8,133 @@ module Bibmix
 		class FrilSimilarityDecorator
 			include Decorator
 				
+			@random_id = nil
+			@temp_querybook_file = nil
+			@temp_responsebook_file = nil
+			@temp_fril_config_file = nil
+			
 			attr_accessor :fril_matching
 						
 			def merge(*args)				
 				
+				# Generate a random id to be used in filenames.
+				@random_id = rand
+				
+				# Write the query and response spreadsheets.
 				write_spreadsheets
+				
+				# Writes a temporary configuration file to be used by fril.
+				prepare_xml_config
+				
+				# Performs matching algorithms determining the similarity of records in
+				# the response book compared to the record in the query book.
 				execute_fril
+				
+				# Reads the result of the matching proces.
 				read_matching_result
-								
+				
+				# Clean up the temporary files.
+				cleanup				
+				
 				@decorated.merge(*args)
 			end
 			
 			protected
+			
+			# Performs matching algorithms determining the similarity of records in
+			# the response book compared to the record in the query book.
+			# The result of this similarity matching (along with a confidence level) is
+			# stored in a temporary file.
 			def execute_fril
-				
-				config = YAML.load_file("#{Bibmix::CONFIG_DIR}/fril/fril_config.yml")['default']
-				
-#				file = "#{Bibmix::CONFIG_DIR}/fril/fril_match_config.xml"
-#				text = File.read(file) 
-#  			File.open("#{Rails.root}/tmp/fril/config.xml", 'w+') do |f| 
-#  				 text = text.gsub(/__source_a__/,	"#{Rails.root}/tmp/fril/query.xls")
-#  				 text = text.gsub(/__source_b__/,	"#{Rails.root}/tmp/fril/response.xls")
-#  				 text = text.gsub(/__output_result__/,	"#{Rails.root}/tmp/fril/result.csv")
-#  				 f << text
-#  			end
+				  	
+				# Read the template executable.
+  			text = File.read(Bibmix.get_config('fril_template_executable'))
   			
-  			prepare_xml_config
+  			# Replace certain values to point to the right FRIL executable directory
+  			# and config file.
+  			text = text.gsub(/__fril_directory__/, Bibmix.get_config('fril_executable_dir'))
+  			text = text.gsub(/__config_file__/, @temp_fril_config_file)
   			
-  			text = File.read("#{Bibmix::CONFIG_DIR}/fril/fril.sh")
-  			text = text.gsub(/__fril_directory__/, config['fril_path'])
-  			text = text.gsub(/__config_file__/, "#{Rails.root}/tmp/fril/config.xml")
-  			
-  			`#{text}`  			
-  			
+  			# Execute FRIL.
+  			`#{text}`
 			end
 			
+			# Reads the result of the matching proces.
 			def read_matching_result
 				
-				attrs = Bibmix::Bibsonomy::Record.new.get_attributes
-				@fril_matching = {}	
-					
+				# Get an array of attributes.
+				attrs = Bibmix::Bibsonomy::Record.new.get_attributes					
 				skip_row = true
-				FasterCSV.foreach("#{Rails.root}/tmp/fril/result.csv") do |row|
+				FasterCSV.foreach(@temp_resultbook_file) do |row|
 					
 					if skip_row
+						# Skip the first row, it contains a header.
 						skip_row = false
 						next
 					end
-										
+					
+					# Read the values in the current row and store the values in a hash.
 					hash = {}
 					row.each_with_index do |val, key| 
 					  hash[attrs[key]] = val
 					end
 					
+					# Convert the hash to a record.
 					new_record = Bibmix::Bibsonomy::Record.from_hash(hash)
-					#puts new_record.to_yaml
-					#@fril_matching[new_record.id] = [new_record, row.last]
+					
+					# 
 					@decorated.similarity_lookup_hash[new_record.id] = row.last.to_i/100
 				end
 			end
 			
+			# Writes a temporary configuration file to be used by fril.
 			def prepare_xml_config
 				
-				file = File.new("#{Bibmix::CONFIG_DIR}/fril/fril_match_config.xml")
+				file = File.new(Bibmix.get_config('fril_template_config'))
 				document = REXML::Document.new(file)
 			
 				els = document.root.elements
 				
-				els['left-data-source/params/param[@name="file-name"]'].attributes['value'] = "#{Rails.root}/tmp/fril/query.xls"
-				els['right-data-source/params/param[@name="file-name"]'].attributes['value'] = "#{Rails.root}/tmp/fril/response.xls"
-				els['results-savers/results-saver/params/param[@name="output-file"]'].attributes['value'] = "#{Rails.root}/tmp/fril/result.csv"
+				@temp_resultbook_file = "#{Bibmix.get_config('fril_tmp_dir')}/result#{@random_id}.csv";
+				els['left-data-source/params/param[@name="file-name"]'].attributes['value'] = @temp_querybook_file
+				els['right-data-source/params/param[@name="file-name"]'].attributes['value'] = @temp_responsebook_file
+				els['results-savers/results-saver/params/param[@name="output-file"]'].attributes['value'] = @temp_resultbook_file 
 				
-				document.write("#{Rails.root}/tmp/fril/config.xml")
+				@temp_fril_config_file = "#{Bibmix.get_config('fril_tmp_dir')}/config#{@random_id}.xml"
+				File.open(@temp_fril_config_file, 'w') {|f| f.write(document) }
 			end
 			
+			# This method writes two spreadsheets. 
+			#
+			# The first spreadsheet (query book) contains columns filled with the 
+			# record for which additional information is queried. 
+			# The second spreadheet (response book) contains rows and columns filled 
+			# with records which where the response of the query.
+			#
+			# Fril will check if any of the rows in the response book correspond to
+			# the record in the query book. 
 			def write_spreadsheets
 				
-				querybook = Spreadsheet::Workbook.new
-				sheet = querybook.create_worksheet
 				
+				querybook = Spreadsheet::Workbook.new
+				querysheet = querybook.create_worksheet
+				
+				# Assemble an array with names used for the headers in both books.
 				header = []
 				@decorated.base.each_attribute do |attr|
 					header << attr.to_s
 				end
-				sheet.row(0).concat(header)
-				sheet.row(1).concat(@decorated.base.to_array)
 				
-				querybook.write "#{Rails.root}/tmp/fril/query.xls"
+				# Write the header.
+				querysheet.row(0).concat(header)
+				# Write the query record in the query book.
+				querysheet.row(1).concat(@decorated.base.to_array)
 				
+				# Write the query book to a temporary file.
+				@temp_querybook_file = "#{Bibmix.get_config('fril_tmp_dir')}/query#{@random_id}.xls"
+				querybook.write @temp_querybook_file
+				
+				# Retrieve an array of records that where in the query response.
 				query = @decorated.query;
 				response_array = []
 				if query.kind_of?(Bibmix::Query)
@@ -107,20 +146,33 @@ module Bibmix
 						response_array = query.response
 					end
 				end
-			
-				responsebook = Spreadsheet::Workbook.new
-				sheet = responsebook.create_worksheet
 				
-				sheet.row(0).concat(header)
+				
+				responsebook = Spreadsheet::Workbook.new
+				responsesheet = responsebook.create_worksheet
+				
+				# Write the header.
+				responsesheet.row(0).concat(header)
+				
+				# Write the response records into the response book.
 				row = 1
 				response_array.each do |record|
-					sheet.row(row).concat(record.to_array)
+					responsesheet.row(row).concat(record.to_array)
 					row += 1
 				end
-				responsebook.write "#{Rails.root}/tmp/fril/response.xls"
+				
+				# Write the response book to a temporary file.
+				@temp_responsebook_file = "#{Bibmix.get_config('fril_tmp_dir')}/response#{@random_id}.xls"
+				responsebook.write @temp_responsebook_file
 			end
 			
-			
+			# Cleans up temporary files.
+			def cleanup
+				File.delete(@temp_querybook_file) if File.exists?(@temp_responsebook_file)
+				File.delete(@temp_responsebook_file) if File.exists?(@temp_responsebook_file)
+				File.delete(@temp_fril_config_file) if File.exists?(@temp_fril_config_file)
+				File.delete(@temp_resultbook_file) if File.exists?(@temp_resultbook_file)				
+			end
 		end
 	end
 end

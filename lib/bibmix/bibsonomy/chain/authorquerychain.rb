@@ -7,12 +7,9 @@ module Bibmix
 			protected
 			def execute_chain_action(chainrecord)
 				
-				#raise MixingProcessInvariantError unless invariant
-				#raise MixingProcessMissingTitleError if !@base.author.kind_of?(Array) || @base.author.size == 0
-				
-				# Set the status to empty result in the beginning
-				#@status = RESULT_AUTHOR_QUERY_EMPTY			
+				# Set the status to empty result in the beginning			
 				record = chainrecord.record
+				
 				# Start looping over authors and try to find matching titles.
 				author_queries = []
 				record.author.each do |q|

@@ -22,16 +22,16 @@ module Bibmix
 				@record.merged = false
 			end
 			
-			def to_excel(file, path)
+			def to_excel(file, template_file)
 				
 			  # get all the data.
-				parsed_record = get_record Chain::STATUS_NOT_MERGED
+				parsed_record = get_record(Chain::STATUS_NOT_MERGED)
 			  titlequery_record = get_record(Chain::STATUS_TITLE_MERGED)				
 				authorquery_record = get_record(Chain::STATUS_AUTHOR_MERGED)
 				attr_record = Bibmix::Bibsonomy::Record.new
 				
 				# initialize the spreadsheet
-			  workbook = Spreadsheet.open path
+			  workbook = Spreadsheet.open template_file
 				
 				# set coordinates
 				co_date = {:x => 1, :y => 0}
