@@ -1,7 +1,10 @@
 default:
     # Turn on/off logging, value should be a boolean {true, false}
     logging                    : true
-  
+    
+    # Directory for temporary files.
+    tmp_dir                    : '__TMP_DIR__'
+    
     # Settings used in the Bibmix::Bibsonomy::Request class.
     bibsonomy_api:
         username               : 'bwenneker'

@@ -31,7 +31,7 @@ module Bibmix
 				attr_record = Bibmix::Bibsonomy::Record.new
 				
 				# initialize the spreadsheet
-			  workbook = Spreadsheet.open template_file
+			  workbook = Spreadsheet.open(template_file, 'w+')
 				
 				# set coordinates
 				co_date = {:x => 1, :y => 0}
@@ -93,7 +93,7 @@ module Bibmix
 			 	end
 				sheet.updated_from(0)
 			
-				filepath = "#{Rails.root}/tmp/evaluation/#{file}.xls"
+				filepath = "#{Bibmix.get_config('tmp_dir')}/#{file}.xls"
 				if File.exist?(filepath)
 					File.delete(filepath)
 				end
