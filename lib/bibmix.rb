@@ -3,7 +3,7 @@ module Bibmix
 	CONFIGURATION_CLASS = 'default'
 	CONFIGURATION_FILE = "#{File.dirname(__FILE__)}/config/config.yml"
 	
-	def self.get_config(key)
+	def self.get_config(key, default=false)
 		
 		if @config.nil?
 			@config = YAML.load_file(CONFIGURATION_FILE)[CONFIGURATION_CLASS]
@@ -24,7 +24,7 @@ module Bibmix
 			return @config[key]
 		end
 		
-		false
+		default
 	end
 	
 	# Use the rails logger to log certain messages.
@@ -36,6 +36,7 @@ module Bibmix
 	end
 end
 
+require 'amatch'
 require 'decorator'
 require 'bibmix/error'
 require 'bibmix/query'
@@ -45,3 +46,4 @@ require 'bibmix/request'
 require 'bibmix/cacherequest'
 require 'bibmix/chain'
 require 'bibmix/response'
+require 'bibmix/tokenizer'

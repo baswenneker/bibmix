@@ -30,8 +30,6 @@ module Bibmix
 				authorquery_record = get_record(Chain::STATUS_AUTHOR_MERGED)
 				attr_record = Bibmix::Bibsonomy::Record.new
 				
-				puts template_file
-				puts File.exists?(template_file)
 				# initialize the spreadsheet
 			  workbook = Spreadsheet.open(template_file)
 				

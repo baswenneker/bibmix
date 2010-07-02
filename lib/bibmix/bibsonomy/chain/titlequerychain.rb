@@ -9,18 +9,26 @@ module Bibmix
 				
 				record = chainrecord.record
 				raise Bibmix::Error.new('No title available in the record.') if !record.title
+				
 				self.log("record.title = '#{record.title}'")
+				
 				query = Bibmix::Bibsonomy::TitleQuery.new(record.title)
 				
 				if query.response.size > 0
-										
+					
+					threshold = Bibmix.get_config('title_querymerger_threshold')
+					
 					begin
-						merged_record = QueryMergerDecoratorFactory.instance.fril(TitleQueryMerger.new(record, query)).merge
+						querymerger = QueryMerger.new(record, query)
+						querymerger = QueryMergerDecoratorFactory.instance.fril(querymerger)						
+						merged_record = querymerger.merge(threshold)
+						
 						chainrecord.set_merged_record(merged_record, Chain::STATUS_TITLE_MERGED, Chain::STATUS_TITLE_NOT_MERGED)
-					rescue QueryMergerError => e						
+					rescue Bibmix::QueryMergerError => e						
 						chainrecord.condition = Chain::STATUS_TITLE_NOT_MERGED
 						self.log("error occurred, setting chainrecord condition to STATUS_NOT_MERGED. Error: #{e}")
 					end
+					
 				else
 					self.log('empty query response, setting chainrecord condition to STATUS_NOT_MERGED')
 					chainrecord.condition = Chain::STATUS_TITLE_NOT_MERGED

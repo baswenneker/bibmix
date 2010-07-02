@@ -12,8 +12,7 @@ module Bibmix
 		class UnimplementedFormatError < RequestError; end
 	
 		class Request < Bibmix::CacheRequest
-			CACHING = true
-			
+						
 	    def initialize
 	    	init_config
 	   	end
@@ -24,6 +23,7 @@ module Bibmix
 	    	if @config == false
 	    		raise Bibmix::Bibsonomy::RequestConfigNotFoundError, "Config not found, please provide a valid configuration."
 	    	end
+	    	@use_caching = Bibmix::get_config('request_caching', true)
 	   	end
 	   
 	   	def send(q = '', api_type = 'posts')
@@ -33,7 +33,7 @@ module Bibmix
 			  
 			  request_uri = "http://www.bibsonomy.org/api/#{api_type}?resourcetype=bibtex&start=0&end=1000&format=#{@config['format']}&search=#{q}"
 			  
-			  if CACHING
+			  if @use_caching
 				  response = from_cache(request_uri)
 				  if response.nil?
 				  	response = client.get_content(request_uri)			  	

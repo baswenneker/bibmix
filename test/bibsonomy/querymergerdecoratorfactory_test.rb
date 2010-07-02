@@ -10,7 +10,7 @@ class Bibsonomy_QueryMergerTest < ActiveSupport::TestCase
 		dummy_query = Query.new
  		
  		# construct the mergers
- 		titlemerger = TitleQueryMerger.new(dummy_record, dummy_query)
+ 		titlemerger = Bibmix::QueryMerger.new(dummy_record, dummy_query)
 		
 		assert_equal PagesSimilarityDecorator, QueryMergerDecoratorFactory.instance.page(titlemerger).class
 		assert_equal TitleSimilarityDecorator, QueryMergerDecoratorFactory.instance.title(titlemerger).class

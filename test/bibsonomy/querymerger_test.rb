@@ -4,7 +4,7 @@ class Bibsonomy_QueryMergerTest < ActiveSupport::TestCase
   include Bibmix::Bibsonomy
   
   def setup
-  	@querymerger = QueryMerger.new(Record.new, Query.new)
+  	@querymerger = Bibmix::QueryMerger.new(Record.new, Query.new)
   end
  
   def teardown
