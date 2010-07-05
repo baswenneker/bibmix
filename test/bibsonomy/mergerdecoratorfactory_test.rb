@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class Bibsonomy_RecordMergerTest < ActiveSupport::TestCase
+class Bibsonomy_MergerDecoratorFactoryTest < ActiveSupport::TestCase
   include Bibmix::Bibsonomy
   
 	def test_decorator_factory
