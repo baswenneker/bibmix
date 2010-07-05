@@ -1,10 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class Bibsonomy_QueryMergerTest < ActiveSupport::TestCase
+class Bibsonomy_RecordMergerTest < ActiveSupport::TestCase
   include Bibmix::Bibsonomy
   
   def setup
-  	@querymerger = Bibmix::QueryMerger.new(Record.new, Query.new)
+  	@querymerger = Bibmix::RecordMerger.new(Record.new, Query.new)
   end
  
   def teardown

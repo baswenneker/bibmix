@@ -11,7 +11,7 @@ require 'bibmix/bibsonomy/request'
 require 'bibmix/bibsonomy/titlequery'
 require 'bibmix/bibsonomy/xmlresponse'
 require 'bibmix/bibsonomy/authorquery'
-require 'bibmix/bibsonomy/querymergerdecoratorfactory'
+require 'bibmix/bibsonomy/mergerdecoratorfactory'
 
 require 'bibmix/bibsonomy/mergerdecorator/frilsimilaritydecorator'
 require 'bibmix/bibsonomy/mergerdecorator/pagessimilaritydecorator'

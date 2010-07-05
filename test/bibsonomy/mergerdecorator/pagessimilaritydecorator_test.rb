@@ -30,7 +30,7 @@ class Bibsonomy_PagesSimilarityDecoratorTest < ActiveSupport::TestCase
 		dummy_query = Query.new
  		
  		# construct the mergers
- 		titlemerger = Bibmix::QueryMerger.new(dummy_record, dummy_query)
+ 		titlemerger = Bibmix::RecordMerger.new(dummy_record, dummy_query)
  		pagesmerger = PagesSimilarityDecorator.new titlemerger
  		 		 		
  		assert_equal PagesSimilarityDecorator::SIMILARITY_BONUS, (pagesmerger.assess_similarity(record1, record2) - titlemerger.assess_similarity(record1, record2)).to_f.round(1)

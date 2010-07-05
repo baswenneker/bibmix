@@ -4,7 +4,7 @@ require 'singleton'
 module Bibmix
 	module Bibsonomy
 		
-		class QueryMergerDecoratorFactory
+		class MergerDecoratorFactory
 			include Singleton
 						
 			def method_missing(method, *args)  

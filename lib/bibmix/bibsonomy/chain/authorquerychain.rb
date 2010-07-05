@@ -23,16 +23,16 @@ module Bibmix
 				
 				self.log("author queries with results: #{author_queries.size}")
 				
-				threshold = Bibmix.get_config('author_querymerger_threshold')
+				threshold = Bibmix.get_config('author_recordmerger_threshold')
 				
 				begin
 					# Merge the results.
-					querymerger = Bibmix::QueryMerger.new(record, author_queries)
-					querymerger = QueryMergerDecoratorFactory.instance.title(querymerger)
-					merged_record = querymerger.merge(threshold)
+					merger = Bibmix::RecordMerger.new(record, author_queries)
+					merger = MergerDecoratorFactory.instance.title(merger)
+					merged_record = merger.merge(threshold)
 					
 					chainrecord.set_merged_record(merged_record, Chain::STATUS_AUTHOR_MERGED, Chain::STATUS_AUTHOR_NOT_MERGED)
-				rescue Bibmix::QueryMergerError => e
+				rescue Bibmix::RecordMergerError => e
 					chainrecord.condition = Chain::STATUS_AUTHOR_NOT_MERGED
 					self.log("empty response for #{author_queries} - #{e}")
 				end			

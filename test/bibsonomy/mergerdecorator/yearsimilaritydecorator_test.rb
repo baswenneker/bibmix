@@ -30,7 +30,7 @@ class Bibsonomy_YearSimilarityDecoratorTest < ActiveSupport::TestCase
 		dummy_query = Query.new
  		
  		# construct the mergers
- 		titlemerger = Bibmix::QueryMerger.new(dummy_record, dummy_query)
+ 		titlemerger = Bibmix::RecordMerger.new(dummy_record, dummy_query)
  		yearmerger = YearSimilarityDecorator.new(titlemerger)
  		 		
  		assert_equal YearSimilarityDecorator::SIMILARITY_BONUS, (yearmerger.assess_similarity(record1, record2) - titlemerger.assess_similarity(record1, record2)).to_f.round(1)
@@ -56,7 +56,7 @@ class Bibsonomy_YearSimilarityDecoratorTest < ActiveSupport::TestCase
  		dummy_record = Record.new
 		dummy_query = Query.new
  		
- 		titlemerger = Bibmix::QueryMerger.new(dummy_record, dummy_query)
+ 		titlemerger = Bibmix::RecordMerger.new(dummy_record, dummy_query)
  		yearmerger = YearSimilarityDecorator.new(titlemerger)
  		 		
  		assert_equal YearSimilarityDecorator::SIMILARITY_BONUS, (yearmerger.assess_similarity(record1, record2) - titlemerger.assess_similarity(record1, record2)).round(1)
