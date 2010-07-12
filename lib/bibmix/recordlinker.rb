@@ -1,10 +1,10 @@
 require 'bibmix'
 
 module Bibmix
-	class RecordMergerError < Bibmix::Error;	end
-	class RecordMergerInvariantError < RecordMergerError;	end
+	class RecordLinkerError < Bibmix::Error;	end
+	class RecordLinkerInvariantError < RecordLinkerError;	end
 		
-	class RecordMerger
+	class RecordLinker
 		
 		attr_reader :base, :query, :result
 		attr_accessor :similarity_lookup_hash
@@ -17,7 +17,7 @@ module Bibmix
 		end
 		
 		def merge(similarity_threshold=false)				
-			raise RecordMergerInvariantError unless invariant
+			raise RecordLinkerInvariantError unless invariant
 							
 			hash = {}
 			if @query.kind_of?(Array)
@@ -30,7 +30,7 @@ module Bibmix
 			end
 			
 			if similarity_threshold == false
-				similarity_threshold = Bibmix.get_config('default_recordmerger_threshold', 0.5)
+				similarity_threshold = Bibmix.get_config('default_recordlinker_threshold', 0.5)
 			end
 			
 			@result = merge_weighted_hash(hash, similarity_threshold)
@@ -61,7 +61,7 @@ module Bibmix
 		def assess_similarity(rec1, rec2)
 			
 			if !(rec1.kind_of?(Bibmix::Record) || rec2.kind_of?(Bibmix::Record))
-				raise Bibmix::RecordMergerError, "One of the params is not a Record, (#{rec1.inspect},#{rec2.inspect})"
+				raise Bibmix::RecordLinkerError, "One of the params is not a Record, (#{rec1.inspect},#{rec2.inspect})"
 			end
 			
 			["title", "intrahash"].each do |key|

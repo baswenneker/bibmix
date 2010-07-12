@@ -14,7 +14,7 @@ class Bibsonomy_FrilSimilarityDecoratorTest < ActiveSupport::TestCase
  		
  		query = TitleQuery.new(record.title)
  		
- 		merged_record = MergerDecoratorFactory.instance.fril(Bibmix::RecordMerger.new(record, query)).merge
+ 		merged_record = MergerDecoratorFactory.instance.fril(Bibmix::RecordLinker.new(record, query)).merge
  		
  	end
  	

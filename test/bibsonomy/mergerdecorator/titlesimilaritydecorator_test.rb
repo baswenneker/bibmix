@@ -24,7 +24,7 @@ class Bibsonomy_TitleSimilarityDecoratorTest < ActiveSupport::TestCase
 		dummy_query = Query.new
  		
  		# construct the mergers
- 		titlemerger = Bibmix::RecordMerger.new(dummy_record, dummy_query)
+ 		titlemerger = Bibmix::RecordLinker.new(dummy_record, dummy_query)
  		merger = TitleSimilarityDecorator.new(titlemerger)
  		 		
  		assert_equal record1.title.pair_distance_similar(record2.title), (merger.assess_similarity(record1, record2) - titlemerger.assess_similarity(record1, record2))
@@ -54,7 +54,7 @@ class Bibsonomy_TitleSimilarityDecoratorTest < ActiveSupport::TestCase
 		dummy_query = Query.new
  		
  		# construct the mergers
- 		titlemerger = Bibmix::RecordMerger.new(dummy_record, dummy_query)
+ 		titlemerger = Bibmix::RecordLinker.new(dummy_record, dummy_query)
  		merger = TitleSimilarityDecorator.new(titlemerger)
  		 		
  		merger.assess_similarity(record1, record2)

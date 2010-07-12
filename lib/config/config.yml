@@ -23,6 +23,6 @@ default:
     # Evaluation settings.
     evaluation_template_xls        : '__EVALUATION_DIR__/template_macros.xls'
     
-    title_recordmerger_threshold   : 0.9
-    author_recordmerger_threshold  : 0.9
-    default_recordmerger_threshold : 0.5
+    title_recordlinker_threshold   : 0.9
+    author_recordlinker_threshold  : 0.9
+    default_recordlinker_threshold : 0.5

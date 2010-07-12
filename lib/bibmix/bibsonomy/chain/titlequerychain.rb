@@ -16,15 +16,15 @@ module Bibmix
 				
 				if query.response.size > 0
 					
-					threshold = Bibmix.get_config('title_recordmerger_threshold')
+					threshold = Bibmix.get_config('title_recordlinker_threshold')
 					
 					begin
-						merger = RecordMerger.new(record, query)
+						merger = RecordLinker.new(record, query)
 						merger = MergerDecoratorFactory.instance.fril(merger)						
 						merged_record = merger.merge(threshold)
 						
 						chainrecord.set_merged_record(merged_record, Chain::STATUS_TITLE_MERGED, Chain::STATUS_TITLE_NOT_MERGED)
-					rescue Bibmix::RecordMergerError => e						
+					rescue Bibmix::RecordLinkerError => e						
 						chainrecord.condition = Chain::STATUS_TITLE_NOT_MERGED
 						self.log("error occurred, setting chainrecord condition to STATUS_NOT_MERGED. Error: #{e}")
 					end
