@@ -11,9 +11,23 @@ Bibmix has some dependencies on gems:
  * spreadsheet
  * faster_csv
 
+Installation
+------------
+
 In order to install the required gems, enter:
 
 	$ sudo gem install httpclient amatch spreadsheet fastercsv
+
+Then install FRIL, go to http://fril.sourceforge.net/download.html and download/install version 2.1.4 (I've not tested this with other versions). To make sure it works, try running fril.sh from the command line.
+
+For Bibmix I had to add a few features to FRIL, in order to incorporate the features, two files have to be replaced. Execute the following commands to replace the files.
+
+	$ cp <BIBMIX FOLDER>/resources/join.jar <FRIL FOLDER>/jars/
+	$ cp <BIBMIX FOLDER>/resources/gui-components.config <FRIL FOLDER>/
+
+Now you are ready to test Bibmix. CD into the Bibmix folder and execute:
+
+	$ rake test
 
 Author 
 -------

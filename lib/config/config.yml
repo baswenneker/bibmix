@@ -15,7 +15,7 @@ default:
       
     # FRIL specific settings.
     fril_tmp_dir                   : '__TMP_DIR__/fril'
-    fril_executable_dir            : '/Users/bas/Documents/FRIL-v2.1.4-src/build'
+    fril_executable_dir            : '/home/bas/dev/FRIL-v2.1.4'
     fril_config_dir                : '__FRIL_DIR__'
     fril_template_config           : '__FRIL_DIR__/fril_config.xml'
     fril_template_executable       : '__FRIL_DIR__/fril_template_executable.sh'
