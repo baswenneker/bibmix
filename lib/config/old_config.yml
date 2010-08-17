@@ -15,7 +15,7 @@ default:
       
     # FRIL specific settings.
     fril_tmp_dir                   : '__TMP_DIR__/fril'
-    fril_executable_dir            : '/Users/bas/Documents/FRIL-v2.1.4-src/build'
+    fril_executable_dir            : '/home/bas/dev/FRIL-v2.1.4'
     fril_config_dir                : '__FRIL_DIR__'
     fril_template_config           : '__FRIL_DIR__/fril_config.xml'
     fril_template_executable       : '__FRIL_DIR__/fril_template_executable.sh'
@@ -24,9 +24,6 @@ default:
     evaluation_template_xls        : '__EVALUATION_DIR__/template_macros.xls'
     
     title_recordlinker_threshold   : 0.9
-    author_recordlinker_threshold  : 0.6
+    author_recordlinker_threshold  : 0.9
     default_recordlinker_threshold : 0.5
     
-    # ParsCit (CME) settings       
-    parscit_dir                    : '/Users/bas/Documents/parscit-100401'
-    parscit_cmd                    : '__PARSCIT_DIR__/bin/parseRefStrings.pl'

@@ -10,13 +10,14 @@ Bibmix has some dependencies on gems:
  * amatch
  * spreadsheet
  * faster_csv
+ * hpricot
 
 Installation
 ------------
 
 In order to install the required gems, enter:
 
-	$ sudo gem install httpclient amatch spreadsheet fastercsv
+	$ sudo gem install httpclient amatch spreadsheet fastercsv hpricot
 
 Then install FRIL, go to http://fril.sourceforge.net/download.html and download/install version 2.1.4 (I've not tested this with other versions). To make sure it works, try running fril.sh from the command line.
 
