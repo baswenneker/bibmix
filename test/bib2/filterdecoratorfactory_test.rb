@@ -7,10 +7,9 @@ class Bibsonomy_FilterDecoratorFactoryTest < ActiveSupport::TestCase
 		
 		# use these dummy objects for the instantiation of the titlemerger.
  		dummy_record = Reference.new
-		dummy_query = Bibsonomy::Query.new
  		
  		# construct the mergers
- 		titlemerger = Bib2::RecordLinker.new(dummy_record, dummy_query)
+ 		titlemerger = Bib2::ReferenceFilter.new(dummy_record)
 		
 		assert_equal PagesFilterDecorator, FilterDecoratorFactory.instance.page(titlemerger).class
 		assert_equal TitleFilterDecorator, FilterDecoratorFactory.instance.title(titlemerger).class

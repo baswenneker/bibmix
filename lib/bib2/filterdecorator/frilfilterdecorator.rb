@@ -5,7 +5,7 @@ require 'rexml/document'
 
 module Bib2
 	class FrilFilterDecorator
-		include Decorator
+		include Decorator, DesignByContract
 			
 		@random_id = nil
 		@temp_querybook_file = nil
@@ -13,7 +13,10 @@ module Bib2
 		@temp_fril_config_file = nil
 		
 		attr_accessor :fril_matching
-					
+		
+		pre(	'Property @relevance_threshold should be false or a Float') { (@decorated.relevance_threshold === nil) || @decorated.relevance_threshold.is_a?(Float) }
+		pre(	'Parameter collected_references should be an Array of Bib2::CollectedReference instances') { |collected_references| collected_references.is_a?(Array) && collected_references.inject(true){|is_a,item| is_a && item.is_a?(Bib2::CollectedReference) } }
+		post(	'Return value should be an Array of Bib2::FilteredReference instances') { @decorated.filtered_references.is_a?(Array) && @decorated.filtered_references.inject(true){|is_a,item| is_a && item.is_a?(Bib2::FilteredReference) } }
 		def filter(collected_references)		
 			
 			# Generate a random id to be used in filenames.

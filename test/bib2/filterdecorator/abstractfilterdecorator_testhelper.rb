@@ -16,7 +16,7 @@ module AbstractFilterDecorator
  		
  		filter = ReferenceFilter.new(@reference)
  		filter = @filter_decorator_class.new(filter)
- 		puts filter.methods
+ 		
  		assert_raise(RuntimeError){
  			filter.filter(nil)
  		}

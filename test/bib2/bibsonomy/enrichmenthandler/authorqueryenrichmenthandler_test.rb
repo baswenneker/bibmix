@@ -13,7 +13,5 @@ class Bib2_Bibsonomy_AuthorQueryEnrichmentHandlerTest < ActiveSupport::TestCase
  		
  		handler = AuthorQueryEnrichmentHandler.new(reference)
  		reference = handler.execute_enrichment_steps()
- 		
- 		puts reference.to_yaml
  	end
 end
