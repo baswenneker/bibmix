@@ -38,19 +38,23 @@ end
 
 require 'dbc'
 
+#require 'bib2/interface/enrichmenthandler'
+
 require 'bib2/error'
-require 'bib2/abstract/chainhandler'
 require 'bib2/abstract/request'
 require 'bib2/abstract/referencecollector'
 require 'bib2/abstract/enrichmenthandler'
 require 'bib2/abstract/reference'
 require 'bib2/abstract/cmeapplication'
 require 'bib2/abstract/referenceintegrator'
+require 'bib2/abstract/response'
+
 
 require 'bib2/reference'
+require 'bib2/collectedreference'
+require 'bib2/filteredreference'
 require 'bib2/parscit'
 require 'bib2/cacherequest'
-require 'bib2/response'
 require 'bib2/filterdecoratorfactory'
 require 'bib2/chaintoken'
 require 'bib2/referencefilter'

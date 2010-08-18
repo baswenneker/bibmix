@@ -6,23 +6,23 @@ module Bib2
 		
 		SIMILARITY_BONUS = 0.1
 		
-		def filter(*args)
+		def filter
 			
-			query = @decorated.query;
+			collected_references = @decorated.collected_references
 			
-			query.response.each do |ref|
-				@decorated.similarity_lookup_hash[ref.id] = assess_similarity(@decorated.base, ref)
+			collected_references.each do |collected_ref|
+				@decorated.similarity_lookup_hash[collected_ref.reference.id] = compute_relevance_of_references(@decorated.reference_for_comparison, collected_ref.reference)
 			end
 			
-			@decorated.filter(*args)
+			@decorated.filter
 		end
 		
-		def assess_similarity(rec1, rec2)
+		def compute_relevance_of_references(rec1, rec2)
 			
-			similarity = @decorated.assess_similarity(rec1, rec2)
-			return 1 if similarity >= 1
+			similarity = @decorated.compute_relevance_of_references(rec1, rec2)
+			return 1.0 if similarity >= 1.0
 			
-			year_similarity = 0
+			year_similarity = 0.0
 			if !rec1.year.nil? && !rec2.year.nil?
 				if rec1.year.to_i == rec2.year.to_i
 					year_similarity = SIMILARITY_BONUS
@@ -30,7 +30,7 @@ module Bib2
 				end
 			end
 		
-			[similarity+year_similarity, 1].min
+			[similarity+year_similarity, 1.0].min
 		end
 		
 	end

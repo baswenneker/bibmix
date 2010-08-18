@@ -3,12 +3,12 @@ require 'bib2'
 module Bib2
 	class ChainToken
 		
-		attr_accessor :record, :condition
+		attr_accessor :reference, :condition
 		
-		def initialize(record=nil)
+		def initialize(reference=nil)
 			
-			@record = record
-			self.send("condition=",AbstractEnrichmentHandler::STATUS_NOT_MERGED)
+			@reference = reference
+			#self.send("condition=",AbstractEnrichmentHandler::STATUS_NOT_MERGED)
 		end
 		
 		def set_merged_record(record, status_merged, status_not_merged)

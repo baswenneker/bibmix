@@ -2,7 +2,8 @@ require 'bib2'
 
 module Bib2
 	module Bibsonomy
-		class AuthorQueryEnrichmentHandler < Bib2::AbstractEnrichmentHandler
+		class AuthorQueryEnrichmentHandler
+			include Bib2::EnrichmentHandlerAbstract
 			
 			protected
 			def execute_chain_action(chainrecord)

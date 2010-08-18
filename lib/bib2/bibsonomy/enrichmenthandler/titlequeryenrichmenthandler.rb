@@ -2,47 +2,51 @@ require 'bib2'
 
 module Bib2
 	module Bibsonomy
-		class TitleQueryEnrichmentHandler < Bib2::AbstractEnrichmentHandler
+		class TitleQueryEnrichmentHandler
+			include Bib2::EnrichmentHandlerAbstract
 			
-			protected
-			def execute_chain_action(chainrecord)
+			def execute_enrichment_steps
+				#super()
 				
-				record = chainrecord.record
-				raise Bib2::Error.new('No title available in the record.') if !record.title
+				result = @input_reference
+				collected_refs = collect_references(@input_reference)
 				
-				self.log("record.title = '#{record.title}'")
-				
-				collector = Bib2::Bibsonomy::TitleQuery.new(record.title)
-				
-				if collector.response.size > 0
+				if collected_refs.size > 0
+					filtered_refs = filter_collected_references(collected_refs.get())
 					
-					threshold = Bib2.get_config('title_recordlinker_threshold')
-					
-					begin
-						filter = ReferenceFilter.new(record, query)
-						filter = FilterDecoratorFactory.instance.fril(filter)	
-						
-						filtered_references = filter.filter(threshold)
-						
-						integrator = NaiveReferenceIntegrator.new(record)
-						integrated_record = integrator.integrate(filtered_references)
-						
-#						merger = RecordLinker.new(record, query)
-#						merger = FilterDecoratorFactory.instance.fril(merger)						
-#						merged_record = merger.merge(threshold)
-						
-						chainrecord.set_merged_record(merged_record, AbstractEnrichmentHandler::STATUS_TITLE_MERGED, AbstractEnrichmentHandler::STATUS_TITLE_NOT_MERGED)
-					rescue Bib2::RecordLinkerError => e						
-						chainrecord.condition = AbstractEnrichmentHandler::STATUS_TITLE_NOT_MERGED
-						self.log("error occurred, setting chainrecord condition to STATUS_NOT_MERGED. Error: #{e}")
-					end
-					
-				else
-					self.log('empty query response, setting chainrecord condition to STATUS_NOT_MERGED')
-					chainrecord.condition = AbstractEnrichmentHandler::STATUS_TITLE_NOT_MERGED
+					if filtered_refs.size > 0
+						integrated_reference = integrate_filtered_references(filtered_refs)
+						result = integrated_reference
+					end					
 				end
-
-				chainrecord
+				
+				result
+			end
+			
+		protected
+				
+			def collect_references(reference)
+				#super(reference)
+				query = Bib2::Bibsonomy::TitleQuery.new(reference.title)
+				query.response
+			end
+			
+			def filter_collected_references(collected_references)
+				#super(collected_references)
+				threshold = Bib2.get_config('title_recordlinker_threshold')
+				
+				filter = ReferenceFilter.new(@input_reference, collected_references)
+				filter.relevance_threshold = threshold
+				filter = FilterDecoratorFactory.instance.fril(filter)	
+						
+				filter.filter()				
+			end
+			
+			def integrate_filtered_references(filtered_references)
+				#super(filtered_references)
+				integrator = NaiveReferenceIntegrator.new(@input_reference)
+				
+				integrator.integrate(filtered_references)
 			end
 		end
 	end

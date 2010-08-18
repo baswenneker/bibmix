@@ -10,7 +10,7 @@ module Bib2
 		class InvariantError < ResponseError
 		end
 		
-		class XMLResponse < Bib2::Response
+		class XMLResponse < Bib2::AbstractResponse
 			
 			attr_reader :raw_response, :doc
 			
@@ -21,7 +21,7 @@ module Bib2
 			def parse(response)
 				@raw_response = response
 				@doc = REXML::Document.new(response)
-				@result = nil
+				@result = []
 				raise InvariantError if not invariant
 			end
 			
@@ -29,12 +29,13 @@ module Bib2
 			def get
 				raise InvariantError unless invariant
 				
-				if @result.nil?
+				if @result.empty?
 					@result = []
 					REXML::XPath.each(@doc, "//posts/post") do |post|
-						record = get_record(post)
-						record.send("tags=", get_tags_of_entry(post))
-						@result << record
+						reference = get_reference(post)
+						reference.send("tags=", get_tags_of_entry(post))
+						
+						@result << Bib2::CollectedReference.new(reference, 'bibsonomy')
 					end
 				end
 				
@@ -54,7 +55,7 @@ module Bib2
 			
 			# Returns the number of returned post entries.
 			def size
-				return self.get.size
+				self.get.size
 			end
 					
 		protected
@@ -63,14 +64,14 @@ module Bib2
 			end
 		
 			# Transforms an xml entry into a Bibsonomy::Record.
-			def get_record(entry)
+			def get_reference(entry)
 				
-				record = Bib2::Reference.new
-				REXML::XPath.first(entry, "bibtex").attributes.each do |key, value|
-					record.send("#{key.strip}=", value.strip)
+				reference = Bib2::Reference.new
+				REXML::XPath.first(entry, 'bibtex').attributes.each do |key, value|
+					reference.send("#{key.strip}=", value.strip)
 				end
 				
-				record
+				reference
 			end
 			
 			# Returns a hash of tags of an entry.

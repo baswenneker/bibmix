@@ -25,7 +25,7 @@ default:
     
     title_recordlinker_threshold   : 0.9
     author_recordlinker_threshold  : 0.6
-    default_recordlinker_threshold : 0.5
+    default_relevance_threshold    : 0.5
     
     # ParsCit (CME) settings       
     parscit_dir                    : '/Users/bas/Documents/parscit-100401'

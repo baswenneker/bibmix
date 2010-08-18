@@ -4,7 +4,7 @@ module Bib2
 	
 	# The Bib2::Response class is an abstract class which can be used as a wrapper
 	# around a response of a Bib2::Query.
-	class Response
+	class AbstractResponse
 		
 		# Response status constant for a succesful request/query.
 		STATUS_OK = 'status_ok'

@@ -4,6 +4,6 @@ module Decorator
   end
 
   def method_missing(method, *args)
-    args.empty? ? @decorated.send(method) : @decorated.send(method, args)
+    args.empty? ? @decorated.send(method) : @decorated.send(method, *args)
   end
 end
