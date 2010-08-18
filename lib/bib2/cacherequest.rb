@@ -3,10 +3,10 @@ require 'bib2'
 module Bib2
 	
 	# A generic abstract class to wrap a request to an API or webservice.
-	class CacheRequest < AbstractRequest
+	class CacheRequest
+		include Bib2::RequestAbstract
 		
 		def from_cache(name)
-			
 			begin
 				return File.read(get_filepath(name))
 			rescue

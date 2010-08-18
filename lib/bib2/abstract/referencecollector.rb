@@ -1,27 +1,19 @@
 require 'bib2'
 
-module Bib2
-	
-	class AbstractReferenceCollector
+module Bib2	
+	module ReferenceCollectorAbstract
+				
+		@request = nil
+		@response = nil
 		
 		attr_reader :response
 		
-		def initialize(q=nil)
+		def initialize
 			raise Bib2::NotImplementedError
 		end
 		
-		def execute(q=nil)
+		def collect_references
 			raise Bib2::NotImplementedError
-		end
-				
-		def first(q=nil)
-			execute(q)
-			
-			if @response.eql?(false) || @response.size == 0
-				return false
-			end
-			
-			@response.get().first			
 		end
 		
 	end

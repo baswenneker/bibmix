@@ -12,5 +12,9 @@ module Bib2
 			@collected_reference = collected_reference
 			@relevance = [[0, relevance].max, 1].min
 		end
+		
+		def reference
+			@collected_reference.reference
+		end
 	end
 end

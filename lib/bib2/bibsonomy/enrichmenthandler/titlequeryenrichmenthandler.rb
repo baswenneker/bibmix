@@ -2,52 +2,28 @@ require 'bib2'
 
 module Bib2
 	module Bibsonomy
-		class TitleQueryEnrichmentHandler
+		class TitleQueryEnrichmentHandler 
 			include Bib2::EnrichmentHandlerAbstract
 			
-			def execute_enrichment_steps
-				#super()
+			def initialize(reference)
+				super(reference)
 				
-				result = @input_reference
-				collected_refs = collect_references(@input_reference)
+				# Initialize the reference collection mechanism.
+				@reference_collector = Bib2::Bibsonomy::TitleQuery.new()
 				
-				if collected_refs.size > 0
-					filtered_refs = filter_collected_references(collected_refs.get())
-					
-					if filtered_refs.size > 0
-						integrated_reference = integrate_filtered_references(filtered_refs)
-						result = integrated_reference
-					end					
-				end
+				# Initialize the reference filtering mechanism, load the threshold
+				# from the config.
+				threshold = Bib2.get_config('title_relevance_threshold')				
+				@reference_filter = ReferenceFilter.new(reference)
+				@reference_filter.relevance_threshold = threshold
 				
-				result
+				# Decorate the filter with the FRIL Filter.
+				@reference_filter = FilterDecoratorFactory.instance.fril(@reference_filter)
+				
+				# Initialize the reference integration mechanism.
+				@reference_integrator = NaiveReferenceIntegrator.new(reference)
 			end
-			
-		protected
-				
-			def collect_references(reference)
-				#super(reference)
-				query = Bib2::Bibsonomy::TitleQuery.new(reference.title)
-				query.response
-			end
-			
-			def filter_collected_references(collected_references)
-				#super(collected_references)
-				threshold = Bib2.get_config('title_recordlinker_threshold')
-				
-				filter = ReferenceFilter.new(@input_reference, collected_references)
-				filter.relevance_threshold = threshold
-				filter = FilterDecoratorFactory.instance.fril(filter)	
-						
-				filter.filter()				
-			end
-			
-			def integrate_filtered_references(filtered_references)
-				#super(filtered_references)
-				integrator = NaiveReferenceIntegrator.new(@input_reference)
-				
-				integrator.integrate(filtered_references)
-			end
+
 		end
 	end
 end

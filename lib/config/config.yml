@@ -23,8 +23,9 @@ default:
     # Evaluation settings.
     evaluation_template_xls        : '__EVALUATION_DIR__/template_macros.xls'
     
-    title_recordlinker_threshold   : 0.9
-    author_recordlinker_threshold  : 0.6
+    # Relevance thresholds used by the RelevanceFilter.
+    title_relevance_threshold   : 0.9
+    author_relevance_threshold  : 0.6
     default_relevance_threshold    : 0.5
     
     # ParsCit (CME) settings       

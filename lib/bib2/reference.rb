@@ -75,14 +75,16 @@ module Bib2
 		end
 	
 		# Merges the current record with the given record.
-		def merge(record)
-			raise ReferenceInvalidMergeParamError unless record.kind_of?(Bib2::Reference)
+		def merge(filtered_reference)
+			raise ReferenceInvalidMergeParamError unless filtered_reference.kind_of?(Bib2::FilteredReference)
 			
+			reference = filtered_reference.reference
 			each_attribute do |attr|
+				
 				if self.respond_to?("merge_#{attr}")
-					self.send("merge_#{attr}", record)
-				elsif self.send(attr).nil? && !record.send(attr).nil?
-					merge_overwrite_attribute(attr, record)
+					self.send("merge_#{attr}", reference)
+				elsif self.send(attr).nil? && !reference.send(attr).nil?
+					merge_overwrite_attribute(attr, reference)
 				end
 			end
 			

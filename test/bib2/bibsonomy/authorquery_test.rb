@@ -1,31 +1,17 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
+require File.expand_path(File.dirname(__FILE__) + '/abstractquery_testhelper.rb')
 
-class Bibsonomy_AuthorQueryTest < ActiveSupport::TestCase
-  include Bib2
+class Bib2_Bibsonomy_AuthorQueryTest < ActiveSupport::TestCase
+	include AbstractQueryTest
   
 	def setup
-    @query = Bibsonomy::AuthorQuery.new
+    @query = Bib2::Bibsonomy::AuthorQuery.new
+    @reference = Bib2::Reference.from_hash({
+ 			:author => ['houben', 'Geert-Jan Houben', 'Houben, G.J.']
+ 		})
+ 		@invalid_reference = Bib2::Reference.from_hash({
+ 			:author => ['__invalid__AUTHOR__']
+ 		}) 		
   end
   
- 	def teardown
- 		@query = nil
- 	end
- 
-	# Tests whether a search on 'houben' results in something.
- 	def test_get_valid_query
- 		['houben', 'Geert-Jan Houben', 'Houben, G.J.'].each do |q|
-	 		response = nil
-	 		assert_nothing_raised{
-	 			response = @query.execute(q)
-	 		}
-
-	 		assert_not_nil response
-	 		assert !response.eql?(false)
-	 		assert response.size() > 0
-	 		assert !@query.first().eql?(false)
-	 		
-	 		setup
-	 	end
- 	end
- 	
 end

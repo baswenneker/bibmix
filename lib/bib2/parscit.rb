@@ -1,21 +1,22 @@
 require 'bib2'
 
 module Bib2
-	class Parscit < Bib2::AbstractCMEApplication
+	class Parscit
+		include Bib2::CMEApplicationAbstract, DesignByContract
 		
-		def parse(str)
-			@citation = str
-			
-			if str.nil? || str.eql?("")
-      	raise Bib2::Error, 'Citation string is nil or empty.'
-    	end
-    
+		pre(	'Parameter citation_string should be a string') {|citation_string| citation_string.is_a?(String) || citation_string.eql?('')}
+		post( 'Return value should be a Bib2::AbstractReference instance') {|result, citation_string| result.is_a?(Bib2::AbstractReference)}
+		post( 'Property @reference should be a Bib2::AbstractReference instance') {@reference.is_a?(Bib2::AbstractReference)}
+		post(	'Property @citation should be a string') {@citation.is_a?(String) || @citation.eql?('')}
+		def parse_citation(citation_string)
+			@citation = citation_string
+			    
 	    parscit_cmd = Bib2::get_config('parscit_cmd')
 	    	    
 	    # Convert the passed string to UTF-8, this prevents possible
 	    # seg faults in parseRefStrings.pl.
 	    ic = Iconv.new('UTF-8//IGNORE', 'UTF-8')
-	    valid_string = ic.iconv(str << ' ')[0..-2]
+	    valid_string = ic.iconv(citation_string << ' ')[0..-2]
 	    
 	    # The ParsCit executable only reads from file so create a
 	    # temporary file and fill it with the citation string.
@@ -37,10 +38,10 @@ module Bib2
 	    end
 	    	    
 	    ref['author'] = ref['authors']['author']
-	    ref['citation'] = str
+	    ref['citation'] = citation_string
 	    ref['parser'] = 'parscit'
 	    
-	    Bib2::Reference.from_hash(ref)
+	    @reference = Bib2::Reference.from_hash(ref)
 	  end
 	end
 end

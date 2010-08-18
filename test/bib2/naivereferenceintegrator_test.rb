@@ -1,9 +1,25 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class Bibsonomy_ReferenceLinkerTest < ActiveSupport::TestCase
+class Bib2_NaiveReferenceIntegratorTest < ActiveSupport::TestCase
   include Bib2
   	
-	def test_integration
+  def test_constructor
+  	
+  	ref1 = Reference.from_hash({
+			:intrahash => '_test_hash_',
+			:title => 'testa'
+		})
+  	
+  	assert_nothing_raised{
+  		integrator = NaiveReferenceIntegrator.new(ref1)
+  	}
+  	
+  	assert_raise(Bib2::Error){
+  		integrator = NaiveReferenceIntegrator.new(nil)
+  	}
+  end
+  	
+	def test_integrate
 		
     ref1 = Reference.from_hash({
 			:intrahash => '_test_hash_',
@@ -16,11 +32,26 @@ class Bibsonomy_ReferenceLinkerTest < ActiveSupport::TestCase
 			:year => 2009
 		})
     
+    collected_reference = CollectedReference.new(ref2, 'unknown source')
+    filtered_reference = FilteredReference.new(collected_reference, 1.0)
+    
     integrator = NaiveReferenceIntegrator.new(ref1)
-    integrated_reference = integrator.integrate(ref2)
+    
+    integrated_reference = nil
+    assert_nothing_raised {
+	    integrated_reference = integrator.integrate(filtered_reference)
+    }
 		
 		assert_equal(ref2.year, integrated_reference.year)
 		assert_equal(ref1.title, integrated_reference.title)
+		
+		assert_raise(RuntimeError) {
+	    integrated_reference = integrator.integrate(ref2)
+		}
+		
+		assert_raise(RuntimeError) {
+	    integrated_reference = integrator.integrate(nil)
+		}
 	end
   
 end

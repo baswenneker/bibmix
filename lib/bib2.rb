@@ -38,8 +38,6 @@ end
 
 require 'dbc'
 
-#require 'bib2/interface/enrichmenthandler'
-
 require 'bib2/error'
 require 'bib2/abstract/request'
 require 'bib2/abstract/referencecollector'
@@ -65,15 +63,13 @@ require 'bib2/filterdecorator/pagesfilterdecorator'
 require 'bib2/filterdecorator/titlefilterdecorator'
 require 'bib2/filterdecorator/yearfilterdecorator'
 
-require 'bib2/bibsonomy/query'
+require 'bib2/bibsonomy/abstract/query'
 require 'bib2/bibsonomy/request'
 require 'bib2/bibsonomy/xmlresponse'
 require 'bib2/bibsonomy/titlequery'
 require 'bib2/bibsonomy/authorquery'
 require 'bib2/bibsonomy/enrichmenthandler/titlequeryenrichmenthandler'
 require 'bib2/bibsonomy/enrichmenthandler/authorqueryenrichmenthandler'
-
-require 'bib2/recordlinker'
 
 #require 'amatch'
 #require 'decorator'

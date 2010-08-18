@@ -5,31 +5,34 @@ class Bib2_ReferenceTest < ActiveSupport::TestCase
   
   def setup
   	@hash = get_hash
+  	@reference = Reference.from_hash(@hash)
+  	collected_reference = CollectedReference.new(@reference, 'unknown source')
+  	@filtered_reference = FilteredReference.new(collected_reference, 1.0)
+  	
+  	@merge_hash = get_merge_hash
+  	@merge_reference = Reference.from_hash(@merge_hash)
+  	collected_reference = CollectedReference.new(@merge_reference, 'unknown source')
+  	@merge_filtered_reference = FilteredReference.new(collected_reference, 1.0)
   end
  
 	def test_each_attribute
-		@record = Reference.from_hash(@hash)
-		@record.each_attribute do |k|
-			assert @record.get_attributes.include?(k)
+		@reference.each_attribute do |k|
+			assert @reference.get_attributes.include?(k)
 		end		
 	end
 	
 	def test_merged_attribute
-		merge_hash = get_merge_hash
-    merge_record = Reference.from_hash(merge_hash)
-    
-    # merge a record and check if the record was merged
-		@record = Reference.from_hash(get_hash)
-		@record.merge(merge_record)
-		assert @record.merged
+			
+		@reference.merge(@merge_filtered_reference)
+		assert @reference.merged
 		
 		# set merged to false and check if the correct value is stored
-		@record.merged = false
-		assert_equal false, @record.merged
+		@reference.merged = false
+		assert_equal(false, @reference.merged)
 		
 		# there is nothing to merge, so merged should still be false
-		@record.merge(merge_record)
-		assert_equal false, @record.merged
+		@reference.merge(@merge_filtered_reference)
+		assert_equal(false, @reference.merged)
 	end
   
 	def test_from_hash
@@ -94,22 +97,21 @@ class Bib2_ReferenceTest < ActiveSupport::TestCase
 
 	def test_merge
 		
-    merge_hash = get_merge_hash
-    merge_record = Reference.from_hash(merge_hash)
-		@record = Reference.from_hash(get_hash)
-		@record.merge(merge_record)
+		assert_nothing_raised{
+    	@reference.merge(@merge_filtered_reference)
+    }
 		
 		@hash.each do |k, v|
 			if k == :author
-				assert_not_nil @record.get(k)
+				assert_not_nil @reference.get(k)
 			else
-				assert_not_nil @record.get(k)
-				assert_equal v, @record.get(k)
+				assert_not_nil @reference.get(k)
+				assert_equal v, @reference.get(k)
 			end
 		end
 		
-		assert_equal merge_hash[:publisher], @record.get('publisher')
-		assert_equal @hash[:year], @record.get('year')
+		assert_equal @merge_hash[:publisher], @reference.get('publisher')
+		assert_equal @hash[:year], @reference.get('year')
 		
 	end
 	

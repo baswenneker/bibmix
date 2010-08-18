@@ -1,11 +1,12 @@
 require 'bib2'
 
 module Bib2
-	class AbstractReferenceIntegrator
+	module ReferenceIntegratorAbstract
 		
 		attr_reader :target_reference
 		
 		def initialize(target_reference)
+			raise Bib2::Error if !target_reference.is_a?(Bib2::AbstractReference)
 			@target_reference = target_reference
 		end
 		

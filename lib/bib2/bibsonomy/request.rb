@@ -12,7 +12,8 @@ module Bib2
 		class UnimplementedFormatError < RequestError; end
 	
 		class Request < Bib2::CacheRequest
-						
+			include DesignByContract			
+			
 	    def initialize
 	    	init_config
 	   	end

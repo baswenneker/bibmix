@@ -18,23 +18,27 @@ class Bib2_ReferenceFilterTest < ActiveSupport::TestCase
  	end
  	
  	# Tests the ReferenceFilter constructor.
- 	def test_construction
+ 	def test_constructor
  		
  		filter = nil
  		assert_nothing_raised{
- 			filter = ReferenceFilter.new(@reference, [])
+ 			filter = ReferenceFilter.new(@reference)
  		}
  		
  		assert_equal(@reference, filter.reference_for_comparison)
  		assert_equal([], filter.collected_references)
  		assert_equal([], filter.filtered_references)
+ 		
+ 		assert_raise(Bib2::Error){
+ 			filter = ReferenceFilter.new(nil)
+ 		}
  	end
  
  	# Tests whether the filter actually filters.
  	def test_filter
  		
  		# Execute the query.
- 		response = @query.execute(@reference.title)
+ 		response = @query.collect_references(@reference)
  		 		
  		# The query should result in more than one reference. 
  		assert(response.size > 0, 'Query did not find any references.')
@@ -53,8 +57,8 @@ class Bib2_ReferenceFilterTest < ActiveSupport::TestCase
 	 	assert(found_similar, 'The query did not find any references with the exact same title, so filter will return no refernces.')
 
 		# Construct the filter and execute the filtering procedure.
- 		filter = ReferenceFilter.new(@reference, @query.response.get())
- 		filter.filter()
+ 		filter = ReferenceFilter.new(@reference)
+ 		filter.filter(@query.response)
 	 	
 	 	assert(filter.filtered_references.size > 0)
 	 	
@@ -71,7 +75,7 @@ class Bib2_ReferenceFilterTest < ActiveSupport::TestCase
  	def test_filter_year
  		
  		# Execute the query.
- 		response = @query.execute(@reference.title)
+ 		response = @query.collect_references(@reference)
  		
  		# The query should result in more than one reference. 
  		assert(response.size > 0, 'Query did not find any references.')
@@ -91,12 +95,12 @@ class Bib2_ReferenceFilterTest < ActiveSupport::TestCase
 	 	assert(found_similar, 'The query did not find any references with the exact same title, so filter will return no refernces.')
 
 		# Construct the filter and execute the filtering procedure.
- 		filter = ReferenceFilter.new(@reference, @query.response.get)
+ 		filter = ReferenceFilter.new(@reference)
  		filter = FilterDecoratorFactory.instance.year(filter)
  		
  		assert(filter.kind_of?(Bib2::YearFilterDecorator))
  		
- 		filter.filter
+ 		filter.filter(@query.response)
 	 	
 	 	assert(filter.filtered_references.size > 0)
 	 	
@@ -115,7 +119,7 @@ class Bib2_ReferenceFilterTest < ActiveSupport::TestCase
 	 	# bonus as threshold. This means all collected references with the same
 	 	# year as @reference will be part of the filter result
 	 	filter.relevance_threshold = YearFilterDecorator::SIMILARITY_BONUS
-	 	filter.filter()
+	 	filter.filter(@query.response)
 	 	
 	 	filter.filtered_references.each do |filtered_ref|
 	 		assert(filtered_ref.relevance >= YearFilterDecorator::SIMILARITY_BONUS)

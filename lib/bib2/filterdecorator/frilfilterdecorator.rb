@@ -14,13 +14,13 @@ module Bib2
 		
 		attr_accessor :fril_matching
 					
-		def merge(*args)				
+		def filter(collected_references)		
 			
 			# Generate a random id to be used in filenames.
 			@random_id = rand
 			
 			# Write the query and response spreadsheets.
-			write_spreadsheets
+			write_spreadsheets(collected_references)
 			
 			# Writes a temporary configuration file to be used by fril.
 			prepare_xml_config
@@ -35,7 +35,7 @@ module Bib2
 			# Clean up the temporary files.
 			cleanup				
 			
-			@decorated.merge(*args)
+			@decorated.filter(collected_references)
 		end
 		
 		protected
@@ -55,7 +55,7 @@ module Bib2
 			text = text.gsub(/__config_file__/, @temp_fril_config_file)
 			
 			# Execute FRIL.
-			puts `#{text}`
+			`#{text}`
 		end
 		
 		# Reads the result of the matching proces.
@@ -112,49 +112,49 @@ module Bib2
 		#
 		# Fril will check if any of the rows in the response book correspond to
 		# the record in the query book. 
-		def write_spreadsheets
-			
+		def write_spreadsheets(collected_references)
 			
 			querybook = Spreadsheet::Workbook.new
 			querysheet = querybook.create_worksheet
 			
 			# Assemble an array with names used for the headers in both books.
 			header = []
-			@decorated.base.each_attribute do |attr|
+			@decorated.reference_for_comparison.each_attribute do |attr|
 				header << attr.to_s
 			end
 			
 			# Write the header.
 			querysheet.row(0).concat(header)
 			# Write the query record in the query book.
-			querysheet.row(1).concat(@decorated.base.to_array)
+			querysheet.row(1).concat(@decorated.reference_for_comparison.to_array)
 			
 			# Write the query book to a temporary file.
 			@temp_querybook_file = "#{Bib2.get_config('fril_tmp_dir')}/query#{@random_id}.xls"
 			querybook.write @temp_querybook_file
 			
 			# Retrieve an array of records that where in the query response.
-			query = @decorated.query;
-			response_array = []
-			if query.kind_of?(Bib2::AbstractReferenceCollector)
-				if query.response.kind_of?(Array)						
-					query.each do |q|
-						response_array << q.response
-					end
-				else
-					response_array = query.response
-				end
-			elsif query.kind_of?(Array)
-				query.each do |subquery|
-					if subquery.response.kind_of?(Array)						
-						subquery.each do |q|
-							response_array << q.response
-						end
-					else
-						response_array = subquery.response
-					end
-				end
-			end
+			#collected_references = @decorated.collected_references
+#			query = @decorated.query;
+#			response_array = []
+#			if query.kind_of?(Bib2::AbstractReferenceCollector)
+#				if query.response.kind_of?(Array)						
+#					query.each do |q|
+#						response_array << q.response
+#					end
+#				else
+#					response_array = query.response
+#				end
+#			elsif query.kind_of?(Array)
+#				query.each do |subquery|
+#					if subquery.response.kind_of?(Array)						
+#						subquery.each do |q|
+#							response_array << q.response
+#						end
+#					else
+#						response_array = subquery.response
+#					end
+#				end
+#			end
 			
 			
 			responsebook = Spreadsheet::Workbook.new
@@ -165,8 +165,8 @@ module Bib2
 			
 			# Write the response records into the response book.
 			row = 1
-			response_array.each do |record|
-				responsesheet.row(row).concat(record.to_array)
+			collected_references.each do |collected_ref|
+				responsesheet.row(row).concat(collected_ref.reference.to_array)
 				row += 1
 			end
 			

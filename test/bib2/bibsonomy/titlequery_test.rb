@@ -1,44 +1,18 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
+require File.expand_path(File.dirname(__FILE__) + '/abstractquery_testhelper.rb')
 
-class Bibsonomy_TitleQueryTest < ActiveSupport::TestCase
-  include Bib2
+class Bib2_Bibsonomy_TitleQueryTest < ActiveSupport::TestCase
+	include AbstractQueryTest
   
-	def setup
-    @query = Bibsonomy::TitleQuery.new
-  end  
+  def setup
+  	@query = TitleQuery.new
+  	@reference = Bib2::Reference.from_hash({
+ 			:title => 'Parscit An open-source CRF reference string parsing package'
+ 		})
+ 		@invalid_reference = Bib2::Reference.from_hash({
+ 			:title => 'You are never gonna find this one'
+ 		})
+  end
   
-  def teardown
- 		@query = nil
- 	end
- 	
- 	def test_get_invalid_query
- 		
- 		q = '__invalid_ titlename___'
- 		response = nil
- 		assert_nothing_raised{
- 			response = @query.execute(q)
- 		}
- 		
- 		assert_not_nil response
- 		assert !response.eql?(false)
- 		assert_equal 0, response.size()
- 		
- 		assert_equal false, @query.first()
-
-	end
  
- 	def test_get_valid_query
- 		q = 'Logsonomy social information retrieval with logdata'
- 		response = nil
- 		assert_nothing_raised{
- 			response = @query.execute(q)
- 		}
- 		
- 		assert_not_nil response
- 		assert !response.eql?(false)
- 		assert response.size > 0
- 		assert !@query.first.eql?(false)
- 	end
-
- 	
 end

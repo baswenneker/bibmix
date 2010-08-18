@@ -45,7 +45,7 @@ module DesignByContract
 
 	def self.included(mod)
 		old_method_added = mod.method :method_added
-
+		
 		new_method_added = lambda { |id| 			
 			if @@pending.has_key? mod
 				# save the list of methods and clear the entry
