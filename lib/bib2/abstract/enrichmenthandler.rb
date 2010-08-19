@@ -5,12 +5,24 @@ module Bib2
 		include DesignByContract
 		
 		@input_reference = nil
-	
-		def initialize(reference)
+		@validator = nil
+		
+		def initialize(reference=nil)
+			
+			@input_reference = reference
+			init_handler(reference) if !reference.nil?
+		end
+		
+		def input_reference=(reference)
 			raise Bib2::Error if !reference.is_a?(Bib2::AbstractReference)
 			@input_reference = reference
+			init_handler(reference)
 		end
-				
+		
+		def has_validator
+			!@validator.nil?
+		end
+						
 		pre(	:execute_enrichment_steps, 'Property @input_reference should be a Bib2::AbstractReference instance') {  @input_reference.is_a?(Bib2::AbstractReference) }
 		post(	:execute_enrichment_steps, 'Return value should be a Bib2::AbstractReference') { |result| result.is_a?(Bib2::AbstractReference) }		
 		def execute_enrichment_steps
@@ -30,6 +42,10 @@ module Bib2
 		end
 		
 	protected
+		
+		def init_handler(reference)
+			raise Bib2::NotImplementedError
+		end
 			
 		pre(	:collect_references, 'Parameter reference should be a Bib2::AbstractReference instance') { |reference| reference.is_a?(Bib2::AbstractReference) }
 		pre(	:collect_references, 'Parameter reference should have a title') { |reference| !reference.title.nil? }

@@ -5,9 +5,8 @@ module Bib2
 		class AuthorQueryEnrichmentHandler 
 			include Bib2::EnrichmentHandlerAbstract
 			
-			def initialize(reference)
-				super(reference)
-				
+			protected
+			def init_handler(reference)
 				# Initialize the reference collection mechanism.
 				@reference_collector = Bib2::Bibsonomy::AuthorQuery.new()
 				
@@ -23,7 +22,6 @@ module Bib2
 				# Initialize the reference integration mechanism.
 				@reference_integrator = NaiveReferenceIntegrator.new(reference)
 			end
-
 		end
 	end
 end

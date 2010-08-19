@@ -5,9 +5,8 @@ module Bib2
 		class TitleQueryEnrichmentHandler 
 			include Bib2::EnrichmentHandlerAbstract
 			
-			def initialize(reference)
-				super(reference)
-				
+			protected
+			def init_handler(reference)
 				# Initialize the reference collection mechanism.
 				@reference_collector = Bib2::Bibsonomy::TitleQuery.new()
 				
@@ -22,6 +21,8 @@ module Bib2
 				
 				# Initialize the reference integration mechanism.
 				@reference_integrator = NaiveReferenceIntegrator.new(reference)
+				
+				@validator = Bib2::TitleAttributeValidator.new(Bib2::TitleAttributeValidator::VALIDATE_BOTH)
 			end
 
 		end

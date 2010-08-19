@@ -5,8 +5,7 @@ module Bib2
 		include Bib2::CMEApplicationAbstract, DesignByContract
 		
 		pre(	'Parameter citation_string should be a string') {|citation_string| citation_string.is_a?(String) || citation_string.eql?('')}
-		post( 'Return value should be a Bib2::AbstractReference instance') {|result, citation_string| result.is_a?(Bib2::AbstractReference)}
-		post( 'Property @reference should be a Bib2::AbstractReference instance') {@reference.is_a?(Bib2::AbstractReference)}
+		post( 'Return value should be a Hash instance') {|result, citation_string| result.is_a?(Hash)}
 		post(	'Property @citation should be a string') {@citation.is_a?(String) || @citation.eql?('')}
 		def parse_citation(citation_string)
 			@citation = citation_string
@@ -40,8 +39,8 @@ module Bib2
 	    ref['author'] = ref['authors']['author']
 	    ref['citation'] = citation_string
 	    ref['parser'] = 'parscit'
-	    
-	    @reference = Bib2::Reference.from_hash(ref)
+
+			ref
 	  end
 	end
 end

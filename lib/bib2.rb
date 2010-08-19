@@ -46,7 +46,14 @@ require 'bib2/abstract/reference'
 require 'bib2/abstract/cmeapplication'
 require 'bib2/abstract/referenceintegrator'
 require 'bib2/abstract/response'
+require 'bib2/abstract/referencevalidator'
+require 'bib2/abstract/pipeline'
+require 'bib2/abstract/metadataprocessor'
 
+require 'bib2/metadataprocessor/parscitmetadataprocessor'
+
+require 'bib2/referencevalidator/authorattributevalidator'
+require 'bib2/referencevalidator/titleattributevalidator'
 
 require 'bib2/reference'
 require 'bib2/collectedreference'
@@ -57,6 +64,7 @@ require 'bib2/filterdecoratorfactory'
 require 'bib2/chaintoken'
 require 'bib2/referencefilter'
 require 'bib2/naivereferenceintegrator'
+require 'bib2/pipeline'
 
 require 'bib2/filterdecorator/frilfilterdecorator'
 require 'bib2/filterdecorator/pagesfilterdecorator'

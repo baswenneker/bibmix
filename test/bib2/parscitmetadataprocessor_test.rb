@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/test_helper')
 
-class Bib2_ParscitTest < ActiveSupport::TestCase
+class Bib2_ParscitMetadataProcessorTest < ActiveSupport::TestCase
   include Bib2
   
   def setup
@@ -10,13 +10,11 @@ class Bib2_ParscitTest < ActiveSupport::TestCase
 	def test_parse_citation
 		
 		cme = Parscit.new
-		
-		reference = nil
-		assert_nothing_raised{
-			reference = cme.parse_citation(@citation)
-		}
-		
-		assert(reference.kind_of?(Hash))				
-		assert_equal(@citation, cme.citation)
+		hash = cme.parse_citation(@citation)
+		reference = Bib2::ParscitMetadataProcessor.process_metadata(hash)
+		assert(reference.kind_of?(Bib2::Reference))
+		assert(reference.author.kind_of?(Array))
+		assert_equal(3, reference.author.length) 
+		assert_equal('ParsCit: An open-source CRF reference string parsing package', reference.title)
 	end
 end
