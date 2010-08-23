@@ -20,7 +20,7 @@ module Bib2
 			if @referencevalidator
 				begin
 					@referencevalidator.handle_validation_request(@referencevalidator, reference)
-				rescue Bib2::DataValidatorError
+				rescue Bib2::ReferenceValidatorError
 					Bib2::log(self, "Error while validating citation metadata: #{reference}.")
 					return reference
 				end

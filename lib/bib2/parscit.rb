@@ -4,7 +4,8 @@ module Bib2
 	class Parscit
 		include Bib2::CMEApplicationAbstract, DesignByContract
 		
-		pre(	'Parameter citation_string should be a string') {|citation_string| citation_string.is_a?(String) || citation_string.eql?('')}
+		pre(	'Parameter citation_string should be a string') {|citation_string| citation_string.is_a?(String)}
+		pre(	'Parameter citation_string should be non-empty') {|citation_string| !citation_string.eql?('')}
 		post( 'Return value should be a Hash instance') {|result, citation_string| result.is_a?(Hash)}
 		post(	'Property @citation should be a string') {@citation.is_a?(String) || @citation.eql?('')}
 		def parse_citation(citation_string)
@@ -36,7 +37,6 @@ module Bib2
 	      raise "Invalid citation datatype or no citations found (ln=#{ref.inspect})"
 	    end
 	    	    
-	    ref['author'] = ref['authors']['author']
 	    ref['citation'] = citation_string
 	    ref['parser'] = 'parscit'
 
