@@ -37,6 +37,8 @@ module Bibmix
 end
 
 require 'dbc'
+require 'amatch'
+require 'decorator'
 
 require 'bibmix/error'
 require 'bibmix/abstract/request'
