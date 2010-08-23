@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class Bib2_NaiveReferenceIntegratorTest < ActiveSupport::TestCase
-  include Bib2
+class Bibmix_NaiveReferenceIntegratorTest < ActiveSupport::TestCase
+  include Bibmix
   	
   def test_constructor
   	
@@ -14,7 +14,7 @@ class Bib2_NaiveReferenceIntegratorTest < ActiveSupport::TestCase
   		integrator = NaiveReferenceIntegrator.new(ref1)
   	}
   	
-  	assert_raise(Bib2::Error){
+  	assert_raise(Bibmix::Error){
   		integrator = NaiveReferenceIntegrator.new(nil)
   	}
   end

@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 module AbstractFilterDecorator
-  include Bib2
+  include Bibmix
   
   def teardown
  		@query = nil
@@ -27,9 +27,9 @@ module AbstractFilterDecorator
  		}
  		
  		assert(filtered_references.is_a?(Array))
- 		assert(filtered_references.inject(true){|is_a,item| is_a && item.is_a?(Bib2::FilteredReference) })
+ 		assert(filtered_references.inject(true){|is_a,item| is_a && item.is_a?(Bibmix::FilteredReference) })
  		assert(filter.filtered_references.is_a?(Array))
- 		assert(filter.filtered_references.inject(true){|is_a,item| is_a && item.is_a?(Bib2::FilteredReference) })
+ 		assert(filter.filtered_references.inject(true){|is_a,item| is_a && item.is_a?(Bibmix::FilteredReference) })
  		
 	end
 end

@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class Bibsonomy_FilterDecoratorFactoryTest < ActiveSupport::TestCase
-  include Bib2
+  include Bibmix
   
 	def test_decorator_factory
 		
@@ -9,7 +9,7 @@ class Bibsonomy_FilterDecoratorFactoryTest < ActiveSupport::TestCase
  		dummy_record = Reference.new
  		
  		# construct the mergers
- 		titlemerger = Bib2::ReferenceFilter.new(dummy_record)
+ 		titlemerger = Bibmix::ReferenceFilter.new(dummy_record)
 		
 		assert_equal PagesFilterDecorator, FilterDecoratorFactory.instance.page(titlemerger).class
 		assert_equal TitleFilterDecorator, FilterDecoratorFactory.instance.title(titlemerger).class

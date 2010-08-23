@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/test_helper')
 
-class Bib2_ReferenceTest < ActiveSupport::TestCase
-  include Bib2
+class Bibmix_ReferenceTest < ActiveSupport::TestCase
+  include Bibmix
   
   def setup
   	@hash = get_hash
@@ -50,13 +50,13 @@ class Bib2_ReferenceTest < ActiveSupport::TestCase
 	def test_invalid_merge
 		
 		@record = Reference.from_hash(@hash)    
-		assert_raise(Bib2::ReferenceInvalidMergeParamError){
+		assert_raise(Bibmix::ReferenceInvalidMergeParamError){
 			@record.merge(nil)
 		}
 		
 		assert !@record.merged
 		
-		assert_raise(Bib2::ReferenceInvalidMergeParamError){
+		assert_raise(Bibmix::ReferenceInvalidMergeParamError){
 			@record.merge(@hash)
 		}
 		
@@ -90,7 +90,7 @@ class Bib2_ReferenceTest < ActiveSupport::TestCase
 		
 		assert_equal Hash, record.tags.class
 		
-		assert_raise(Bib2::ReferenceError){
+		assert_raise(Bibmix::ReferenceError){
 			record.tags = 'some_invalid_tag_type'
 		}		
 	end

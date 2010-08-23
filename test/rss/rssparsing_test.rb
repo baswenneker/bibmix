@@ -50,14 +50,14 @@ class RSSParsingTest < ActiveSupport::TestCase
 					html_pres.each do |pre|
 						entry = parse_entry_html(pre.inner_html)
 						#entries << entry
-						puts entry.to_yaml
+						#puts entry.to_yaml
 					end
 					
 				elsif !bibtex_href.nil?
 					bibdoc = Hpricot(open("http://liinwww.ira.uka.de#{bibtex_href}"))
 					entry = parse_entry_html(bibdoc.at('pre[@class="bibtex"]').inner_html)
 					
-					puts entry.to_yaml
+					#puts entry.to_yaml
 					
 				end
 				
@@ -109,7 +109,7 @@ class RSSParsingTest < ActiveSupport::TestCase
 		end
 		data
 		
-		puts data
+		#puts data
 	end
 	
 end

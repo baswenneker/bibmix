@@ -1,11 +1,11 @@
 require File.expand_path(File.dirname(__FILE__) + '/test_helper')
 
-class Bib2_ReferenceFilterTest < ActiveSupport::TestCase
-  include Bib2
+class Bibmix_ReferenceFilterTest < ActiveSupport::TestCase
+  include Bibmix
   
   def setup
     @query = Bibsonomy::TitleQuery.new
-    @reference = Bib2::Reference.from_hash({
+    @reference = Bibmix::Reference.from_hash({
  			:citation => 'Logsonomy - social information retrieval with logdata',
  			:title => 'Logsonomy - social information retrieval with logdata',
  			:year => '2008'
@@ -29,7 +29,7 @@ class Bib2_ReferenceFilterTest < ActiveSupport::TestCase
  		assert_equal([], filter.collected_references)
  		assert_equal([], filter.filtered_references)
  		
- 		assert_raise(Bib2::Error){
+ 		assert_raise(Bibmix::Error){
  			filter = ReferenceFilter.new(nil)
  		}
  	end
@@ -48,7 +48,7 @@ class Bib2_ReferenceFilterTest < ActiveSupport::TestCase
  		# filtering.
  		found_similar = false
  		@query.response.each do |collected_ref|
- 			assert(collected_ref.is_a?(Bib2::CollectedReference))
+ 			assert(collected_ref.is_a?(Bibmix::CollectedReference))
  			if collected_ref.reference.title == @reference.title
  				found_similar = true
  			end
@@ -86,7 +86,7 @@ class Bib2_ReferenceFilterTest < ActiveSupport::TestCase
  		# filtering.
  		found_similar = false
  		@query.response.each do |collected_ref|
- 			assert(collected_ref.is_a?(Bib2::CollectedReference))
+ 			assert(collected_ref.is_a?(Bibmix::CollectedReference))
  			if collected_ref.reference.title == @reference.title
  				found_similar = true
  			end
@@ -98,7 +98,7 @@ class Bib2_ReferenceFilterTest < ActiveSupport::TestCase
  		filter = ReferenceFilter.new(@reference)
  		filter = FilterDecoratorFactory.instance.year(filter)
  		
- 		assert(filter.kind_of?(Bib2::YearFilterDecorator))
+ 		assert(filter.kind_of?(Bibmix::YearFilterDecorator))
  		
  		filter.filter(@query.response)
 	 	

@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 require File.expand_path(File.dirname(__FILE__) + '/abstractreferencevalidator_testhelper.rb')
 
-class Bib2_TitleAttributeValidatorTest < ActiveSupport::TestCase
+class Bibmix_TitleAttributeValidatorTest < ActiveSupport::TestCase
   include AbstractReferenceValidatorTest
   
   def setup
@@ -9,12 +9,12 @@ class Bib2_TitleAttributeValidatorTest < ActiveSupport::TestCase
     
     @implements = [@validator_class::VALIDATE_BOTH]
     
-    @valid_reference = Bib2::Reference.from_hash({
+    @valid_reference = Bibmix::Reference.from_hash({
  			:title => 'Logsonomy - social information retrieval with logdata',
  			:year => '2008'
  		})
  		
- 		@invalid_reference = Bib2::Reference.from_hash({
+ 		@invalid_reference = Bibmix::Reference.from_hash({
  			:year => '2008'
  		})
   end  

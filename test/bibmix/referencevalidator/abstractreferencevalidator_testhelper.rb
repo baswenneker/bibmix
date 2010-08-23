@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 module AbstractReferenceValidatorTest
-  include Bib2
+  include Bibmix
   
   def teardown
  		@validator_class = nil
@@ -30,11 +30,11 @@ module AbstractReferenceValidatorTest
 	 		}
  		end	
  		
- 		assert_raises(Bib2::Error) {
+ 		assert_raises(Bibmix::Error) {
 			@validator_class.new(nil)
 		}
 		
-		assert_raises(Bib2::Error) {
+		assert_raises(Bibmix::Error) {
 			@validator_class.new('invalid_condition')
 		}
  	end
@@ -50,7 +50,7 @@ module AbstractReferenceValidatorTest
 	 			validator.handle_validation_request(condition, @valid_reference)
 	 		}
 		
-			assert_raises(Bib2::ReferenceValidatorError) {
+			assert_raises(Bibmix::ReferenceValidatorError) {
 				validator.handle_validation_request(condition, @invalid_reference)
 			}
 		end

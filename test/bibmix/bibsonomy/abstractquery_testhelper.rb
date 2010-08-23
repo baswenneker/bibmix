@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 module AbstractQueryTest 
-  include Bib2::Bibsonomy
+  include Bibmix::Bibsonomy
   
   def setup
   	@query = nil
@@ -36,11 +36,11 @@ module AbstractQueryTest
  		
  		assert(response.kind_of?(Array), 'The response should always be an array')
  		assert(response.size > 0, 'There should be something in the array as there are references found.')
- 		assert(response.inject(true){|is_a,item| is_a && item.is_a?(Bib2::CollectedReference)}, 'All items in the response should be Bib2::CollectedReference instances.')
+ 		assert(response.inject(true){|is_a,item| is_a && item.is_a?(Bibmix::CollectedReference)}, 'All items in the response should be Bibmix::CollectedReference instances.')
  		
  		assert(@query.response.kind_of?(Array), 'The response should always be an array')
  		assert(@query.response.size > 0, 'There should be something in the array as there are references found.')
-		assert(@query.response.inject(true){|is_a,item| is_a && item.is_a?(Bib2::CollectedReference)}, 'All items in the response should be Bib2::CollectedReference instances.')
+		assert(@query.response.inject(true){|is_a,item| is_a && item.is_a?(Bibmix::CollectedReference)}, 'All items in the response should be Bibmix::CollectedReference instances.')
 		
  		response = nil
  		assert_nothing_raised{

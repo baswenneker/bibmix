@@ -1,64 +1,51 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../test_helper')
+require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
+require File.expand_path(File.dirname(__FILE__) + '/abstractfilterdecorator_testhelper.rb')
 
-class Bibsonomy_TitleSimilarityDecoratorTest < ActiveSupport::TestCase
-  include Bib2::Bibsonomy
-   
-	# Tests whether the title similarity decorator.
- 	def test_similar_titles
- 		
- 		# set up records
- 		record1 = Bib2::Reference.from_hash({
- 			:title => 'recorda',
- 			:intrahash => 'recorda_hash',
- 			:year => '2010'
- 		}) 
-
- 		record2 = Bib2::Reference.from_hash({
- 			:title => 'recordb',
- 			:intrahash => 'recordb_hash',
- 			:year => '2010'
+class Bibmix_TitleFilterDecoratorTest < ActiveSupport::TestCase
+  include AbstractFilterDecorator
+  
+  def setup
+    @query = Bibsonomy::TitleQuery.new
+    @reference = Bibmix::Reference.from_hash({
+ 			:title => 'Logsonomy - social information retrieval with logdata',
+ 			:year => '2008'
  		})
+ 		@collected_references = [
+ 			Bibmix::CollectedReference.new(Bibmix::Reference.from_hash({
+	 			:title => 'Logsonomy - social information retrieval with logdata',
+	 			:series => 'series1',
+	 			:year => '2008',
+	 			:intrahash => 'id1'
+	 		}), 'unknown source'),
+	 		Bibmix::CollectedReference.new(Bibmix::Reference.from_hash({
+	 			:title => 'something entirely different',
+	 			:series => 'series2',
+	 			:year => '2007',
+	 			:intrahash => 'id2'
+	 		}), 'unknown source'),
+ 		]
+ 		@filter_decorator_class = Bibmix::TitleFilterDecorator
+ 		@filter_bonus = Bibmix::YearFilterDecorator::SIMILARITY_BONUS
+  end 
+  
+ 	# Tests whether the filter actually filters.
+ 	def test_filter_bonus
  		
- 		# use these dummy objects for the instantiation of the titlemerger.
- 		dummy_record = Bib2::Reference.new
-		dummy_query = Query.new
+ 		filter = ReferenceFilter.new(@reference)
+ 		filter = @filter_decorator_class.new(filter)
  		
- 		# construct the mergers
- 		titlemerger = Bib2::RecordLinker.new(dummy_record, dummy_query)
- 		merger = Bib2::TitleFilterDecorator.new(titlemerger)
- 		 		
- 		assert_equal record1.title.pair_distance_similar(record2.title), (merger.assess_similarity(record1, record2) - titlemerger.assess_similarity(record1, record2))
+ 		filtered_references = filter.filter(@collected_references)
  		
-	end
- 
- 	# Tests whether the bonus is added when the years are equal in both records.
- 	def test_missing_title
+ 		assert(filtered_references.is_a?(Array))
+ 		assert(filtered_references.inject(true){|is_a,item| is_a && item.is_a?(Bibmix::FilteredReference) })
  		
- 		# set up records
- 		record1 = Bib2::Reference.from_hash({
- 			:title => 'recorda',
- 			:intrahash => 'recorda_hash'
- 		}) 
-
- 		record2 = Bib2::Reference.from_hash({
- 			:intrahash => 'recordb_hash',
- 		})
- 		
- 		record3 = Bib2::Reference.from_hash({
- 			:title => '',
- 			:intrahash => 'recordc_hash'
- 		})
- 		
- 		# use these dummy objects for the instantiation of the titlemerger.
- 		dummy_record = Bib2::Reference.new
-		dummy_query = Query.new
- 		
- 		# construct the mergers
- 		titlemerger = Bib2::RecordLinker.new(dummy_record, dummy_query)
- 		merger = Bib2::TitleFilterDecorator.new(titlemerger)
- 		 		
- 		merger.assess_similarity(record1, record2)
- 		
+ 		filtered_references.each do |filtered_ref|
+ 			if filtered_ref.reference.id == 'id1'
+ 				assert(filtered_ref.relevance > 0)
+ 			else
+ 				assert_equal(0, filtered_ref.relevance)
+ 				assert_equal('id2', filtered_ref.reference.id)
+ 			end
+ 		end
  	end
- 	
 end

@@ -54,7 +54,7 @@ class ImportTest < ActiveSupport::TestCase
 	  	other = other.gsub(/<.*?>/,'')
 	  	
 	  	citation = "#{author}. \"#{title}\". #{other}"
-	  	puts citation
+	  	#puts citation
 			ref = Reference.create_with_parscit(citation)
 			
 			record = Record.from_hash(ref.to_hash)

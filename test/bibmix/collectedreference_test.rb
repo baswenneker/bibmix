@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class Bib2_CollectedReferenceTest < ActiveSupport::TestCase
-  include Bib2
+class Bibmix_CollectedReferenceTest < ActiveSupport::TestCase
+  include Bibmix
   
 	def test_constructor
 		reference = Reference.new
@@ -11,13 +11,13 @@ class Bib2_CollectedReferenceTest < ActiveSupport::TestCase
 			CollectedReference.new(reference, source)
 		}
 		
-		assert_raise(Bib2::Error){
+		assert_raise(Bibmix::Error){
 			CollectedReference.new(reference, nil)
 		}
-		assert_raise(Bib2::Error){
+		assert_raise(Bibmix::Error){
 			CollectedReference.new(nil, nil)
 		}
-		assert_raise(Bib2::Error){
+		assert_raise(Bibmix::Error){
 			CollectedReference.new(nil, source)
 		}
 	end
