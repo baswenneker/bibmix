@@ -13,7 +13,7 @@ module Bibmix
           v = v.gsub(/__TMP_DIR__/, "#{Rails.root}/tmp")
           v = v.gsub(/__FRIL_DIR__/, "#{File.dirname(__FILE__)}/config/fril")
           v = v.gsub(/__EVALUATION_DIR__/, "#{File.dirname(__FILE__)}/../evaluation")
-          
+          v = v.gsub(/__PARSCIT_DIR__/, @config['parscit_dir'])          
         end
         @config[k] = v
       end   
@@ -36,14 +36,57 @@ module Bibmix
 	end
 end
 
-require 'amatch'
-require 'decorator'
+require 'dbc'
+
 require 'bibmix/error'
-require 'bibmix/query'
-require 'bibmix/recordlinker'
-require 'bibmix/record'
-require 'bibmix/request'
+require 'bibmix/abstract/request'
+require 'bibmix/abstract/referencecollector'
+require 'bibmix/abstract/enrichmenthandler'
+require 'bibmix/abstract/reference'
+require 'bibmix/abstract/cmeapplication'
+require 'bibmix/abstract/referenceintegrator'
+require 'bibmix/abstract/response'
+require 'bibmix/abstract/referencevalidator'
+require 'bibmix/abstract/pipeline'
+require 'bibmix/abstract/metadataprocessor'
+
+require 'bibmix/metadataprocessor/parscitmetadataprocessor'
+
+require 'bibmix/referencevalidator/authorattributevalidator'
+require 'bibmix/referencevalidator/titleattributevalidator'
+
+require 'bibmix/reference'
+require 'bibmix/collectedreference'
+require 'bibmix/filteredreference'
+require 'bibmix/parscit'
 require 'bibmix/cacherequest'
-require 'bibmix/chain'
-require 'bibmix/response'
-require 'bibmix/tokenizer'
+require 'bibmix/filterdecoratorfactory'
+require 'bibmix/chaintoken'
+require 'bibmix/referencefilter'
+require 'bibmix/naivereferenceintegrator'
+require 'bibmix/pipeline'
+
+require 'bibmix/filterdecorator/frilfilterdecorator'
+require 'bibmix/filterdecorator/pagesfilterdecorator'
+require 'bibmix/filterdecorator/titlefilterdecorator'
+require 'bibmix/filterdecorator/yearfilterdecorator'
+
+require 'bibmix/bibsonomy/abstract/query'
+require 'bibmix/bibsonomy/request'
+require 'bibmix/bibsonomy/xmlresponse'
+require 'bibmix/bibsonomy/titlequery'
+require 'bibmix/bibsonomy/authorquery'
+require 'bibmix/bibsonomy/enrichmenthandler/titlequeryenrichmenthandler'
+require 'bibmix/bibsonomy/enrichmenthandler/authorqueryenrichmenthandler'
+
+#require 'amatch'
+#require 'decorator'
+#require 'bibmix/error'
+#require 'bibmix/query'
+#require 'bibmix/recordlinker'
+#require 'bibmix/record'
+#require 'bibmix/request'
+#require 'bibmix/cacherequest'
+#require 'bibmix/chain'
+#require 'bibmix/response'
+#require 'bibmix/tokenizer'
