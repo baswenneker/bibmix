@@ -12,6 +12,7 @@ class Bib2_ParscitMetadataProcessorTest < ActiveSupport::TestCase
 		cme = Parscit.new
 		hash = cme.parse_citation(@citation)
 		reference = Bib2::ParscitMetadataProcessor.process_metadata(hash)
+		
 		assert(reference.kind_of?(Bib2::Reference))
 		assert(reference.author.kind_of?(Array))
 		assert_equal(3, reference.author.length) 

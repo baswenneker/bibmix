@@ -15,6 +15,7 @@ class Bib2_ParscitTest < ActiveSupport::TestCase
 		assert_nothing_raised{
 			reference = cme.parse_citation(@citation)
 		}
+		
 		puts reference.to_yaml
 		assert(reference.kind_of?(Hash))				
 		assert_equal(@citation, cme.citation)
