@@ -31,3 +31,7 @@ default:
     # ParsCit (CME) settings       
     parscit_dir                    : '/Users/bas/Documents/parscit-100401'
     parscit_cmd                    : '__PARSCIT_DIR__/bin/parseRefStrings.pl'
+    
+    # CCSB shows relevance numbers next to search results, only try to integrate results
+    # with a higher relevance than stated below.
+    ccsb_request_relevance_threshold : 50

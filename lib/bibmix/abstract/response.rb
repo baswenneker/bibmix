@@ -34,7 +34,7 @@ module Bibmix
 		
 		# Returns the number items in response result array.
 		def size
-			raise Bibmix::NotImplementedError
+			self.get.size
 		end
 	end
 end

@@ -1,8 +1,8 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
-require File.expand_path(File.dirname(__FILE__) + '/abstractquery_testhelper.rb')
+require File.expand_path(File.dirname(__FILE__) + '/../abstract/query.rb')
 
 class Bibmix_Bibsonomy_AuthorQueryTest < ActiveSupport::TestCase
-	include AbstractQueryTest
+	include Bibmix::Bibsonomy, Bibmix_Abstract_QueryTest
   
 	def setup
     @query = Bibmix::Bibsonomy::AuthorQuery.new

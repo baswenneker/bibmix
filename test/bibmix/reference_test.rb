@@ -1,4 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/test_helper')
+require 'bibtex'
 
 class Bibmix_ReferenceTest < ActiveSupport::TestCase
   include Bibmix
@@ -34,6 +35,31 @@ class Bibmix_ReferenceTest < ActiveSupport::TestCase
 		@reference.merge(@merge_filtered_reference)
 		assert_equal(false, @reference.merged)
 	end
+  
+  def test_from_bibtex
+  	bibtex_str = 
+  		'@InProceedings{sigir95,
+			  author =	"A. Bookstein and S. T. Klein and T. Raita",
+			  title =	"Detecting Content-Bearing Words by Serial Clustering",
+			  pages =	"319--327",
+			  ISBN = 	"0-89791-714-2",
+			  editor =	"Edward A. Fox and Peter Ingwersen and Raya Fidel",
+			  booktitle =	"Proceedings of the 18th Annual International
+					 Conference on Research and Development in Information
+					 Retrieval (SIGIR95)",
+			  month =	jul,
+			  publisher =	"ACM Press",
+			  address =	"New York, NY, USA",
+			  year = 	"1995"
+			}'
+			
+		result = nil
+		Bibtex::Parser.parse_string(bibtex_str).map do |entry|
+		  result = entry
+		end
+		
+		Reference.from_bibtex(result)    
+  end
   
 	def test_from_hash
 		

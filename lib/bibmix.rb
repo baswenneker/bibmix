@@ -81,6 +81,11 @@ require 'bibmix/bibsonomy/authorquery'
 require 'bibmix/bibsonomy/enrichmenthandler/titlequeryenrichmenthandler'
 require 'bibmix/bibsonomy/enrichmenthandler/authorqueryenrichmenthandler'
 
+require 'bibmix/ccsb/abstract/query'
+require 'bibmix/ccsb/response'
+require 'bibmix/ccsb/request'
+require 'bibmix/ccsb/titlequery'
+
 #require 'amatch'
 #require 'decorator'
 #require 'bibmix/error'

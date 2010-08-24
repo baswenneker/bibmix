@@ -1,7 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-module AbstractQueryTest 
-  include Bibmix::Bibsonomy
+module Bibmix_Abstract_QueryTest 
   
   def setup
   	@query = nil
@@ -45,7 +44,7 @@ module AbstractQueryTest
  		response = nil
  		assert_nothing_raised{
  			response = @query.collect_references(@invalid_reference)
- 		}
+ 		}#
  		
  		assert(response.kind_of?(Array), 'The response should always be an array')
  		assert_equal(0, response.size, 'There should be nothing in the array as there is nothing found.')
