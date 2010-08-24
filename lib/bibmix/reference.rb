@@ -18,7 +18,7 @@ module Bibmix
 			:school, :series, :title,
 			:type, :volume, :year,
 			# Fields also returned by bibsonomy, but are useful for other APIs as well.
-			:entrytype, :tags, :intrahash,
+			:entrytype, :tags, :id,
 			# The complete citation string, if any.
 			:citation, :merged
 		]
@@ -27,14 +27,17 @@ module Bibmix
 		attr_accessor *@@attributes
 		
 		def id
-			if !@intrahash
-				raise Bibmix::Error, 'No intrahash identifier present'
+			if !@id
+				@id = rand.to_s
 			end
-			@intrahash
+			@id
 		end
 		
 		# A setter for entrytype which makes sure the entry type value is a valid one.
 		def entrytype=(value)
+			
+			value = value.downcase
+			
 			valid_entry_types = [
 				'article', 'book', 'booklet',
 				'conference', 'inbook', 'incollection',
@@ -49,7 +52,7 @@ module Bibmix
 		
 		# A setter for tags which makes sure the tags are hashes.
 		def tags=(value)
-			raise Bibmix::ReferenceError.new("Tags have invalid type (#{value.class})") if value.class != Hash
+			raise Bibmix::ReferenceError.new("Tags have invalid type (#{value.class}, #{value})") if value.class != Hash
 			@tags = value
 		end
 		

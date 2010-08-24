@@ -15,13 +15,13 @@ class Bibmix_FrilFilterDecoratorTest < ActiveSupport::TestCase
 	 			:title => 'Logsonomy - social information retrieval with logdata',
 	 			:series => 'series1',
 	 			:year => '2008',
-	 			:intrahash => 'id1'
+	 			:id => 'id1'
 	 		}), 'unknown source'),
 	 		Bibmix::CollectedReference.new(Bibmix::Reference.from_hash({
 	 			:title => 'test2',
 	 			:series => 'series2',
 	 			:year => '2007',
-	 			:intrahash => 'id2'
+	 			:id => 'id2'
 	 		}), 'unknown source'),
  		]
  		@filter_decorator_class = Bibmix::FrilFilterDecorator

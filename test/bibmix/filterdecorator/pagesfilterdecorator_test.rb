@@ -15,13 +15,13 @@ class Bibmix_PagesFilterDecoratorTest < ActiveSupport::TestCase
 	 			:title => 'test1',
 	 			:series => 'series1',
 	 			:pages => '2--3',
-	 			:intrahash => 'id1'
+	 			:id => 'id1'
 	 		}), 'unknown source'),
 	 		Bibmix::CollectedReference.new(Bibmix::Reference.from_hash({
 	 			:title => 'test2',
 	 			:series => 'series2',
 	 			:pages => '3-4',
-	 			:intrahash => 'id2'
+	 			:id => 'id2'
 	 		}), 'unknown source'),
  		]
  		@filter_decorator_class = Bibmix::PagesFilterDecorator

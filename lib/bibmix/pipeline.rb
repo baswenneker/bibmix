@@ -8,7 +8,8 @@ module Bibmix
 		def initialize_enrichmenthandlers
 			@enrichmenthandlers = [
 				Bibmix::Bibsonomy::TitleQueryEnrichmentHandler.new,
-				Bibmix::Bibsonomy::AuthorQueryEnrichmentHandler.new
+				Bibmix::Bibsonomy::AuthorQueryEnrichmentHandler.new,
+				Bibmix::Ccsb::TitleQueryEnrichmentHandler.new
 			]
 		end
 		

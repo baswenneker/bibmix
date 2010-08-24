@@ -67,6 +67,7 @@ module Bibmix
 			# Get an array of attributes.
 			attrs = Bibmix::Reference.new.get_attributes					
 			skip_row = true
+					
 			FasterCSV.foreach(@temp_resultbook_file) do |row|
 				
 				if skip_row
@@ -180,10 +181,10 @@ module Bibmix
 		
 		# Cleans up temporary files.
 		def cleanup
-			File.delete(@temp_querybook_file) if File.exists?(@temp_responsebook_file)
-			File.delete(@temp_responsebook_file) if File.exists?(@temp_responsebook_file)
-			File.delete(@temp_fril_config_file) if File.exists?(@temp_fril_config_file)
-			File.delete(@temp_resultbook_file) if File.exists?(@temp_resultbook_file)				
+#			File.delete(@temp_querybook_file) if File.exists?(@temp_responsebook_file)
+#			File.delete(@temp_responsebook_file) if File.exists?(@temp_responsebook_file)
+#			File.delete(@temp_fril_config_file) if File.exists?(@temp_fril_config_file)
+#			File.delete(@temp_resultbook_file) if File.exists?(@temp_resultbook_file)				
 		end
 	end
 end

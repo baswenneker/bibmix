@@ -110,8 +110,8 @@
                 converter="cdc.datamodel.converters.DummyConverter" name="tags">
                 <empty-values/>
             </column>
-            <column column="intrahash"
-                converter="cdc.datamodel.converters.DummyConverter" name="intrahash">
+            <column column="id"
+                converter="cdc.datamodel.converters.DummyConverter" name="id">
                 <empty-values/>
             </column>
             <column column="citation"
@@ -236,8 +236,8 @@
                 converter="cdc.datamodel.converters.DummyConverter" name="tags">
                 <empty-values/>
             </column>
-            <column column="intrahash"
-                converter="cdc.datamodel.converters.DummyConverter" name="intrahash">
+            <column column="id"
+                converter="cdc.datamodel.converters.DummyConverter" name="id">
                 <empty-values/>
             </column>
             <column column="citation"
@@ -254,11 +254,11 @@
                 <deduplication-condition acceptance-level="100">
                     <condition
                         class="cdc.impl.distance.EqualFieldsDistance"
-                        column="intrahash" weight="100">
+                        column="id" weight="100">
                         <params/>
                     </condition>
                 </deduplication-condition>
-                <hashing-function columns="intrahash,intrahash" hash="equality"/>
+                <hashing-function columns="id,id" hash="equality"/>
             </deduplication>
         </preprocessing>
     </right-data-source>
@@ -307,7 +307,7 @@
             <column name="year" source="sourceB"/>
             <column name="entrytype" source="sourceB"/>
             <column name="tags" source="sourceB"/>
-            <column name="intrahash" source="sourceB"/>
+            <column name="id" source="sourceB"/>
             <column name="citation" source="sourceB"/>
             <column name="merged" source="sourceB"/>
         </row-model>

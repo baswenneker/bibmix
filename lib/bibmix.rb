@@ -85,6 +85,7 @@ require 'bibmix/ccsb/abstract/query'
 require 'bibmix/ccsb/response'
 require 'bibmix/ccsb/request'
 require 'bibmix/ccsb/titlequery'
+require 'bibmix/ccsb/enrichmenthandler/titlequeryenrichmenthandler'
 
 #require 'amatch'
 #require 'decorator'

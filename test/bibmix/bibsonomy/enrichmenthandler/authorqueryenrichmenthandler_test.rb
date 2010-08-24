@@ -4,7 +4,7 @@ class Bibmix_Bibsonomy_AuthorQueryEnrichmentHandlerTest < ActiveSupport::TestCas
   include Bibmix::Bibsonomy
  
 	# Tests a chain which results in a titlequery.
- 	def test_titlequeryenrichmenthandler
+ 	def test_authorqueryenrichmenthandler
  		
  		reference = Bibmix::Reference.from_hash({
  			:title => 'Experimental Test of Parity Conservation in Beta Deca',

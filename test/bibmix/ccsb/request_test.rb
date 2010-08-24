@@ -22,5 +22,6 @@ class Bibmix_Ccsb_RequestTest < ActiveSupport::TestCase
  		}
  		
  		assert(response.is_a?(Bibmix::Ccsb::Response))
+ 		assert(response.is_a?(Bibmix::Ccsb::Response))
  	end
 end

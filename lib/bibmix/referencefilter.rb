@@ -62,10 +62,10 @@ module Bibmix
 		pre( 'Parameter ref2 should be a Bibmix::AbstractReference instance') {|rec1, rec2| rec2.is_a?(Bibmix::AbstractReference)}
 		def compute_relevance_of_references(rec1, rec2)
 						
-			["title", "intrahash"].each do |key|
+			["title", "id"].each do |key|
 				next if rec1.send(key).nil? || rec2.send(key).nil?
 				
-				return 0.0 if rec1.send(key).size == 0 || rec2.send(key).size == 0
+				return 0.0 if rec1.send(key).empty? || rec2.send(key).empty?
 				return 1.0 if rec1.send(key) == rec2.send(key)
 			end
 			

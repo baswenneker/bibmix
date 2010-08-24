@@ -69,23 +69,28 @@ module Bibmix
 		
 		# Creates a record from a hash.
 		def self.from_bibtex(bibtex)
-			ref = self.new
+			reference = self.new
 			
 			@@attributes.each do |key|
 				begin
 					value = bibtex[key]
-					
-					if value.kind_of?(String)
-						record.send("#{key}=", value.strip)
-					else
-						record.send("#{key}=", value)
+					if !value.empty?
+						if value.kind_of?(String)
+							
+							value = value.gsub(/\s+/,' ')
+							value = value.gsub(/\{|\}/,'')
+							
+							reference.send("#{key}=", value.strip)
+						else
+							reference.send("#{key}=", value)
+						end
 					end
 				rescue
 					next
 				end
 			end
 						
-			ref
+			reference
 		end
 		
 		def to_array

@@ -34,7 +34,6 @@ module Bibmix
 					REXML::XPath.each(@doc, "//posts/post") do |post|
 						reference = get_reference(post)
 						reference.send("tags=", get_tags_of_entry(post))
-						
 						@result << Bibmix::CollectedReference.new(reference, 'bibsonomy')
 					end
 				end
@@ -69,6 +68,10 @@ module Bibmix
 				reference = Bibmix::Reference.new
 				REXML::XPath.first(entry, 'bibtex').attributes.each do |key, value|
 					reference.send("#{key.strip}=", value.strip)
+					
+					if key == 'intrahash'
+						reference.id = value.strip
+					end
 				end
 				
 				reference

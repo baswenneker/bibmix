@@ -6,7 +6,7 @@ class Bibmix_NaiveReferenceIntegratorTest < ActiveSupport::TestCase
   def test_constructor
   	
   	ref1 = Reference.from_hash({
-			:intrahash => '_test_hash_',
+			:id => '_test_hash_',
 			:title => 'testa'
 		})
   	
@@ -22,12 +22,12 @@ class Bibmix_NaiveReferenceIntegratorTest < ActiveSupport::TestCase
 	def test_integrate
 		
     ref1 = Reference.from_hash({
-			:intrahash => '_test_hash_',
+			:id => '_test_hash_',
 			:title => 'testa'
 		})
 		
     ref2 = Reference.from_hash({
-			:intrahash => 'other_test_hash',
+			:id => 'other_test_hash',
 			:title => 'testb',
 			:year => 2009
 		})
