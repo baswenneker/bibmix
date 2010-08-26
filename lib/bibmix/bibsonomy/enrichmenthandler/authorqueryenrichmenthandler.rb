@@ -5,6 +5,8 @@ module Bibmix
 		class AuthorQueryEnrichmentHandler 
 			include Bibmix::EnrichmentHandlerAbstract
 			
+			HANDLER_NAME = 'bibsonomy_author'
+			
 			protected
 			def init_handler(reference)
 				# Initialize the reference collection mechanism.
@@ -20,7 +22,9 @@ module Bibmix
 				@reference_filter = FilterDecoratorFactory.instance.fril(@reference_filter)
 				
 				# Initialize the reference integration mechanism.
-				@reference_integrator = NaiveReferenceIntegrator.new(reference)
+				@reference_integrator = NaiveReferenceIntegrator.new(reference, AuthorQueryEnrichmentHandler::HANDLER_NAME)
+				
+				@validators << Bibmix::AuthorAttributeValidator << Bibmix::MergedBibsonomyTitleQueryValidator
 			end
 		end
 	end

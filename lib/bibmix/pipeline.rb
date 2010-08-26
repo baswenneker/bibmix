@@ -20,17 +20,5 @@ module Bibmix
 		def initialize_metadataprocessor
 			@metadataprocessor = Bibmix::ParscitMetadataProcessor
 		end
-		
-		def initialize_referencevalidator_chain			
-			@enrichmenthandlers.each do |handler|
-				if handler.has_validator
-					if @referencevalidator.nil?
-						@referencevalidator = handler.validator
-					else
-						@referencevalidator = @referencevalidator.set_next_validator(handler.validator)
-					end
-				end
-			end
-		end
 	end
 end

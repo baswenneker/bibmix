@@ -7,7 +7,7 @@ module Bibmix
 	
 	# Reference class which is a datawrapper and interchangeable format for data 
 	# in the Bibmix application.
-	class AbstractReference
+	class AbstractReference 
 		
 		# An array of attributes names.
 		@@attributes = [:merged]
@@ -104,6 +104,21 @@ module Bibmix
 				end
 				
 				result << val
+			end
+			result
+		end
+		
+		def to_hash
+			
+			result = {}	
+			self.each_attribute do |key|
+				val = self.get(key, ' ')
+				
+				if !val.nil? && val.kind_of?(Array)
+					val = val.join(' and ')
+				end
+				
+				result[key] = val
 			end
 			result
 		end

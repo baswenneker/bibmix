@@ -7,7 +7,6 @@ module Bibmix
 		@enrichmenthandlers = []
 		@cmeapplication = nil
 		@metadataprocessor = nil
-		@referencevalidator = nil
 		
 		def execute_pipeline(citation)
 			
@@ -16,23 +15,16 @@ module Bibmix
 			extracted_citation_metadata = @cmeapplication.parse_citation(citation)
 			
 			reference = @metadataprocessor.process_metadata(extracted_citation_metadata)
-				
-			if @referencevalidator
-				begin
-					@referencevalidator.handle_validation_request(@referencevalidator, reference)
-				rescue Bibmix::ReferenceValidatorError
-					Bibmix::log(self, "Error while validating citation metadata: #{reference}.")
-					return reference
-				end
-			end
-			
+						
+			Bibmix::log(self, "Starting with enrichmenthandlers (#{reference.to_yaml})")
 			@enrichmenthandlers.each do |handler|
-				begin
-					handler.input_reference = reference
+				
+				Bibmix::log(self, "Starting with handler (#{handler})")
+				handler.input_reference = reference
+				if handler.is_valid_input_reference
 					reference = handler.execute_enrichment_steps
-				rescue Bibmix::DataValidatorError
-					Bibmix::log(self, "Error while validating enrichment reference#{reference}.")
-					return reference
+				else
+					Bibmix::log(self, "Invalid reference, skipping handler, #{reference}.")
 				end
 			end
 			
@@ -46,14 +38,12 @@ module Bibmix
 			initialize_cmeapplication
 			initialize_metadataprocessor
 			initialize_enrichmenthandlers
-			initialize_referencevalidator_chain
 		end
 		
 		def cleanup
 			@enrichmenthandlers = []
 			@cmeapplication = nil
 			@metadataprocessor = nil
-			@referencevalidator = nil
 		end
 		
 		def initialize_enrichmenthandlers
@@ -65,10 +55,6 @@ module Bibmix
 		end
 		
 		def initialize_metadataprocessor
-			raise Bibmix::NotImplementedError
-		end
-		
-		def initialize_referencevalidator_chain
 			raise Bibmix::NotImplementedError
 		end
 	end

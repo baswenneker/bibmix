@@ -50,23 +50,85 @@ module Bibmix
 								
 		protected
 						
-			def parse_entry_html(html)
+			def parse_entry_html(html, bibutils=false)
 				bibtex = clean_entry(html)
 				
-				result = nil
-				Bibtex::Parser.parse_string(bibtex).map do |entry|
-				  result = entry
+				if !bibutils
+					result = nil
+					begin
+						Bibtex::Parser.parse_string(bibtex).map do |entry|
+						  result = entry
+						end
+					rescue
+						puts html,'-------', bibtex
+						parse_entry_html(html, true) 
+					end
+				else
+					
+					tmp = Tempfile.new("bibutils_tmp")
+			    tmp.binmode
+			    tmp.puts(bibtex)
+			    tmp.close()
+			    
+					
+					xml = `~/Downloads/bibutils_4.8/bib2xml #{tmp.path()}`
+					tmp.unlink
+					tmp = Tempfile.new("bibutils_tmp")
+			    tmp.binmode
+			    tmp.puts(xml)
+			    tmp.close()
+					bibtex = `~/Downloads/bibutils_4.8/xml2bib #{tmp.path()}`
+										
+					tmp.unlink
+					
+					result = nil
+					Bibtex::Parser.parse_string(bibtex).map do |entry|
+					  result = entry
+					end
 				end
-				
+					
 				result
 			end
 			
 			def clean_entry(bibtex)
+				
+	    	ic = Iconv.new('UTF-8//IGNORE', 'UTF-8')
+	    	bibtex = ic.iconv(bibtex << ' ')[0..-2]
+	    	
 				bibtex = bibtex.gsub(/<.*?>/,'')
 				bibtex = bibtex.gsub(/^@(.*?)\{.*?(,[\s\S]*)/,'@\1{bibtex\2')
 				bibtex = bibtex.gsub(/([\s\S]*?),\s*\}\s*$/, '\1}')
 				bibtex = bibtex.gsub(/("[\s\S]*?)\{\"\}([\s\S]*?)\{\"\}([\s\S]*?)/, '\1\2\3')	
 				bibtex = bibtex.gsub(/\{"\}/,'')
+#				bibtex = bibtex.gsub(/\s+#.*?,\s/, ',')
+				bibtex = bibtex.gsub(/\s+#.*,\s*$/, ',')
+				
+				bibtex = bibtex.gsub(/url.alt\s+=/, 'urlalt')
+				bibtex = bibtex.gsub(/\{\\["']\{?[aeiuoAEIOU].*?\}?\}/) {|match, x|
+					result = match
+					if match.include?('a')
+						result = 'ä'
+					elsif match.include?('u')
+						result = 'ü'
+					elsif match.include?('e')
+						result = 'ë'
+					elsif match.include?('o')
+						result = 'ö'
+					elsif match.include?('i')
+						result = 'ï'
+					elsif match.include?('A')
+						result = 'Ü'
+					elsif match.include?('U')
+						result = 'Ü'
+					elsif match.include?('E')
+						result = 'Ë'
+					elsif match.include?('O')
+						result = 'Ö'
+					elsif match.include?('I')
+						result = 'Ï'
+					end
+					result
+				}
 			end
 			
 			# Transforms an xml entry into a Bibsonomy::Record.

@@ -4,8 +4,7 @@ module Bibmix
 	class AuthorAttributeValidator
 		include ReferenceValidatorAbstract
 					
-		protected
-		def validate_both(reference)
+		def self.is_valid_reference(reference)
 			reference.author.is_a?(Array) && !reference.author.empty?
 		end
 	end

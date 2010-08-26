@@ -5,10 +5,9 @@ module Bibmix
 		include DesignByContract
 		
 		@input_reference = nil
-		@validator = nil
+		@validators = nil
 		
-		def initialize(reference=nil)
-			
+		def initialize(reference=nil)			
 			@input_reference = reference
 			init_handler(reference) if !reference.nil?
 		end
@@ -16,13 +15,10 @@ module Bibmix
 		def input_reference=(reference)
 			raise Bibmix::Error if !reference.is_a?(Bibmix::AbstractReference)
 			@input_reference = reference
+			@validators = []
 			init_handler(reference)
 		end
-		
-		def has_validator
-			!@validator.nil?
-		end
-						
+								
 		pre(	:execute_enrichment_steps, 'Property @input_reference should be a Bibmix::AbstractReference instance') {  @input_reference.is_a?(Bibmix::AbstractReference) }
 		post(	:execute_enrichment_steps, 'Return value should be a Bibmix::AbstractReference') { |result| result.is_a?(Bibmix::AbstractReference) }		
 		def execute_enrichment_steps
@@ -41,6 +37,14 @@ module Bibmix
 			result
 		end
 		
+		def is_valid_input_reference(reference=@input_reference)
+			result = true
+			@validators.each do |validator|
+				result = result && validator.is_valid_reference(reference)
+			end
+			result			
+		end
+		
 	protected
 		
 		def init_handler(reference)
@@ -48,7 +52,6 @@ module Bibmix
 		end
 			
 		pre(	:collect_references, 'Parameter reference should be a Bibmix::AbstractReference instance') { |reference| reference.is_a?(Bibmix::AbstractReference) }
-		pre(	:collect_references, 'Parameter reference should have a title') { |reference| !reference.title.nil? }
 		post(	:collect_references, 'Return value should be an Array of Bibmix::AbstractResponse') { |result, reference| result.is_a?(Array) && result.inject(true){|is_a,item| is_a && item.is_a?(Bibmix::CollectedReference) } }
 		def collect_references(reference) 			
 			@reference_collector.collect_references(reference)

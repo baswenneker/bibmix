@@ -18,5 +18,9 @@ class Bibmix_ParscitTest < ActiveSupport::TestCase
 		
 		assert(reference.kind_of?(Hash))				
 		assert_equal(@citation, cme.citation)
+		
+		citation = 'Zarka Cvetanovic and Dileep Bhandarkar. Characterization of the Alpha AXP Performance Using TP and SPEC Workloads. In Proceedings of the 21st Annual International Symposium on Computer Architecture, pages 60-70, April 1994.'
+		reference = cme.parse_citation(citation)
+		
 	end
 end

@@ -58,7 +58,11 @@ module Bibmix
 			text = text.gsub(/__config_file__/, @temp_fril_config_file)
 			
 			# Execute FRIL.
-			`#{text}`
+			output = `#{text}`
+			
+			Bibmix::log(self, "FRIL output: \n\n  #{output} \n\n")
+			
+			output
 		end
 		
 		# Reads the result of the matching proces.
@@ -67,26 +71,29 @@ module Bibmix
 			# Get an array of attributes.
 			attrs = Bibmix::Reference.new.get_attributes					
 			skip_row = true
+			
+			if File.exists?(@temp_resultbook_file)
+			
+				FasterCSV.foreach(@temp_resultbook_file) do |row|
 					
-			FasterCSV.foreach(@temp_resultbook_file) do |row|
-				
-				if skip_row
-					# Skip the first row, it contains a header.
-					skip_row = false
-					next
+					if skip_row
+						# Skip the first row, it contains a header.
+						skip_row = false
+						next
+					end
+					
+					# Read the values in the current row and store the values in a hash.
+					hash = {}
+					row.each_with_index do |val, key| 
+					  hash[attrs[key]] = val
+					end
+					
+					# Convert the hash to a record.
+					new_record = Bibmix::Reference.from_hash(hash)
+					
+					# 
+					@decorated.similarity_lookup_hash[new_record.id] = row.last.to_i/100
 				end
-				
-				# Read the values in the current row and store the values in a hash.
-				hash = {}
-				row.each_with_index do |val, key| 
-				  hash[attrs[key]] = val
-				end
-				
-				# Convert the hash to a record.
-				new_record = Bibmix::Reference.from_hash(hash)
-				
-				# 
-				@decorated.similarity_lookup_hash[new_record.id] = row.last.to_i/100
 			end
 		end
 		
@@ -181,10 +188,10 @@ module Bibmix
 		
 		# Cleans up temporary files.
 		def cleanup
-#			File.delete(@temp_querybook_file) if File.exists?(@temp_responsebook_file)
-#			File.delete(@temp_responsebook_file) if File.exists?(@temp_responsebook_file)
-#			File.delete(@temp_fril_config_file) if File.exists?(@temp_fril_config_file)
-#			File.delete(@temp_resultbook_file) if File.exists?(@temp_resultbook_file)				
+			File.delete(@temp_querybook_file) if File.exists?(@temp_responsebook_file)
+			File.delete(@temp_responsebook_file) if File.exists?(@temp_responsebook_file)
+			File.delete(@temp_fril_config_file) if File.exists?(@temp_fril_config_file)
+			File.delete(@temp_resultbook_file) if File.exists?(@temp_resultbook_file)				
 		end
 	end
 end

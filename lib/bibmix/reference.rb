@@ -26,6 +26,19 @@ module Bibmix
 		# Create getters and setters for the given attributes.
 		attr_accessor *@@attributes
 		
+		def initialize
+			super
+			@merged_by = []
+		end
+		
+		def merged_by=(merged_by)
+			@merged_by = merged_by
+		end
+		
+		def merged_by
+			@merged_by
+		end
+		
 		def id
 			if !@id
 				@id = rand.to_s
@@ -46,14 +59,63 @@ module Bibmix
 				'techreport', 'unpublished'
 			]
 			
-			Rails.logger.info("Invalid entry type found (#{value})") if !valid_entry_types.include?(value)
+			if !valid_entry_types.include?(value)
+				Rails.logger.info("Invalid entry type found (#{value})")
+			end
+			
 			@entrytype = value
+			
+			@type = case @entrytype
+				when 'article' 						then 'An article from a journal or magazine.'
+				when 'book' 							then 'A book with an explicit publisher.'
+				when 'booklet' 						then 'A work that is printed and bound, but without a named publisher or sponsering institution.'
+				when 'conference' 				then 'An article in a conference proceedings.'
+				when 'inbook' 						then 'A part of a book.'
+				when 'incollection' 			then 'A part of a book having its own title.'
+				when 'inproceedings'			then 'An article in a conference proceedings.'
+				when 'manual' 						then 'Technical documentation.'
+				when 'mastersthesis' 			then 'A Master\'s thesis.'
+				when 'misc' 							then ''
+				when 'phdthesis' 					then 'A PhD thesis.'
+				when 'proceedings' 				then 'The proceedings of a conference.'
+				when 'techreport' 				then 'A report published by a school or other institution.'
+				when 'unpublished' 				then 'A document having an author and title, but not formally published.'				
+			end
+			
+		end
+		
+		def month=(value)
+			
+			value = value.gsub(/\s|\d|[-_\+\.,]/, '')
+			
+			@month = case value.downcase
+				when 'jan' 		then 'January'
+				when 'feb' 		then 'February'
+				when 'mar' 		then 'March'
+				when 'apr' 		then 'April'
+				when 'may' 		then 'May'
+				when 'jun' 		then 'June'
+				when 'jul'		then 'July'
+				when 'aug' 		then 'August'
+				when 'sep' 		then 'September'
+				when 'okt' 		then 'October'
+				when 'nov' 		then 'November'
+				when 'dec' 		then 'December'
+				else value
+			end
+			
 		end
 		
 		# A setter for tags which makes sure the tags are hashes.
 		def tags=(value)
 			raise Bibmix::ReferenceError.new("Tags have invalid type (#{value.class}, #{value})") if value.class != Hash
 			@tags = value
+		end
+		
+		def address=(value)
+			if value != 'pub-ACM:adr'
+				@address = value
+			end
 		end
 		
 		# Setter for 'author' which makes sure the author is an array.

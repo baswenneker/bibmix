@@ -22,6 +22,12 @@ class Bibmix_ReferenceTest < ActiveSupport::TestCase
 		end		
 	end
 	
+	def test_merged_by
+		
+		#@reference.merged_by = []
+		assert_equal([], @reference.merged_by)
+	end
+	
 	def test_merged_attribute
 			
 		@reference.merge(@merge_filtered_reference)
@@ -58,7 +64,44 @@ class Bibmix_ReferenceTest < ActiveSupport::TestCase
 		  result = entry
 		end
 		
-		Reference.from_bibtex(result)    
+		assert_nothing_raised{
+			Reference.from_bibtex(result)
+		}
+		
+		bibtex_str = '@InProceedings{bibtex,
+		  author =	"Cedric Augonnet and Raymond Namyst",
+		  editor =	"Eduardo Cesar and Michael Alexander and Achim Streit
+				 and Jesper Larsson Traff and Christophe Cerin and
+				 Andreas Knupfer and Dieter Kranzlmuller and Shantenu
+				 Jha",
+		  title =	"A Unified Runtime System for Heterogeneous Multi-core
+				 Architectures",
+		  booktitle =	"Euro-Par 2008 Workshops -- Parallel Processing, 14th
+				 International Euro-Par Conference (14th Euro-Par\'08)",
+		  series =	"Lecture Notes in Computer Science (LNCS)",
+		  volume =	"5415",
+		  pages =	"174--183",
+		  publisher =	"Springer-Verlag (New York)",
+		  address =	"Las Palmas de Gran Canaria, Spain",
+		 month =	aug # " 2008, Revised Selected paper",
+		  year = 	"2009",
+		  keywords =	"Second Workshop on Highly Parallel Processing on a
+				 Chip (2nd HPPC\'08),",
+		  abstract =	"C{\'e}dric Augonnet\par Eduardo C{\'e}sar\par Jesper
+				 Larsson Träff\par Christophe C{\'e}rin\par Andreas
+				 Knüpfer\par Dieter Kranzlmüller"}
+				'
+			
+			bibtex_str = bibtex_str.gsub(/\s+#.*,\s*$/, ',')
+		puts bibtex_str
+		result = nil
+		Bibtex::Parser.parse_string(bibtex_str).map do |entry|
+		  result = entry
+		end
+		
+		assert_nothing_raised{
+			Reference.from_bibtex(result)
+		}
   end
   
 	def test_from_hash

@@ -56,6 +56,7 @@ require 'bibmix/metadataprocessor/parscitmetadataprocessor'
 
 require 'bibmix/referencevalidator/authorattributevalidator'
 require 'bibmix/referencevalidator/titleattributevalidator'
+require 'bibmix/referencevalidator/mergedbibsonomytitlequeryvalidator'
 
 require 'bibmix/reference'
 require 'bibmix/collectedreference'
@@ -65,8 +66,11 @@ require 'bibmix/cacherequest'
 require 'bibmix/filterdecoratorfactory'
 require 'bibmix/chaintoken'
 require 'bibmix/referencefilter'
-require 'bibmix/naivereferenceintegrator'
 require 'bibmix/pipeline'
+
+
+require 'bibmix/referenceintegrator/naivereferenceintegrator'
+require 'bibmix/referenceintegrator/intelligentreferenceintegrator'
 
 require 'bibmix/filterdecorator/frilfilterdecorator'
 require 'bibmix/filterdecorator/pagesfilterdecorator'

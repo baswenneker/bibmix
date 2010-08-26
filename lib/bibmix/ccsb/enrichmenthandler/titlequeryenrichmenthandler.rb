@@ -5,6 +5,8 @@ module Bibmix
 		class TitleQueryEnrichmentHandler 
 			include Bibmix::EnrichmentHandlerAbstract
 			
+			HANDLER_NAME = 'ccsb_title'
+			
 			protected
 			def init_handler(reference)
 				# Initialize the reference collection mechanism.
@@ -20,9 +22,9 @@ module Bibmix
 				@reference_filter = Bibmix::FilterDecoratorFactory.instance.fril(@reference_filter)
 				
 				# Initialize the reference integration mechanism.
-				@reference_integrator = Bibmix::NaiveReferenceIntegrator.new(reference)
+				@reference_integrator = Bibmix::NaiveReferenceIntegrator.new(reference, TitleQueryEnrichmentHandler::HANDLER_NAME)
 				
-				@validator = Bibmix::TitleAttributeValidator.new(Bibmix::TitleAttributeValidator::VALIDATE_BOTH)
+				@validators << Bibmix::TitleAttributeValidator
 			end
 
 		end

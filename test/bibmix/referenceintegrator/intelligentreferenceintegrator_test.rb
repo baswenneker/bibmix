@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class Bibmix_NaiveReferenceIntegratorTest < ActiveSupport::TestCase
+class Bibmix_IntelligentReferenceIntegratorTest < ActiveSupport::TestCase
   include Bibmix
   	
   def test_constructor

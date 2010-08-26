@@ -4,8 +4,7 @@ module Bibmix
 	class TitleAttributeValidator
 		include ReferenceValidatorAbstract
 					
-		protected
-		def validate_both(reference)
+		def self.is_valid_reference(reference)
 			reference.title.is_a?(String) && !reference.title.empty?
 		end
 	end

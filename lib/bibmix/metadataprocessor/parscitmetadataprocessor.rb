@@ -8,7 +8,9 @@ module Bibmix
 		post( 'Return value should be a Bibmix::AbstractReference instance') {|result, metadata| result.is_a?(Bibmix::AbstractReference)}
 		def self.process_metadata(metadata)
 	    
-	    metadata['author'] = metadata['authors']['author']
+	    if !metadata['authors'].nil? && !metadata['authors']['author'].nil?
+	    	metadata['author'] = metadata['authors']['author']
+	    end
 	    
 	    if metadata['date'] =~ /^\d{4}$/
 	    	metadata['year'] = metadata['date']
