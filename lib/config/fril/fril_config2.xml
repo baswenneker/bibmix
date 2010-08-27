@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <left-data-source class="cdc.impl.datasource.office.ExcelDataSource" name="sourceA">
+        <params>
+            <param name="file-name" value="__source_a__"/>
+            <param name="source-name" value="sourceA"/>
+        </params>
+        <row-model>
+            <column column="address"
+                converter="cdc.datamodel.converters.DummyConverter" name="address">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="annotate"
+                converter="cdc.datamodel.converters.DummyConverter" name="annotate">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="author"
+                converter="cdc.datamodel.converters.DummyConverter" name="author">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="booktitle"
+                converter="cdc.datamodel.converters.DummyConverter" name="booktitle">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="chapter"
+                converter="cdc.datamodel.converters.DummyConverter" name="chapter">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="crossref"
+                converter="cdc.datamodel.converters.DummyConverter" name="crossref">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="edition"
+                converter="cdc.datamodel.converters.DummyConverter" name="edition">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="editor"
+                converter="cdc.datamodel.converters.DummyConverter" name="editor">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="howpublished"
+                converter="cdc.datamodel.converters.DummyConverter" name="howpublished">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="institution"
+                converter="cdc.datamodel.converters.DummyConverter" name="institution">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="journal"
+                converter="cdc.datamodel.converters.DummyConverter" name="journal">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="key"
+                converter="cdc.datamodel.converters.DummyConverter" name="key">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="month"
+                converter="cdc.datamodel.converters.DummyConverter" name="month">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="note"
+                converter="cdc.datamodel.converters.DummyConverter" name="note">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="number"
+                converter="cdc.datamodel.converters.DummyConverter" name="number">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="organization"
+                converter="cdc.datamodel.converters.DummyConverter" name="organization">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="pages"
+                converter="cdc.datamodel.converters.DummyConverter" name="pages">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="publisher"
+                converter="cdc.datamodel.converters.DummyConverter" name="publisher">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="school"
+                converter="cdc.datamodel.converters.DummyConverter" name="school">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="series"
+                converter="cdc.datamodel.converters.DummyConverter" name="series">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="title"
+                converter="cdc.datamodel.converters.DummyConverter" name="title">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="type"
+                converter="cdc.datamodel.converters.DummyConverter" name="type">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="volume"
+                converter="cdc.datamodel.converters.DummyConverter" name="volume">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="year"
+                converter="cdc.datamodel.converters.DummyConverter" name="year">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="entrytype"
+                converter="cdc.datamodel.converters.DummyConverter" name="entrytype">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="tags"
+                converter="cdc.datamodel.converters.DummyConverter" name="tags">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="id"
+                converter="cdc.datamodel.converters.DummyConverter" name="id">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="citation"
+                converter="cdc.datamodel.converters.DummyConverter" name="citation">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="merged"
+                converter="cdc.datamodel.converters.DummyConverter" name="merged">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="pages"
+                converter="cdc.datamodel.converters.SplitConverter" name="pages_0,pages_1">
+                <empty-values/>
+                <params>
+                    <param name="col-name" value="pages_0,pages_1"/>
+                    <param name="split" value="-"/>
+                    <param name="script" value="//This script has the following input parameters:&#xa;//   column - string value of the column that is being split&#xa;//   splitStr - string used for splitting&#xa;//   outSize - expected number of strings in output array&#xa;//This script is expected to return array of strings of length outSize&#xa;&#xa;//Split input&#xa;String[] strArray = column.split(splitStr);&#xa;&#xa;//Create output array&#xa;String[] out = new String[outSize];&#xa;&#xa;//Fill in the out array&#xa;for (int i = 0; i &lt; outSize; i++) {&#xa;   if (strArray.length > i) {&#xa;       out[i] = strArray[i];&#xa;   } else {&#xa;       out[i] = &quot;&quot;;&#xa;   }&#xa;}&#xa;&#xa;//Append reminder items&#xa;if (outSize &lt; strArray.length) { &#xa;   for (int i = outSize; i &lt; strArray.length; i++) {&#xa;       out[outSize - 1] = out[outSize - 1] + splitStr + strArray[i];&#xa;   }&#xa;}&#xa;&#xa;return out;&#xa;"/>
+                </params>
+            </column>
+            <column column="author"
+                converter="cdc.datamodel.converters.ReplaceConverter" name="nodot_author">
+                <empty-values/>
+                <params>
+                    <param name="replace1" value="\."/>
+                    <param name="script" value="//This script can use two parameters:&#xa;//   column - value of converter's input column&#xa;//   lookFor - regular expressions to be looked for (Array of Strings)&#xa;//   replaceWith - values (Array of Strings)&#xa;//Comment: lookFor[i] should be replaced with replaceWith[i]&#xa;//Return value: String&#xa;&#xa;for (int i = 0; i &lt; lookFor.length; i++) {&#xa;&#x9;column = column.replaceAll(lookFor[i], replaceWith[i]);&#xa;}&#xa;return column;&#xa;"/>
+                    <param name="out-column" value="nodot_author"/>
+                    <param name="new-string1" value=""/>
+                </params>
+            </column>
+        </row-model>    
+    </left-data-source>
+    <right-data-source
+        class="cdc.impl.datasource.office.ExcelDataSource" name="sourceB">
+        <params>
+            <param name="file-name" value="__source_b__"/>
+            <param name="sheet-name" value=""/>
+            <param name="source-name" value="sourceB"/>
+        </params>
+        <row-model>
+            <column column="address"
+                converter="cdc.datamodel.converters.DummyConverter" name="address">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="annotate"
+                converter="cdc.datamodel.converters.DummyConverter" name="annotate">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="author"
+                converter="cdc.datamodel.converters.DummyConverter" name="author">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="booktitle"
+                converter="cdc.datamodel.converters.DummyConverter" name="booktitle">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="chapter"
+                converter="cdc.datamodel.converters.DummyConverter" name="chapter">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="crossref"
+                converter="cdc.datamodel.converters.DummyConverter" name="crossref">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="edition"
+                converter="cdc.datamodel.converters.DummyConverter" name="edition">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="editor"
+                converter="cdc.datamodel.converters.DummyConverter" name="editor">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="howpublished"
+                converter="cdc.datamodel.converters.DummyConverter" name="howpublished">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="institution"
+                converter="cdc.datamodel.converters.DummyConverter" name="institution">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="journal"
+                converter="cdc.datamodel.converters.DummyConverter" name="journal">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="key"
+                converter="cdc.datamodel.converters.DummyConverter" name="key">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="month"
+                converter="cdc.datamodel.converters.DummyConverter" name="month">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="note"
+                converter="cdc.datamodel.converters.DummyConverter" name="note">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="number"
+                converter="cdc.datamodel.converters.DummyConverter" name="number">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="organization"
+                converter="cdc.datamodel.converters.DummyConverter" name="organization">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="pages"
+                converter="cdc.datamodel.converters.DummyConverter" name="pages">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="publisher"
+                converter="cdc.datamodel.converters.DummyConverter" name="publisher">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="school"
+                converter="cdc.datamodel.converters.DummyConverter" name="school">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="series"
+                converter="cdc.datamodel.converters.DummyConverter" name="series">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="title"
+                converter="cdc.datamodel.converters.DummyConverter" name="title">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="type"
+                converter="cdc.datamodel.converters.DummyConverter" name="type">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="volume"
+                converter="cdc.datamodel.converters.DummyConverter" name="volume">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="year"
+                converter="cdc.datamodel.converters.DummyConverter" name="year">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="entrytype"
+                converter="cdc.datamodel.converters.DummyConverter" name="entrytype">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="tags"
+                converter="cdc.datamodel.converters.DummyConverter" name="tags">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="id"
+                converter="cdc.datamodel.converters.DummyConverter" name="id">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="citation"
+                converter="cdc.datamodel.converters.DummyConverter" name="citation">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="merged"
+                converter="cdc.datamodel.converters.DummyConverter" name="merged">
+                <empty-values/>
+                <params/>
+            </column>
+            <column column="pages"
+                converter="cdc.datamodel.converters.SplitConverter" name="pages_1,pages_2">
+                <empty-values/>
+                <params>
+                    <param name="col-name" value="pages_1,pages_2"/>
+                    <param name="split" value="-"/>
+                    <param name="script" value="//This script has the following input parameters:&#xa;//   column - string value of the column that is being split&#xa;//   splitStr - string used for splitting&#xa;//   outSize - expected number of strings in output array&#xa;//This script is expected to return array of strings of length outSize&#xa;&#xa;//Split input&#xa;String[] strArray = column.split(splitStr);&#xa;&#xa;//Create output array&#xa;String[] out = new String[outSize];&#xa;&#xa;//Fill in the out array&#xa;for (int i = 0; i &lt; outSize; i++) {&#xa;   if (strArray.length > i) {&#xa;       out[i] = strArray[i];&#xa;   } else {&#xa;       out[i] = &quot;&quot;;&#xa;   }&#xa;}&#xa;&#xa;//Append reminder items&#xa;if (outSize &lt; strArray.length) { &#xa;   for (int i = outSize; i &lt; strArray.length; i++) {&#xa;       out[outSize - 1] = out[outSize - 1] + splitStr + strArray[i];&#xa;   }&#xa;}&#xa;&#xa;return out;&#xa;"/>
+                </params>
+            </column>
+            <column column="author"
+                converter="cdc.datamodel.converters.ReplaceConverter" name="nodot_author">
+                <empty-values/>
+                <params>
+                    <param name="replace1" value="\."/>
+                    <param name="script" value="//This script can use two parameters:&#xa;//   column - value of converter's input column&#xa;//   lookFor - regular expressions to be looked for (Array of Strings)&#xa;//   replaceWith - values (Array of Strings)&#xa;//Comment: lookFor[i] should be replaced with replaceWith[i]&#xa;//Return value: String&#xa;&#xa;for (int i = 0; i &lt; lookFor.length; i++) {&#xa;&#x9;column = column.replaceAll(lookFor[i], replaceWith[i]);&#xa;}&#xa;return column;&#xa;"/>
+                    <param name="out-column" value="nodot_author"/>
+                    <param name="new-string1" value=""/>
+                </params>
+            </column>
+        </row-model>
+    
+    </right-data-source>
+    <join class="cdc.impl.join.nestedloop.NestedLoopJoin"
+        summary-left="false" summary-right="false">
+        <params/>
+        <join-condition class="cdc.impl.conditions.WeightedJoinCondition">
+            <params>
+                <param name="acceptance-level" value="50"/>
+            </params>
+            <condition class="cdc.impl.distance.NumericDistance"
+                left-column="pages_0" right-column="pages_1" weight="5">
+                <params>
+                    <param name="use-lineral-approximation" value="true"/>
+                    <param name="percent-difference" value=""/>
+                    <param name="numeric-difference" value="2.0,2.0"/>
+                </params>
+            </condition>
+            <condition class="cdc.impl.distance.NumericDistance"
+                left-column="pages_1" right-column="pages_2" weight="5">
+                <params>
+                    <param name="use-lineral-approximation" value="true"/>
+                    <param name="percent-difference" value=""/>
+                    <param name="numeric-difference" value="2.0,2.0"/>
+                </params>
+            </condition>
+            <condition class="cdc.impl.distance.PairSimilarityDistance"
+                left-column="nodot_author" right-column="nodot_author" weight="10">
+                <params>
+                    <param name="disapprove-level" value="0.45"/>
+                    <param name="approve-level" value="0.09"/>
+                </params>
+            </condition>
+            <condition class="cdc.impl.distance.PairSimilarityDistance"
+                left-column="title" right-column="title" weight="65">
+                <params>
+                    <param name="disapprove-level" value="0.28"/>
+                    <param name="approve-level" value="0.09"/>
+                </params>
+            </condition>
+            <condition class="cdc.impl.distance.EqualFieldsDistance"
+                left-column="year" right-column="year" weight="10">
+                <params/>
+            </condition>
+            <condition class="cdc.impl.distance.EqualFieldsDistance"
+                left-column="month" right-column="month" weight="5">
+                <params/>
+            </condition>
+        </join-condition>
+        <row-model>
+            <column name="id" source="sourceB"/>
+            <column name="title" source="sourceB"/>
+        </row-model>
+    </join>
+	<results-savers>
+        <results-saver class="cdc.impl.resultsavers.CSVFileSaver">
+            <params>
+                <param name="encoding" value="UTF-8"/>
+                <param name="output-file" value="__output_result__"/>
+            </params>
+        </results-saver>
+    </results-savers>
+</configuration>

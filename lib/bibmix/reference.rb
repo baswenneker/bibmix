@@ -98,7 +98,7 @@ module Bibmix
 				when 'jul'		then 'July'
 				when 'aug' 		then 'August'
 				when 'sep' 		then 'September'
-				when 'okt' 		then 'October'
+				when 'oct' 		then 'October'
 				when 'nov' 		then 'November'
 				when 'dec' 		then 'December'
 				else value
@@ -156,9 +156,9 @@ module Bibmix
 			self
 		end
 		
-		def merge_pages(record)
-			merge_overwrite_attribute('pages', record)
-		end			
+#		def merge_pages(record)
+#			merge_overwrite_attribute('pages', record)
+#		end			
 		
 		protected	 
 		def split_authors(authors)

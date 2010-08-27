@@ -14,7 +14,7 @@ module Bibmix
 				
 				# Initialize the reference filtering mechanism, load the threshold
 				# from the config.
-				threshold = Bibmix.get_config('author_relevance_threshold')				
+				threshold = Bibmix.get_config('bibsonomy_author_relevance_threshold')				
 				@reference_filter = ReferenceFilter.new(reference)
 				@reference_filter.relevance_threshold = threshold
 				
@@ -22,7 +22,7 @@ module Bibmix
 				@reference_filter = FilterDecoratorFactory.instance.fril(@reference_filter)
 				
 				# Initialize the reference integration mechanism.
-				@reference_integrator = NaiveReferenceIntegrator.new(reference, AuthorQueryEnrichmentHandler::HANDLER_NAME)
+				@reference_integrator = IntelligentReferenceIntegrator.new(reference, AuthorQueryEnrichmentHandler::HANDLER_NAME)
 				
 				@validators << Bibmix::AuthorAttributeValidator << Bibmix::MergedBibsonomyTitleQueryValidator
 			end

@@ -25,7 +25,9 @@ module Bibmix
 	   	
 	   	pre( 'Parameter title is should not be empty') {|title| title.is_a?(String) && !title.empty? }
 	   	def send(title)		  
-			  result_page_request_uri = "http://liinwww.ira.uka.de/csbib?query=#{CGI.escape(title)}"
+	   		
+	   		title = CGI.escape(title.gsub(/\s*-\s*/,' '))
+			  result_page_request_uri = "http://liinwww.ira.uka.de/csbib?query=#{title}"
 			  begin
 			  	response = do_request(result_page_request_uri)
 			  rescue Error => e
@@ -92,8 +94,9 @@ module Bibmix
 							html_pres.each do |pre|
 								entries << pre.inner_html
 							end
-							
-						elsif !bibtex_href.nil?
+						end
+						
+						if !bibtex_href.nil?
 							bibdoc = do_request("http://liinwww.ira.uka.de#{bibtex_href}")
 							entries << bibdoc.at('pre[@class="bibtex"]').inner_html
 						end

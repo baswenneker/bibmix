@@ -31,7 +31,10 @@ module Bibmix
 				if @result.empty?
 					@result = []
 					@doc.each do |html|
-						@result << Bibmix::CollectedReference.new(get_reference(html), 'ccsb')
+						ref = get_reference(html)
+						if !ref.nil?
+							@result << Bibmix::CollectedReference.new(ref, 'ccsb')
+						end
 					end
 				end
 				
@@ -70,20 +73,24 @@ module Bibmix
 			    tmp.puts(bibtex)
 			    tmp.close()
 			    
+						result = nil
+					begin
+						xml = `~/Downloads/bibutils_4.8/bib2xml #{tmp.path()}`
+						tmp.unlink
+						tmp = Tempfile.new("bibutils_tmp")
+				    tmp.binmode
+				    tmp.puts(xml)
+				    tmp.close()
+						bibtex = `~/Downloads/bibutils_4.8/xml2bib #{tmp.path()}`
+											
+						tmp.unlink
 					
-					xml = `~/Downloads/bibutils_4.8/bib2xml #{tmp.path()}`
-					tmp.unlink
-					tmp = Tempfile.new("bibutils_tmp")
-			    tmp.binmode
-			    tmp.puts(xml)
-			    tmp.close()
-					bibtex = `~/Downloads/bibutils_4.8/xml2bib #{tmp.path()}`
-										
-					tmp.unlink
-					
-					result = nil
-					Bibtex::Parser.parse_string(bibtex).map do |entry|
-					  result = entry
+						
+						Bibtex::Parser.parse_string(bibtex).map do |entry|
+						  result = entry
+						end
+					rescue
+						return nil
 					end
 				end
 					
@@ -135,7 +142,10 @@ module Bibmix
 			def get_reference(html)
 				
 				entry = parse_entry_html(html)
-				Reference.from_bibtex(entry)
+				if !entry.nil?
+					entry = Reference.from_bibtex(entry)
+				end
+				entry
 			end
 			
 		end

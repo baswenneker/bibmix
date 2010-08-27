@@ -83,16 +83,18 @@ module Bibmix
 					end
 					
 					# Read the values in the current row and store the values in a hash.
-					hash = {}
-					row.each_with_index do |val, key| 
-					  hash[attrs[key]] = val
-					end
+#					hash = {}
+#					row.each_with_index do |val, key| 
+#					  hash[attrs[key]] = val
+#					end
 					
 					# Convert the hash to a record.
-					new_record = Bibmix::Reference.from_hash(hash)
-					
+					#new_record = Bibmix::Reference.from_hash(hash)
+					#puts hash.to_yaml
 					# 
-					@decorated.similarity_lookup_hash[new_record.id] = row.last.to_i/100
+					#puts row.to_yaml, hash.to_yaml,row.last.to_i/100.0
+					#Bibmix::log(self,"Silimarlity #{new_record}: #{row.last.to_i},#{row.last.to_i/100.0}")
+					@decorated.similarity_lookup_hash[row.first] = row.last.to_i/100.0
 				end
 			end
 		end
